@@ -157,7 +157,7 @@ func FindTraditionPage(entity Entity, currPageNo, pageSize int, searchParam []Se
 		return nil, err
 	}
 
-	objects := []*Model{}
+	objects := []interface {}{}
 
 	for rows.Next() {
 

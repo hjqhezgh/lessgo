@@ -251,7 +251,7 @@ func dealEntityAdd(entity Entity, terminal string, m map[string]interface{}, w h
 	content, err := ioutil.ReadFile("../etc/view/" + terminal + "/" + entity.Id + "/add.xml")
 
 	if err != nil {
-		log.Error(err)
+		Log.Error(err)
 		errMessage(w, r, "出现错误，请联系IT部门，错误信息:"+err.Error())
 		return
 	}
@@ -269,7 +269,7 @@ func dealEntityModify(entity Entity, terminal string, m map[string]interface{}, 
 	content, err := ioutil.ReadFile("../etc/view/" + terminal + "/" + entity.Id + "/modify.xml")
 
 	if err != nil {
-		log.Error(err)
+		Log.Error(err)
 		errMessage(w, r, "出现错误，请联系IT部门，错误信息:"+err.Error())
 		return
 	}
@@ -296,7 +296,7 @@ func dealEntitySave(entity Entity, w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-		log.Warn(err.Error())
+		Log.Warn(err.Error())
 		commonlib.OutputJson(w, m," ")
 		return
 	}
@@ -321,12 +321,12 @@ func dealEntitySave(entity Entity, w http.ResponseWriter, r *http.Request) {
 
 				fileNameProp := new(Prop)
 				fileNameProp.Name = "filename"
-				fileNameProp.Value = tool.SubstrByStEd(filePath, strings.LastIndex(filePath, "/")+1, strings.LastIndex(filePath, "."))
-				tmpFileName = tool.Substr(filePath, strings.LastIndex(filePath, "/")+1, len(filePath))
+				fileNameProp.Value = commonlib.SubstrByStEd(filePath, strings.LastIndex(filePath, "/")+1, strings.LastIndex(filePath, "."))
+				tmpFileName = commonlib.Substr(filePath, strings.LastIndex(filePath, "/")+1, len(filePath))
 
 				suffixProp := new(Prop)
 				suffixProp.Name = "suffix"
-				suffixProp.Value = tool.Substr(filePath, strings.LastIndex(filePath, ".")+1, len(filePath))
+				suffixProp.Value = commonlib.Substr(filePath, strings.LastIndex(filePath, ".")+1, len(filePath))
 
 				imageModel.Props = append(imageModel.Props, fileNameProp)
 				imageModel.Props = append(imageModel.Props, suffixProp)
@@ -367,7 +367,7 @@ func dealEntitySave(entity Entity, w http.ResponseWriter, r *http.Request) {
 				_, err = os.Stat(element.ImagePath)
 
 				if err != nil && os.IsNotExist(err) {
-					log.Info(element.ImagePath, "文件夹不存在，创建")
+					Log.Info(element.ImagePath, "文件夹不存在，创建")
 					os.Mkdir(element.ImagePath, 0777)
 				}
 
@@ -448,7 +448,7 @@ func dealEntitySave(entity Entity, w http.ResponseWriter, r *http.Request) {
 //处理实体的详细页请求
 func dealEntityDetail(entity Entity, m map[string]interface{}, w http.ResponseWriter, r *http.Request) {
 
-	log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的详细信息页")
+	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的详细信息页")
 
 	vars := mux.Vars(r)
 	id := vars["id"] //先假设这个是活动的ID
@@ -470,7 +470,7 @@ func dealEntityDetail(entity Entity, m map[string]interface{}, w http.ResponseWr
 //处理实体的删除页请求
 func dealEntityDelete(entity Entity, w http.ResponseWriter, r *http.Request) {
 
-	log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的删除页")
+	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的删除页")
 
 	m := make(map[string]interface{})
 
@@ -497,7 +497,7 @@ func dealEntityDelete(entity Entity, w http.ResponseWriter, r *http.Request) {
 //处理实体的分页ajax请求
 func dealEntityPage(entity Entity, w http.ResponseWriter, r *http.Request) {
 
-	log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的分页数据ajax请求")
+	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的分页数据ajax请求")
 
 	err := r.ParseForm()
 
@@ -517,7 +517,7 @@ func dealEntityPage(entity Entity, w http.ResponseWriter, r *http.Request) {
 		pageNo, err = strconv.Atoi(pageNoString)
 		if err != nil {
 			pageNo = 1
-			log.Warn("错误的pageNo:", pageNo)
+			Log.Warn("错误的pageNo:", pageNo)
 		}
 	}
 
@@ -570,7 +570,7 @@ func dealEntityPage(entity Entity, w http.ResponseWriter, r *http.Request) {
 	m["Gridpanel"] = gridpanel
 	m["DataLength"] = len(pageData.Datas) - 1
 	if len(pageData.Datas) > 0 {
-		m["FieldLength"] = len(pageData.Datas[0].Props) - 1
+		m["FieldLength"] = len(pageData.Datas[0].(*Model).Props) - 1
 	}
 
 	commonlib.RenderTemplate(w, r, "entity_page.json", m, template.FuncMap{"getPropValue": getPropValue, "compareInt": compareInt, "dealJsonString": dealJsonString}, "../template/entity_page.json")
@@ -579,7 +579,7 @@ func dealEntityPage(entity Entity, w http.ResponseWriter, r *http.Request) {
 //处理实体的所有数据ajax请求
 func dealEntityAllData(entity Entity, w http.ResponseWriter, r *http.Request) {
 
-	log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的所有数据ajax请求")
+	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的所有数据ajax请求")
 
 	err := r.ParseForm()
 
@@ -608,7 +608,7 @@ func dealEntityAllData(entity Entity, w http.ResponseWriter, r *http.Request) {
 //处理实体的分页ajax请求
 func dealEntityLoad(entity Entity, w http.ResponseWriter, r *http.Request) {
 
-	log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的load单实体ajax请求")
+	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的load单实体ajax请求")
 
 	m := make(map[string]interface{})
 
@@ -643,7 +643,7 @@ func dealEntityLoad(entity Entity, w http.ResponseWriter, r *http.Request) {
 //多实体保存ajax请求处理器
 func MutiSavaAction(w http.ResponseWriter, r *http.Request) {
 
-	log.Debug("访问多表保存ajax路径：", r.URL.Path)
+	Log.Debug("访问多表保存ajax路径：", r.URL.Path)
 
 	err := r.ParseForm()
 
