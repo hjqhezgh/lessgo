@@ -14,8 +14,6 @@
 package lessgo
 
 import (
-	"bytes"
-	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"github.com/gorilla/mux"
@@ -72,12 +70,12 @@ func CommonAction(w http.ResponseWriter, r *http.Request) {
 
 		switch opera {
 		case "home":
-			log.Debug("路径：", r.URL.Path, "访问应用首页")
+			Log.Debug("路径：", r.URL.Path, "访问应用首页")
 
 			content, err := ioutil.ReadFile("../etc/view/" + terminal + "/home.xml")
 
 			if err != nil {
-				log.Error(err)
+				Log.Error(err)
 				errMessage(w, r, "出现错误，请联系IT部门，错误信息:"+err.Error())
 				return
 			}
@@ -104,7 +102,7 @@ func CommonAction(w http.ResponseWriter, r *http.Request) {
 		case "load":
 			dealEntityLoad(entity, w, r)
 		default:
-			log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的未知页")
+			Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的未知页")
 			commonlib.RenderTemplate(w, r, "home.html", m, nil, "../template/home.html", "../template/nav.html")
 		}
 	}
@@ -113,7 +111,7 @@ func CommonAction(w http.ResponseWriter, r *http.Request) {
 //中心控制器
 func IndependentAction(w http.ResponseWriter, r *http.Request) {
 
-	log.Debug("访问自定义路径：", r.URL.Path)
+	Log.Debug("访问自定义路径：", r.URL.Path)
 
 	strs := strings.Split(r.URL.Path, "/")
 
@@ -170,7 +168,7 @@ func analyNav(terminal string) error {
 	err = xml.Unmarshal(content, &navs)
 
 	if err != nil {
-		log.Error(err)
+		Log.Error(err)
 		return err
 	}
 
@@ -230,7 +228,7 @@ func analyseUrl(url string) (entity Entity, operation, terminal, msg string) {
 
 //处理实体的列表页请求
 func dealEntityIndex(entity Entity, terminal string, m map[string]interface{}, w http.ResponseWriter, r *http.Request) {
-	log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的列表页")
+	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的列表页")
 
 	content, err := ioutil.ReadFile("../etc/view/" + terminal + "/" + entity.Id + "/index.xml")
 
