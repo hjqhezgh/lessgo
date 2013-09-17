@@ -54,7 +54,6 @@ type Entity struct {
 	Refs   []Ref   `xml:"ref"`
 }
 
-/*
 //根据id查找出实体
 func GetEntity(id string) Entity {
 
@@ -66,7 +65,6 @@ func GetEntity(id string) Entity {
 
 	return Entity{}
 }
-*/
 
 type Ref struct {
 	Entity         string  `xml:"entity,attr"`
