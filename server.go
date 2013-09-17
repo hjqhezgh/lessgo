@@ -109,7 +109,7 @@ func bulidWhereSql(entity Entity, countSql, dataSql string, searchParam []Search
 }
 
 //查找分页数据
-func FindTraditionPage(entity Entity, currPageNo, pageSize int, searchParam []Search, colmuns []Column) (*TraditionPage, error) {
+func FindTraditionPage(entity Entity, currPageNo, pageSize int, searchParam []Search, colmuns []Column) (*commonlib.TraditionPage, error) {
 
 	countSql, dataSql := bulidSelectSql(entity, colmuns)
 
@@ -188,7 +188,7 @@ func FindTraditionPage(entity Entity, currPageNo, pageSize int, searchParam []Se
 		objects = append(objects, model)
 	}
 
-	return BulidTraditionPage(currPageNo, pageSize, totalNum, objects), nil
+	return commonlib.BulidTraditionPage(currPageNo, pageSize, totalNum, objects), nil
 }
 
 //查找分页数据
