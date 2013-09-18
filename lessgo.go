@@ -70,7 +70,7 @@ func Analyse() error {
 }
 
 //启动应用
-func ConfigLessgo() {
+func ConfigLessgo() *mux.Router{
 
 	http.Handle("/js/", http.FileServer(http.Dir("../static")))
 	http.Handle("/css/", http.FileServer(http.Dir("../static")))
@@ -120,9 +120,9 @@ func ConfigLessgo() {
 
 	r.HandleFunc("/kindeditorImageUpload", kindeditorImageUpload)
 
-	http.Handle("/", r)
+//	http.Handle("/", r)
 
 	fmt.Println("lessgo配置完成")
 
-	//Log.Error(http.ListenAndServe(fmt.Sprintf(":%d", config.Port), nil))
+	return r
 }
