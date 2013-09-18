@@ -26,7 +26,7 @@ type Region struct {
 
 // 根据父节点地区码获取该节点下的地区列表
 func FindRegionByParentCode(parentCode string) (regions []*Region, err error) {
-	db := DBPool{}.GetMySQL()
+	db := GetMySQL()
 	defer db.Close()
 
 	regions = []*Region{}
@@ -63,7 +63,7 @@ func GetAreaNameByCode(area string) (areaName string) {
 		return ""
 	}
 
-	db := DBPool{}.GetMySQL()
+	db := GetMySQL()
 	defer db.Close()
 
 	province := area[0:2] + "0000"
@@ -121,7 +121,7 @@ func GetOneAreaNameByCode(area string) (areaName string) {
 		return ""
 	}
 
-	db := DBPool{}.GetMySQL()
+	db := GetMySQL()
 	defer db.Close()
 
 	//查询区的名字

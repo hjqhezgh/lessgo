@@ -117,7 +117,7 @@ func findTraditionPage(entity entity, currPageNo, pageSize int, searchParam []se
 
 	Log.Debug(countSql)
 
-	db := DBPool{}.GetMySQL()
+	db := GetMySQL()
 	defer db.Close()
 
 	rows, err := db.Query(countSql, params...)
@@ -198,7 +198,7 @@ func findAllData(entity entity) ([]*model, error) {
 
 	Log.Debug(dataSql)
 
-	db := DBPool{}.GetMySQL()
+	db := GetMySQL()
 	defer db.Close()
 
 	dataSql += " order by " + entity.Pk + " desc "
@@ -283,7 +283,7 @@ func insert(entity entity, model *model, elements []element) (id int, err error)
 
 	Log.Debug(sql)
 
-	db := DBPool{}.GetMySQL()
+	db := GetMySQL()
 	defer db.Close()
 
 	stmt, err := db.Prepare(sql)
@@ -327,7 +327,7 @@ func findById(entity entity, id string) (*model, error) {
 
 	Log.Debug(dataSql)
 
-	db := DBPool{}.GetMySQL()
+	db := GetMySQL()
 	defer db.Close()
 
 	rows, err := db.Query(dataSql, id)
@@ -387,7 +387,7 @@ func modify(entity entity, model *model, elements []element) error {
 
 	Log.Debug(sql)
 
-	db := DBPool{}.GetMySQL()
+	db := GetMySQL()
 	defer db.Close()
 
 	stmt, err := db.Prepare(sql)
@@ -412,7 +412,7 @@ func delete(entity entity, id string) error {
 
 	Log.Debug(sql)
 
-	db := DBPool{}.GetMySQL()
+	db := GetMySQL()
 	defer db.Close()
 
 	stmt, err := db.Prepare(sql)

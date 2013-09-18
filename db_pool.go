@@ -19,12 +19,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type DBPool struct {
-}
-
 var mySQLPool chan *sql.DB
 
-func (dbPool DBPool) GetMySQL() *sql.DB {
+func GetMySQL() *sql.DB {
 	if mySQLPool == nil {
 		mySQLPool = make(chan *sql.DB, config.MaxPoolSize)
 	}
@@ -36,14 +33,14 @@ func (dbPool DBPool) GetMySQL() *sql.DB {
 					Log.Warn(err)
 					continue
 				}
-				dbPool.PutMySQL(db)
+				putMySQL(db)
 			}
 		}()
 	}
 	return <-mySQLPool
 }
 
-func (dbPool DBPool) PutMySQL(conn *sql.DB) {
+func putMySQL(conn *sql.DB) {
 	if mySQLPool == nil {
 		mySQLPool = make(chan *sql.DB, config.MaxPoolSize)
 	}
