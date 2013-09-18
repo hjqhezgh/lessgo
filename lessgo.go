@@ -72,9 +72,7 @@ func Analyse() error {
 //启动应用
 func ConfigLessgo() *mux.Router{
 
-	http.Handle("/js/", http.FileServer(http.Dir("../static")))
-	http.Handle("/css/", http.FileServer(http.Dir("../static")))
-	http.Handle("/img/", http.FileServer(http.Dir("../static")))
+	http.Handle("/lessgo/", http.FileServer(http.Dir("../")))
 	http.Handle("/tmp/", http.FileServer(http.Dir("../")))
 	http.Handle("/imageupload/", http.FileServer(http.Dir("../")))
 
