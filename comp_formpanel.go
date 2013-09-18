@@ -83,7 +83,7 @@ func (formpanel formPanel) generateFormPanel(entity entity, terminal, packageNam
 
 	if formpanel.Load == "true" {
 		vars := mux.Vars(r)
-		id := vars["id"] //先假设这个是活动的ID
+		id := vars["id"]
 		model, err := findById(entity, id)
 
 		if err != nil {
