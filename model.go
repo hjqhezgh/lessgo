@@ -18,14 +18,14 @@ import (
 )
 
 //通用模型，用于存储从数据库获取到的值
-type Model struct {
-	Entity Entity
+type model struct {
+	Entity entity
 	Id     int
-	Props  []*Prop
+	Props  []*prop
 }
 
 //通用属性
-type Prop struct {
+type prop struct {
 	Name  string
 	Value string
 }
@@ -42,67 +42,67 @@ type Config struct {
 }
 
 //entity.xml
-type Entitys struct {
+type entitys struct {
 	XMLName xml.Name `xml:"entitys"`
-	Entitys []Entity `xml:"entity"`
+	Entitys []entity `xml:"entity"`
 }
 
-type Entity struct {
+type entity struct {
 	Id     string  `xml:"id,attr"`
 	Pk     string  `xml:"pk"`
-	Fields []Field `xml:"field"`
-	Refs   []Ref   `xml:"ref"`
+	Fields []field `xml:"field"`
+	Refs   []ref   `xml:"ref"`
 }
 
 //根据id查找出实体
-func GetEntity(id string) Entity {
+func getEntity(id string) entity {
 
-	for _, entity := range entitys.Entitys {
+	for _, entity := range entityList.Entitys {
 		if entity.Id == id {
 			return entity
 		}
 	}
 
-	return Entity{}
+	return entity{}
 }
 
-type Ref struct {
+type ref struct {
 	Entity         string  `xml:"entity,attr"`
 	Field          string  `xml:"field,attr"`
 	RefEntityField string  `xml:"refEntityField,attr"`
-	Fields         []Field `xml:"field"`
+	Fields         []field `xml:"field"`
 }
 
-type Field struct {
+type field struct {
 	Name string `xml:"name,attr"`
 	Desc string `xml:"desc,attr"`
 }
 
 //nav.xml
-type Navs struct {
+type navs struct {
 	XMLName xml.Name `xml:"navs"`
-	Navs    []Nav    `xml:"nav"`
+	Navs    []nav    `xml:"nav"`
 }
 
-type Nav struct {
+type nav struct {
 	Text  string `xml:"text,attr"`
-	Items []Item `xml:"item"`
+	Items []item `xml:"item"`
 }
 
-type Item struct {
+type item struct {
 	Path    string `xml:"path,attr"`
 	Text    string `xml:"text,attr"`
 	Outside bool   `xml:"outside,attr"`
 }
 
 //url.xml
-type Urls struct {
+type urls struct {
 	XMLName   xml.Name `xml:"urls"`
-	Urls      []Url    `xml:"url"`
+	Urls      []url    `xml:"url"`
 	Terminals []string `xml:"terminal"`
 }
 
-type Url struct {
+type url struct {
 	Path string `xml:"path,attr"`
 	View string `xml:"view,attr"`
 }

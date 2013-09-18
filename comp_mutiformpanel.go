@@ -36,7 +36,7 @@ type formTab struct {
 	Desc     string    `xml:"desc,attr"`
 }
 
-func (mutiFormPanel mutiFormPanel) GenerateMutiFormPanel(terminal, packageName string, r *http.Request) []byte {
+func (mutiFormPanel mutiFormPanel) generateMutiFormPanel(terminal, packageName string, r *http.Request) []byte {
 
 	var t *template.Template
 

@@ -26,9 +26,9 @@ var (
 	tmplog  log4go.Logger
 	Log     *MyLogger
 	config  Config
-	entitys Entitys
-	navs    Navs
-	urls    Urls
+	entityList entitys
+	navList    navs
+	urlList    urls
 )
 
 func init() {
@@ -57,7 +57,7 @@ func Analyse() error {
 	}
 
 	content, err = ioutil.ReadFile("../etc/entity.xml")
-	err = xml.Unmarshal(content, &entitys)
+	err = xml.Unmarshal(content, &entityList)
 
 	if err != nil {
 		Log.Error(err)
@@ -65,7 +65,7 @@ func Analyse() error {
 	}
 
 	content, err = ioutil.ReadFile("../etc/url.xml")
-	err = xml.Unmarshal(content, &urls)
+	err = xml.Unmarshal(content, &urlList)
 
 	if err != nil {
 		Log.Error(err)
@@ -90,12 +90,12 @@ func ConfigServer() {
 
 	//这里的把每个实体的url规约好，暂时不去改变，将来再考虑配置 FIXME
 
-	for _, terminal := range urls.Terminals {
+	for _, terminal := range urlList.Terminals {
 
 		r.HandleFunc("/"+terminal, commonAction)
 		r.HandleFunc("/"+terminal+"/index.html", commonAction)
 
-		for _, entity := range entitys.Entitys {
+		for _, entity := range entityList.Entitys {
 			r.HandleFunc("/"+terminal+"/"+entity.Id+"/index.html", commonAction)
 			r.HandleFunc("/"+terminal+"/"+entity.Id, commonAction)
 			r.HandleFunc("/"+terminal+"/"+entity.Id+"/{id:[0-9]+}", commonAction)
@@ -110,7 +110,7 @@ func ConfigServer() {
 
 	}
 
-	for _, url := range urls.Urls {
+	for _, url := range urlList.Urls {
 		r.HandleFunc(url.Path, independentAction)
 	}
 

@@ -43,7 +43,7 @@ type element struct {
 	Resolutions  string `xml:"resolutions,attr"`
 }
 
-func (formpanel formPanel) GenerateFormPanel(entity Entity, terminal, packageName string, r *http.Request) []byte {
+func (formpanel formPanel) generateFormPanel(entity entity, terminal, packageName string, r *http.Request) []byte {
 
 	var t *template.Template
 

@@ -29,20 +29,20 @@ type viewport struct {
 }
 
 //扩展viewport的同时，记得同时扩展container
-func (viewport viewport) GenerateViewport(terminal, packageName string, r *http.Request) []byte {
+func (viewport viewport) generateViewport(terminal, packageName string, r *http.Request) []byte {
 
 	content := ""
 
 	for _, gridpanel := range viewport.GridPanels {
-		content += string(gridpanel.GenerateGridPanel(GetEntity(gridpanel.Entity), terminal, packageName))
+		content += string(gridpanel.generateGridPanel(getEntity(gridpanel.Entity), terminal, packageName))
 	}
 
 	for _, formpanel := range viewport.FormPanels {
-		content += string(formpanel.GenerateFormPanel(GetEntity(formpanel.Entity), terminal, packageName, r))
+		content += string(formpanel.generateFormPanel(getEntity(formpanel.Entity), terminal, packageName, r))
 	}
 
 	for _, mutiformpanel := range viewport.MutiFormPanels {
-		content += string(mutiformpanel.GenerateMutiFormPanel(terminal, packageName, r))
+		content += string(mutiformpanel.generateMutiFormPanel(terminal, packageName, r))
 	}
 
 	var t *template.Template
@@ -60,7 +60,7 @@ func (viewport viewport) GenerateViewport(terminal, packageName string, r *http.
 
 	data := make(map[string]interface{})
 	data["Content"] = content
-	data["Nav"] = navs
+	data["Nav"] = navList
 
 	err = t.Execute(&buf, data)
 

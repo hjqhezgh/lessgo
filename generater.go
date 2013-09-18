@@ -33,5 +33,5 @@ func generate(viewContent []byte, terminal, packageName string, r *http.Request)
 		return []byte{}
 	}
 
-	return viewport.GenerateViewport(terminal, packageName, r)
+	return viewport.generateViewport(terminal, packageName, r)
 }
