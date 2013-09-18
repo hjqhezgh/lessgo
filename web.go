@@ -36,7 +36,7 @@ func errMessage(w http.ResponseWriter, r *http.Request, errMsg string) {
 
 	m["Nav"] = navList
 
-	commonlib.RenderTemplate(w, r, "err_message.html", m, nil, "../template/err_message.html", "../template/nav.html")
+	commonlib.RenderTemplate(w, r, "err_message.html", m, nil, "../lessgo/template/err_message.html", "../lessgo/template/nav.html")
 }
 
 //中心控制器
@@ -103,7 +103,7 @@ func commonAction(w http.ResponseWriter, r *http.Request) {
 			dealEntityLoad(entity, w, r)
 		default:
 			Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的未知页")
-			commonlib.RenderTemplate(w, r, "home.html", m, nil, "../template/home.html", "../template/nav.html")
+			commonlib.RenderTemplate(w, r, "home.html", m, nil, "../lessgo/template/home.html", "../lessgo/template/nav.html")
 		}
 	}
 }
@@ -463,7 +463,7 @@ func dealEntityDetail(entity entity, m map[string]interface{}, w http.ResponseWr
 	m["Entity"] = entity
 	m["Model"] = model
 
-	commonlib.RenderTemplate(w, r, "entity_detail.html", m, template.FuncMap{"getPropValue": getPropValue}, "../template/entity_detail.html", "../template/nav.html")
+	commonlib.RenderTemplate(w, r, "entity_detail.html", m, template.FuncMap{"getPropValue": getPropValue}, "../lessgo/template/entity_detail.html", "../lessgo/template/nav.html")
 
 }
 
@@ -573,7 +573,7 @@ func dealEntityPage(entity entity, w http.ResponseWriter, r *http.Request) {
 		m["FieldLength"] = len(pageData.Datas[0].(*model).Props) - 1
 	}
 
-	commonlib.RenderTemplate(w, r, "entity_page.json", m, template.FuncMap{"getPropValue": getPropValue, "compareInt": compareInt, "dealJsonString": dealJsonString}, "../template/entity_page.json")
+	commonlib.RenderTemplate(w, r, "entity_page.json", m, template.FuncMap{"getPropValue": getPropValue, "compareInt": compareInt, "dealJsonString": dealJsonString}, "../lessgo/template/entity_page.json")
 }
 
 //处理实体的所有数据ajax请求
@@ -602,7 +602,7 @@ func dealEntityAllData(entity entity, w http.ResponseWriter, r *http.Request) {
 		m["FieldLength"] = len(models[0].Props) - 1
 	}
 
-	commonlib.RenderTemplate(w, r, "entity_alldata.json", m, template.FuncMap{"getPropValue": getPropValue, "compareInt": compareInt}, "../template/entity_alldata.json")
+	commonlib.RenderTemplate(w, r, "entity_alldata.json", m, template.FuncMap{"getPropValue": getPropValue, "compareInt": compareInt}, "../lessgo/template/entity_alldata.json")
 }
 
 //处理实体的分页ajax请求
@@ -637,7 +637,7 @@ func dealEntityLoad(entity entity, w http.ResponseWriter, r *http.Request) {
 	m["Model"] = model
 	m["FieldLength"] = len(entity.Fields) - 1
 
-	commonlib.RenderTemplate(w, r, "entity_load.json", m, template.FuncMap{"getPropValue": getPropValue, "compareInt": compareInt}, "../template/entity_load.json")
+	commonlib.RenderTemplate(w, r, "entity_load.json", m, template.FuncMap{"getPropValue": getPropValue, "compareInt": compareInt}, "../lessgo/template/entity_load.json")
 }
 
 //多实体保存ajax请求处理器

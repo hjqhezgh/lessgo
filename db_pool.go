@@ -16,19 +16,30 @@ package lessgo
 import (
 	"database/sql"
 	"fmt"
+	"strconv"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 var mySQLPool chan *sql.DB
 
 func GetMySQL() *sql.DB {
+
+	maxPoolSizeString,_ := Config.GetValue("lessgo","maxPoolSize")
+	maxPoolSize,_ := strconv.Atoi(maxPoolSizeString)
+
 	if mySQLPool == nil {
-		mySQLPool = make(chan *sql.DB, config.MaxPoolSize)
+		mySQLPool = make(chan *sql.DB, maxPoolSize)
 	}
+
+	dbUrl,_ := Config.GetValue("lessgo","dbUrl")
+	dbName,_ := Config.GetValue("lessgo","dbName")
+	dbUserName,_ := Config.GetValue("lessgo","dbUserName")
+	dbPwd,_ := Config.GetValue("lessgo","dbPwd")
+
 	if len(mySQLPool) == 0 {
 		go func() {
-			for i := 0; i < config.MaxPoolSize/2; i++ {
-				db, err := sql.Open("mysql", fmt.Sprintf("%v:%v@tcp(%v)/%v?charset=utf8", config.DbUserName, config.DbPwd, config.DbUrl, config.DbName))
+			for i := 0; i < maxPoolSize/2; i++ {
+				db, err := sql.Open("mysql", fmt.Sprintf("%v:%v@tcp(%v)/%v?charset=utf8", dbUserName, dbPwd, dbUrl, dbName))
 				if err != nil {
 					Log.Warn(err)
 					continue
@@ -41,12 +52,18 @@ func GetMySQL() *sql.DB {
 }
 
 func putMySQL(conn *sql.DB) {
+
+	maxPoolSizeString,_ := Config.GetValue("lessgo","maxPoolSize")
+	maxPoolSize,_ := strconv.Atoi(maxPoolSizeString)
+
 	if mySQLPool == nil {
-		mySQLPool = make(chan *sql.DB, config.MaxPoolSize)
+		mySQLPool = make(chan *sql.DB, maxPoolSize)
 	}
-	if len(mySQLPool) == config.MaxPoolSize {
+
+	if len(mySQLPool) == maxPoolSize {
 		conn.Close()
 		return
 	}
+
 	mySQLPool <- conn
 }

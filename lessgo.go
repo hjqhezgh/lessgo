@@ -20,22 +20,29 @@ import (
 	"github.com/moovweb/log4go"
 	"io/ioutil"
 	"net/http"
+	"github.com/Unknwon/goconfig"
 )
 
 var (
 	tmplog  log4go.Logger
-	Log     *MyLogger
-	config  Config
+	Log     *MyLogger //提供公用的日志方式
+	Config  *goconfig.ConfigFile
 	entityList entitys
 	navList    navs
 	urlList    urls
 )
 
 func init() {
+
+	Config, _ = goconfig.LoadConfigFile("../etc/config.ini")
+
+	logFilePath,_ := Config.GetValue("lessgo","logFilePath")
+
 	tmplog = make(log4go.Logger)
 	tmplog.AddFilter("stdout", log4go.DEBUG, log4go.NewConsoleLogWriter())
+
 	//单位是字节
-	fw := log4go.NewFileLogWriter("code.log", false).SetRotateSize(10 * 1024 * 1024).SetRotate(true)
+	fw := log4go.NewFileLogWriter(logFilePath, false).SetRotateSize(10 * 1024 * 1024).SetRotate(true)
 	tmplog.AddFilter("log", log4go.INFO, fw)
 	Log = new(MyLogger)
 }
@@ -43,20 +50,7 @@ func init() {
 //解析配置文件内容至内存中
 func Analyse() error {
 
-	content, err := ioutil.ReadFile("../etc/config.xml")
-
-	if err != nil {
-		Log.Error(err)
-		return err
-	}
-
-	err = xml.Unmarshal(content, &config)
-	if err != nil {
-		Log.Error(err)
-		return err
-	}
-
-	content, err = ioutil.ReadFile("../etc/entity.xml")
+	content, err := ioutil.ReadFile("../etc/entity.xml")
 	err = xml.Unmarshal(content, &entityList)
 
 	if err != nil {
@@ -76,7 +70,7 @@ func Analyse() error {
 }
 
 //启动应用
-func ConfigServer() {
+func ConfigLessgo() {
 
 	http.Handle("/js/", http.FileServer(http.Dir("../static")))
 	http.Handle("/css/", http.FileServer(http.Dir("../static")))
@@ -128,7 +122,7 @@ func ConfigServer() {
 
 	http.Handle("/", r)
 
-	fmt.Println("Server start on:", config.Port)
+	fmt.Println("lessgo配置完成")
 
 	//Log.Error(http.ListenAndServe(fmt.Sprintf(":%d", config.Port), nil))
 }

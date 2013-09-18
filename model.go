@@ -30,17 +30,6 @@ type prop struct {
 	Value string
 }
 
-//config.xml
-type Config struct {
-	XMLName     xml.Name `xml:"config"`
-	Port        int      `xml:"port"`
-	DbUrl       string   `xml:"dbUrl"`
-	DbName      string   `xml:"dbName"`
-	DbUserName  string   `xml:"dbUserName"`
-	DbPwd       string   `xml:"dbPwd"`
-	MaxPoolSize int      `xml:"maxPoolSize"`
-}
-
 //entity.xml
 type entitys struct {
 	XMLName xml.Name `xml:"entitys"`
