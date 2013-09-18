@@ -48,7 +48,7 @@ func init() {
 }
 
 //解析配置文件内容至内存中
-func Analyse() error {
+func analyse() error {
 
 	content, err := ioutil.ReadFile("../etc/entity.xml")
 	err = xml.Unmarshal(content, &entityList)
@@ -71,6 +71,12 @@ func Analyse() error {
 
 //启动应用
 func ConfigLessgo() *mux.Router{
+
+	err := analyse()
+
+	if err != nil {
+		panic(err)
+	}
 
 	http.Handle("/lessgo/", http.FileServer(http.Dir("../")))
 	http.Handle("/tmp/", http.FileServer(http.Dir("../")))
