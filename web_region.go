@@ -14,8 +14,8 @@
 package lessgo
 
 import (
-	"net/http"
 	"github.com/hjqhezgh/commonlib"
+	"net/http"
 )
 
 func regions(w http.ResponseWriter, r *http.Request) {
@@ -26,7 +26,7 @@ func regions(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		m["success"] = false
 		m["reason"] = "请求解析异常"
-		commonlib.OutputJson(w, m ," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -37,14 +37,14 @@ func regions(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		m["success"] = false
 		m["reason"] = "服务器异常"
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
 	m["success"] = true
 	m["regions"] = regions
 
-	commonlib.OutputJson(w, m," ")
+	commonlib.OutputJson(w, m, " ")
 
 	return
 }

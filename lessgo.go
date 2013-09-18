@@ -16,17 +16,17 @@ package lessgo
 import (
 	"encoding/xml"
 	"fmt"
+	"github.com/Unknwon/goconfig"
 	"github.com/gorilla/mux"
 	"github.com/moovweb/log4go"
 	"io/ioutil"
 	"net/http"
-	"github.com/Unknwon/goconfig"
 )
 
 var (
-	tmplog  log4go.Logger
-	Log     *MyLogger //提供公用的日志方式
-	Config  *goconfig.ConfigFile
+	tmplog     log4go.Logger
+	Log        *MyLogger //提供公用的日志方式
+	Config     *goconfig.ConfigFile
 	entityList entitys
 	navList    navs
 	urlList    urls
@@ -36,7 +36,7 @@ func init() {
 
 	Config, _ = goconfig.LoadConfigFile("../etc/config.ini")
 
-	logFilePath,_ := Config.GetValue("lessgo","logFilePath")
+	logFilePath, _ := Config.GetValue("lessgo", "logFilePath")
 
 	tmplog = make(log4go.Logger)
 	tmplog.AddFilter("stdout", log4go.DEBUG, log4go.NewConsoleLogWriter())
@@ -70,7 +70,7 @@ func analyse() error {
 }
 
 //启动应用
-func ConfigLessgo() *mux.Router{
+func ConfigLessgo() *mux.Router {
 
 	err := analyse()
 
@@ -124,7 +124,7 @@ func ConfigLessgo() *mux.Router{
 
 	r.HandleFunc("/kindeditorImageUpload", kindeditorImageUpload)
 
-//	http.Handle("/", r)
+	//	http.Handle("/", r)
 
 	fmt.Println("lessgo配置完成")
 

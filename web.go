@@ -17,6 +17,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/hjqhezgh/commonlib"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -24,7 +25,6 @@ import (
 	"strconv"
 	"strings"
 	"text/template"
-	"github.com/hjqhezgh/commonlib"
 )
 
 //跳转至错误页面
@@ -297,7 +297,7 @@ func dealEntitySave(_entity entity, w http.ResponseWriter, r *http.Request) {
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
 		Log.Warn(err.Error())
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -345,7 +345,7 @@ func dealEntitySave(_entity entity, w http.ResponseWriter, r *http.Request) {
 					m["code"] = 100
 					m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
 					Log.Warn(err.Error())
-					commonlib.OutputJson(w, m," ")
+					commonlib.OutputJson(w, m, " ")
 					return
 				}
 
@@ -360,7 +360,7 @@ func dealEntitySave(_entity entity, w http.ResponseWriter, r *http.Request) {
 					m["code"] = 100
 					m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
 					Log.Warn(err.Error())
-					commonlib.OutputJson(w, m," ")
+					commonlib.OutputJson(w, m, " ")
 					return
 				}
 
@@ -378,7 +378,7 @@ func dealEntitySave(_entity entity, w http.ResponseWriter, r *http.Request) {
 					m["code"] = 100
 					m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
 					Log.Warn(err.Error())
-					commonlib.OutputJson(w, m," ")
+					commonlib.OutputJson(w, m, " ")
 					return
 				}
 
@@ -406,7 +406,7 @@ func dealEntitySave(_entity entity, w http.ResponseWriter, r *http.Request) {
 			m["code"] = 100
 			m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
 			Log.Warn(err.Error())
-			commonlib.OutputJson(w, m," ")
+			commonlib.OutputJson(w, m, " ")
 			return
 		}
 
@@ -418,13 +418,13 @@ func dealEntitySave(_entity entity, w http.ResponseWriter, r *http.Request) {
 			m["success"] = false
 			m["code"] = 100
 			m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-			commonlib.OutputJson(w, m," ")
+			commonlib.OutputJson(w, m, " ")
 			return
 		}
 
 		m["success"] = true
 		m["code"] = 200
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	} else {
 		_, err = insert(_entity, _model, formpanel.Elements)
@@ -433,13 +433,13 @@ func dealEntitySave(_entity entity, w http.ResponseWriter, r *http.Request) {
 			m["success"] = false
 			m["code"] = 100
 			m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-			commonlib.OutputJson(w, m," ")
+			commonlib.OutputJson(w, m, " ")
 			return
 		}
 
 		m["success"] = true
 		m["code"] = 200
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -483,13 +483,13 @@ func dealEntityDelete(entity entity, w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
 	m["success"] = true
 	m["code"] = 200
-	commonlib.OutputJson(w, m," ")
+	commonlib.OutputJson(w, m, " ")
 	return
 
 }
@@ -507,7 +507,7 @@ func dealEntityPage(entity entity, w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -561,7 +561,7 @@ func dealEntityPage(entity entity, w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -591,7 +591,7 @@ func dealEntityAllData(entity entity, w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -621,7 +621,7 @@ func dealEntityLoad(entity entity, w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -629,7 +629,7 @@ func dealEntityLoad(entity entity, w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:找不到相应的实体"
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -654,7 +654,7 @@ func mutiSavaAction(w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -705,13 +705,13 @@ func mutiSavaAction(w http.ResponseWriter, r *http.Request) {
 			m["success"] = false
 			m["code"] = 100
 			m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-			commonlib.OutputJson(w, m," ")
+			commonlib.OutputJson(w, m, " ")
 			return
 		}
 	}
 
 	m["success"] = true
 	m["code"] = 200
-	commonlib.OutputJson(w, m," ")
+	commonlib.OutputJson(w, m, " ")
 	return
 }

@@ -16,25 +16,25 @@ package lessgo
 import (
 	"database/sql"
 	"fmt"
-	"strconv"
 	_ "github.com/go-sql-driver/mysql"
+	"strconv"
 )
 
 var mySQLPool chan *sql.DB
 
 func GetMySQL() *sql.DB {
 
-	maxPoolSizeString,_ := Config.GetValue("lessgo","maxPoolSize")
-	maxPoolSize,_ := strconv.Atoi(maxPoolSizeString)
+	maxPoolSizeString, _ := Config.GetValue("lessgo", "maxPoolSize")
+	maxPoolSize, _ := strconv.Atoi(maxPoolSizeString)
 
 	if mySQLPool == nil {
 		mySQLPool = make(chan *sql.DB, maxPoolSize)
 	}
 
-	dbUrl,_ := Config.GetValue("lessgo","dbUrl")
-	dbName,_ := Config.GetValue("lessgo","dbName")
-	dbUserName,_ := Config.GetValue("lessgo","dbUserName")
-	dbPwd,_ := Config.GetValue("lessgo","dbPwd")
+	dbUrl, _ := Config.GetValue("lessgo", "dbUrl")
+	dbName, _ := Config.GetValue("lessgo", "dbName")
+	dbUserName, _ := Config.GetValue("lessgo", "dbUserName")
+	dbPwd, _ := Config.GetValue("lessgo", "dbPwd")
 
 	if len(mySQLPool) == 0 {
 		go func() {
@@ -53,8 +53,8 @@ func GetMySQL() *sql.DB {
 
 func putMySQL(conn *sql.DB) {
 
-	maxPoolSizeString,_ := Config.GetValue("lessgo","maxPoolSize")
-	maxPoolSize,_ := strconv.Atoi(maxPoolSizeString)
+	maxPoolSizeString, _ := Config.GetValue("lessgo", "maxPoolSize")
+	maxPoolSize, _ := strconv.Atoi(maxPoolSizeString)
 
 	if mySQLPool == nil {
 		mySQLPool = make(chan *sql.DB, maxPoolSize)

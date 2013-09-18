@@ -15,9 +15,9 @@ package lessgo
 
 import (
 	"fmt"
+	"github.com/hjqhezgh/commonlib"
 	"math"
 	"strings"
-	"github.com/hjqhezgh/commonlib"
 )
 
 //构建查询的sql语句
@@ -157,7 +157,7 @@ func findTraditionPage(entity entity, currPageNo, pageSize int, searchParam []se
 		return nil, err
 	}
 
-	objects := []interface {}{}
+	objects := []interface{}{}
 
 	for rows.Next() {
 

@@ -15,13 +15,13 @@ package lessgo
 
 import (
 	"fmt"
+	"github.com/hjqhezgh/commonlib"
 	"io"
 	"math/rand"
 	"net/http"
 	"os"
 	"strings"
 	"time"
-	"github.com/hjqhezgh/commonlib"
 )
 
 func imageUpload(w http.ResponseWriter, r *http.Request) {
@@ -41,7 +41,7 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		Log.Error("获取上传图片发生错误，信息如下：", err.Error())
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -53,7 +53,7 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		Log.Error("获取上传图片发生错误，信息如下：", err.Error())
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -65,7 +65,7 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 	m["code"] = 200
 	m["tmpfile"] = "/tmp/" + newFileName
 
-	commonlib.OutputJson(w, m," ")
+	commonlib.OutputJson(w, m, " ")
 }
 
 /*****
@@ -103,7 +103,7 @@ func kindeditorImageUpload(w http.ResponseWriter, r *http.Request) {
 		m["error"] = 1
 		m["message"] = err.Error()
 		Log.Error("获取上传图片发生错误，信息如下：", err.Error())
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -115,7 +115,7 @@ func kindeditorImageUpload(w http.ResponseWriter, r *http.Request) {
 		m["error"] = 1
 		m["message"] = err.Error()
 		Log.Error("获取上传图片发生错误，信息如下：", err.Error())
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -126,5 +126,5 @@ func kindeditorImageUpload(w http.ResponseWriter, r *http.Request) {
 	m["error"] = 0
 	m["url"] = "/imageupload/" + newFileName
 
-	commonlib.OutputJson(w, m," ")
+	commonlib.OutputJson(w, m, " ")
 }

@@ -14,8 +14,8 @@
 package lessgo
 
 import (
-	"net/http"
 	"github.com/hjqhezgh/commonlib"
+	"net/http"
 )
 
 func years(w http.ResponseWriter, r *http.Request) {
@@ -28,7 +28,7 @@ func years(w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -38,7 +38,7 @@ func years(w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -46,7 +46,7 @@ func years(w http.ResponseWriter, r *http.Request) {
 	m["code"] = 200
 	m["datas"] = years
 
-	commonlib.OutputJson(w, m," ")
+	commonlib.OutputJson(w, m, " ")
 
 	return
 }
@@ -61,7 +61,7 @@ func months(w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -73,7 +73,7 @@ func months(w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -81,7 +81,7 @@ func months(w http.ResponseWriter, r *http.Request) {
 	m["code"] = 200
 	m["datas"] = months
 
-	commonlib.OutputJson(w, m," ")
+	commonlib.OutputJson(w, m, " ")
 
 	return
 }
@@ -95,7 +95,7 @@ func weeks(w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -108,7 +108,7 @@ func weeks(w http.ResponseWriter, r *http.Request) {
 		m["success"] = false
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-		commonlib.OutputJson(w, m," ")
+		commonlib.OutputJson(w, m, " ")
 		return
 	}
 
@@ -116,7 +116,7 @@ func weeks(w http.ResponseWriter, r *http.Request) {
 	m["code"] = 200
 	m["datas"] = weeks
 
-	commonlib.OutputJson(w, m," ")
+	commonlib.OutputJson(w, m, " ")
 
 	return
 }
