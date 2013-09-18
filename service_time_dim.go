@@ -21,7 +21,7 @@ type Week struct {
 //返回系统支持的年份
 func FindYear() ([]string, error) {
 
-	db := DBPool{}.getMySQL()
+	db := DBPool{}.GetMySQL()
 
 	defer db.Close()
 
@@ -50,7 +50,7 @@ func FindYear() ([]string, error) {
 //返回指定年份下的月份
 func FindMonth(year string) ([]string, error) {
 
-	db := DBPool{}.getMySQL()
+	db := DBPool{}.GetMySQL()
 
 	defer db.Close()
 
@@ -78,7 +78,7 @@ func FindMonth(year string) ([]string, error) {
 
 //返回指定年份、月份下的周信息
 func FindWeek(year, month string) ([]*Week, error) {
-	db := DBPool{}.getMySQL()
+	db := DBPool{}.GetMySQL()
 
 	defer db.Close()
 

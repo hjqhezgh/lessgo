@@ -86,45 +86,45 @@ func ConfigServer() {
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/", HomeAction)
+	r.HandleFunc("/", homeAction)
 
 	//这里的把每个实体的url规约好，暂时不去改变，将来再考虑配置 FIXME
 
 	for _, terminal := range urls.Terminals {
 
-		r.HandleFunc("/"+terminal, CommonAction)
-		r.HandleFunc("/"+terminal+"/index.html", CommonAction)
+		r.HandleFunc("/"+terminal, commonAction)
+		r.HandleFunc("/"+terminal+"/index.html", commonAction)
 
 		for _, entity := range entitys.Entitys {
-			r.HandleFunc("/"+terminal+"/"+entity.Id+"/index.html", CommonAction)
-			r.HandleFunc("/"+terminal+"/"+entity.Id, CommonAction)
-			r.HandleFunc("/"+terminal+"/"+entity.Id+"/{id:[0-9]+}", CommonAction)
-			r.HandleFunc("/"+terminal+"/"+entity.Id+"/add", CommonAction)
-			r.HandleFunc("/"+terminal+"/"+entity.Id+"/modify"+"/{id:[0-9]+}", CommonAction)
-			r.HandleFunc("/"+terminal+"/"+entity.Id+"/save", CommonAction)
-			r.HandleFunc("/"+terminal+"/"+entity.Id+"/page", CommonAction)
-			r.HandleFunc("/"+terminal+"/"+entity.Id+"/alldata", CommonAction)
-			r.HandleFunc("/"+terminal+"/"+entity.Id+"/load"+"/{id:[0-9]+}", CommonAction)
-			r.HandleFunc("/"+terminal+"/"+entity.Id+"/delete"+"/{id:[0-9]+}", CommonAction)
+			r.HandleFunc("/"+terminal+"/"+entity.Id+"/index.html", commonAction)
+			r.HandleFunc("/"+terminal+"/"+entity.Id, commonAction)
+			r.HandleFunc("/"+terminal+"/"+entity.Id+"/{id:[0-9]+}", commonAction)
+			r.HandleFunc("/"+terminal+"/"+entity.Id+"/add", commonAction)
+			r.HandleFunc("/"+terminal+"/"+entity.Id+"/modify"+"/{id:[0-9]+}", commonAction)
+			r.HandleFunc("/"+terminal+"/"+entity.Id+"/save", commonAction)
+			r.HandleFunc("/"+terminal+"/"+entity.Id+"/page", commonAction)
+			r.HandleFunc("/"+terminal+"/"+entity.Id+"/alldata", commonAction)
+			r.HandleFunc("/"+terminal+"/"+entity.Id+"/load"+"/{id:[0-9]+}", commonAction)
+			r.HandleFunc("/"+terminal+"/"+entity.Id+"/delete"+"/{id:[0-9]+}", commonAction)
 		}
 
 	}
 
 	for _, url := range urls.Urls {
-		r.HandleFunc(url.Path, IndependentAction)
+		r.HandleFunc(url.Path, independentAction)
 	}
 
-	r.HandleFunc("/region/regions", Regions)
+	r.HandleFunc("/region/regions", regions)
 
-	r.HandleFunc("/timedim/years", Years)
-	r.HandleFunc("/timedim/months", Months)
-	r.HandleFunc("/timedim/weeks", Weeks)
+	r.HandleFunc("/timedim/years", years)
+	r.HandleFunc("/timedim/months", months)
+	r.HandleFunc("/timedim/weeks", weeks)
 
-	r.HandleFunc("/mutisave", MutiSavaAction)
+	r.HandleFunc("/mutisave", mutiSavaAction)
 
-	r.HandleFunc("/imgageuplaod", ImageUpload)
+	r.HandleFunc("/imgageuplaod", imageUpload)
 
-	r.HandleFunc("/kindeditorImageUpload", KindeditorImageUpload)
+	r.HandleFunc("/kindeditorImageUpload", kindeditorImageUpload)
 
 	http.Handle("/", r)
 

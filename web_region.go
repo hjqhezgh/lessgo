@@ -18,7 +18,7 @@ import (
 	"github.com/hjqhezgh/commonlib"
 )
 
-func Regions(w http.ResponseWriter, r *http.Request) {
+func regions(w http.ResponseWriter, r *http.Request) {
 
 	m := make(map[string]interface{})
 

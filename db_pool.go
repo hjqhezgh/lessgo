@@ -22,13 +22,13 @@ import (
 type DBPool struct {
 }
 
-var MySQLPool chan *sql.DB
+var mySQLPool chan *sql.DB
 
-func (dbPool DBPool) getMySQL() *sql.DB {
-	if MySQLPool == nil {
-		MySQLPool = make(chan *sql.DB, config.MaxPoolSize)
+func (dbPool DBPool) GetMySQL() *sql.DB {
+	if mySQLPool == nil {
+		mySQLPool = make(chan *sql.DB, config.MaxPoolSize)
 	}
-	if len(MySQLPool) == 0 {
+	if len(mySQLPool) == 0 {
 		go func() {
 			for i := 0; i < config.MaxPoolSize/2; i++ {
 				db, err := sql.Open("mysql", fmt.Sprintf("%v:%v@tcp(%v)/%v?charset=utf8", config.DbUserName, config.DbPwd, config.DbUrl, config.DbName))
@@ -36,20 +36,20 @@ func (dbPool DBPool) getMySQL() *sql.DB {
 					Log.Warn(err)
 					continue
 				}
-				dbPool.putMySQL(db)
+				dbPool.PutMySQL(db)
 			}
 		}()
 	}
-	return <-MySQLPool
+	return <-mySQLPool
 }
 
-func (dbPool DBPool) putMySQL(conn *sql.DB) {
-	if MySQLPool == nil {
-		MySQLPool = make(chan *sql.DB, config.MaxPoolSize)
+func (dbPool DBPool) PutMySQL(conn *sql.DB) {
+	if mySQLPool == nil {
+		mySQLPool = make(chan *sql.DB, config.MaxPoolSize)
 	}
-	if len(MySQLPool) == config.MaxPoolSize {
+	if len(mySQLPool) == config.MaxPoolSize {
 		conn.Close()
 		return
 	}
-	MySQLPool <- conn
+	mySQLPool <- conn
 }

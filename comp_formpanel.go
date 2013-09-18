@@ -20,14 +20,14 @@ import (
 	"text/template"
 )
 
-type FormPanel struct {
+type formPanel struct {
 	Entity   string    `xml:"entity,attr"`
 	Load     string    `xml:"load,attr"`
 	Id       string    `xml:"id,attr"`
-	Elements []Element `xml:"element"`
+	Elements []element `xml:"element"`
 }
 
-type Element struct {
+type element struct {
 	Field        string `xml:"field,attr"`
 	Desc         string `xml:"desc,attr"`
 	Type         string `xml:"type,attr"`
@@ -43,7 +43,7 @@ type Element struct {
 	Resolutions  string `xml:"resolutions,attr"`
 }
 
-func (formpanel FormPanel) GenerateFormPanel(entity Entity, terminal, packageName string, r *http.Request) []byte {
+func (formpanel formPanel) GenerateFormPanel(entity Entity, terminal, packageName string, r *http.Request) []byte {
 
 	var t *template.Template
 
@@ -84,7 +84,7 @@ func (formpanel FormPanel) GenerateFormPanel(entity Entity, terminal, packageNam
 	if formpanel.Load == "true" {
 		vars := mux.Vars(r)
 		id := vars["id"] //先假设这个是活动的ID
-		model, err := FindById(entity, id)
+		model, err := findById(entity, id)
 
 		if err != nil {
 			Log.Error(err.Error())

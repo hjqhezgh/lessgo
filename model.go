@@ -106,10 +106,3 @@ type Url struct {
 	Path string `xml:"path,attr"`
 	View string `xml:"view,attr"`
 }
-
-//地区信息
-type Region struct {
-	Code       string `json:"code"`
-	ParentCode string `json:"parentCode"`
-	Name       string `json:"name"`
-}

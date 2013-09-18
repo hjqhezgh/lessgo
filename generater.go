@@ -22,9 +22,9 @@ import (
 var runtimeComponentContain = make(map[string]interface{})
 
 //根据用户定义的view文件和数据库内容生成数据流
-func Generate(viewContent []byte, terminal, packageName string, r *http.Request) []byte {
+func generate(viewContent []byte, terminal, packageName string, r *http.Request) []byte {
 
-	var viewport Viewport
+	var viewport viewport
 
 	err := xml.Unmarshal(viewContent, &viewport)
 

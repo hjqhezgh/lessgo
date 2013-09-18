@@ -24,7 +24,7 @@ import (
 	"github.com/hjqhezgh/commonlib"
 )
 
-func ImageUpload(w http.ResponseWriter, r *http.Request) {
+func imageUpload(w http.ResponseWriter, r *http.Request) {
 
 	m := make(map[string]interface{})
 
@@ -86,7 +86,7 @@ func findRandomFileName(sourceFileName string) string {
 	return fmt.Sprint(time.Now().UnixNano(), str, suffix)
 }
 
-func KindeditorImageUpload(w http.ResponseWriter, r *http.Request) {
+func kindeditorImageUpload(w http.ResponseWriter, r *http.Request) {
 
 	m := make(map[string]interface{})
 

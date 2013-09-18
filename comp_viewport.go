@@ -21,15 +21,15 @@ import (
 )
 
 //当viewport下面可以放置其他元素的时候，就扩展Viewport结构体，同时记得扩展容器结构体
-type Viewport struct {
+type viewport struct {
 	XMLName        xml.Name        `xml:"viewport"`
-	GridPanels     []GridPanel     `xml:"gridpanel"`
-	FormPanels     []FormPanel     `xml:"formpanel"`
-	MutiFormPanels []MutiFormPanel `xml:"mutiformpanel"`
+	GridPanels     []gridPanel     `xml:"gridpanel"`
+	FormPanels     []formPanel     `xml:"formpanel"`
+	MutiFormPanels []mutiFormPanel `xml:"mutiformpanel"`
 }
 
 //扩展viewport的同时，记得同时扩展container
-func (viewport Viewport) GenerateViewport(terminal, packageName string, r *http.Request) []byte {
+func (viewport viewport) GenerateViewport(terminal, packageName string, r *http.Request) []byte {
 
 	content := ""
 

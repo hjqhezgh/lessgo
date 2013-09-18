@@ -18,7 +18,7 @@ import (
 	"github.com/hjqhezgh/commonlib"
 )
 
-func Years(w http.ResponseWriter, r *http.Request) {
+func years(w http.ResponseWriter, r *http.Request) {
 
 	m := make(map[string]interface{})
 
@@ -51,7 +51,7 @@ func Years(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func Months(w http.ResponseWriter, r *http.Request) {
+func months(w http.ResponseWriter, r *http.Request) {
 
 	m := make(map[string]interface{})
 
@@ -86,7 +86,7 @@ func Months(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func Weeks(w http.ResponseWriter, r *http.Request) {
+func weeks(w http.ResponseWriter, r *http.Request) {
 	m := make(map[string]interface{})
 
 	err := r.ParseForm()

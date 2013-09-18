@@ -19,24 +19,24 @@ import (
 	"text/template"
 )
 
-type MutiFormPanel struct {
+type mutiFormPanel struct {
 	Id            string        `xml:"id,attr"`
-	PublicElement PublicElement `xml:"publicelement"`
-	FormTabs      []FormTab     `xml:"formtab"`
+	PublicElement publicElement `xml:"publicelement"`
+	FormTabs      []formTab     `xml:"formtab"`
 }
 
 //公共输入域容器
-type PublicElement struct {
-	Elements []Element `xml:"element"`
+type publicElement struct {
+	Elements []element `xml:"element"`
 }
 
-type FormTab struct {
-	Elements []Element `xml:"element"`
+type formTab struct {
+	Elements []element `xml:"element"`
 	Entity   string    `xml:"entity,attr"`
 	Desc     string    `xml:"desc,attr"`
 }
 
-func (mutiFormPanel MutiFormPanel) GenerateMutiFormPanel(terminal, packageName string, r *http.Request) []byte {
+func (mutiFormPanel mutiFormPanel) GenerateMutiFormPanel(terminal, packageName string, r *http.Request) []byte {
 
 	var t *template.Template
 

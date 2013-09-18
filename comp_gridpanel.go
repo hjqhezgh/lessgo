@@ -18,30 +18,30 @@ import (
 	"text/template"
 )
 
-type GridPanel struct {
+type gridPanel struct {
 	Entity   string   `xml:"entity,attr"`
 	PageSize int      `xml:"pageSize,attr"`
 	Id       string   `xml:"id,attr"`
 	Title    string   `xml:"title,attr"`
 	Width    string   `xml:"width,attr"`
 	Height   string   `xml:"height,attr"`
-	Columns  []Column `xml:"column"`
-	Actions  []Action `xml:"action"`
-	Searchs  []Search `xml:"search"`
+	Columns  []column `xml:"column"`
+	Actions  []action `xml:"action"`
+	Searchs  []search `xml:"search"`
 }
 
-type Column struct {
+type column struct {
 	Field string `xml:"field,attr"`
 	Desc  string `xml:"desc,attr"`
 }
 
-type Action struct {
+type action struct {
 	Desc   string `xml:"desc,attr"`
 	Action string `xml:"action,attr"`
 	Url    string `xml:"url,attr"`
 }
 
-type Search struct {
+type search struct {
 	Field      string `xml:"field,attr"`
 	SearchType string `xml:"searchType,attr"`
 	InputType  string `xml:"inputType,attr"`
@@ -54,7 +54,7 @@ type Search struct {
 	Value string
 }
 
-func (gridpanel GridPanel) GenerateGridPanel(entity Entity, terminal, packageName string) []byte {
+func (gridpanel gridPanel) GenerateGridPanel(entity Entity, terminal, packageName string) []byte {
 
 	var t *template.Template
 

@@ -21,7 +21,7 @@ import (
 )
 
 //构建查询的sql语句
-func bulidSelectSql(entity Entity, colmuns []Column) (string, string) {
+func bulidSelectSql(entity Entity, colmuns []column) (string, string) {
 
 	dataSql := "select " + entity.Id + "." + entity.Pk + ","
 
@@ -61,7 +61,7 @@ func bulidSelectSql(entity Entity, colmuns []Column) (string, string) {
 }
 
 //构建查询
-func bulidWhereSql(entity Entity, countSql, dataSql string, searchParam []Search) (string, string, []interface{}) {
+func bulidWhereSql(entity Entity, countSql, dataSql string, searchParam []search) (string, string, []interface{}) {
 
 	params := []interface{}{}
 
@@ -109,7 +109,7 @@ func bulidWhereSql(entity Entity, countSql, dataSql string, searchParam []Search
 }
 
 //查找分页数据
-func FindTraditionPage(entity Entity, currPageNo, pageSize int, searchParam []Search, colmuns []Column) (*commonlib.TraditionPage, error) {
+func findTraditionPage(entity Entity, currPageNo, pageSize int, searchParam []search, colmuns []column) (*commonlib.TraditionPage, error) {
 
 	countSql, dataSql := bulidSelectSql(entity, colmuns)
 
@@ -117,7 +117,7 @@ func FindTraditionPage(entity Entity, currPageNo, pageSize int, searchParam []Se
 
 	Log.Debug(countSql)
 
-	db := DBPool{}.getMySQL()
+	db := DBPool{}.GetMySQL()
 	defer db.Close()
 
 	rows, err := db.Query(countSql, params...)
@@ -192,13 +192,13 @@ func FindTraditionPage(entity Entity, currPageNo, pageSize int, searchParam []Se
 }
 
 //查找分页数据
-func FindAllData(entity Entity) ([]*Model, error) {
+func findAllData(entity Entity) ([]*Model, error) {
 
-	_, dataSql := bulidSelectSql(entity, []Column{})
+	_, dataSql := bulidSelectSql(entity, []column{})
 
 	Log.Debug(dataSql)
 
-	db := DBPool{}.getMySQL()
+	db := DBPool{}.GetMySQL()
 	defer db.Close()
 
 	dataSql += " order by " + entity.Pk + " desc "
@@ -257,7 +257,7 @@ func FindAllData(entity Entity) ([]*Model, error) {
 }
 
 //添加数据
-func Insert(entity Entity, model *Model, elements []Element) (id int, err error) {
+func insert(entity Entity, model *Model, elements []element) (id int, err error) {
 
 	sql := "insert into " + entity.Id + "("
 	valueSql := " values ("
@@ -283,7 +283,7 @@ func Insert(entity Entity, model *Model, elements []Element) (id int, err error)
 
 	Log.Debug(sql)
 
-	db := DBPool{}.getMySQL()
+	db := DBPool{}.GetMySQL()
 	defer db.Close()
 
 	stmt, err := db.Prepare(sql)
@@ -312,7 +312,7 @@ func Insert(entity Entity, model *Model, elements []Element) (id int, err error)
 }
 
 //根据id查找对象
-func FindById(entity Entity, id string) (*Model, error) {
+func findById(entity Entity, id string) (*Model, error) {
 
 	dataSql := "select " + entity.Pk + ","
 
@@ -327,7 +327,7 @@ func FindById(entity Entity, id string) (*Model, error) {
 
 	Log.Debug(dataSql)
 
-	db := DBPool{}.getMySQL()
+	db := DBPool{}.GetMySQL()
 	defer db.Close()
 
 	rows, err := db.Query(dataSql, id)
@@ -367,7 +367,7 @@ func FindById(entity Entity, id string) (*Model, error) {
 }
 
 //修改
-func Modify(entity Entity, model *Model, elements []Element) error {
+func modify(entity Entity, model *Model, elements []element) error {
 	sql := "update " + entity.Id + " set "
 
 	params := []interface{}{}
@@ -387,7 +387,7 @@ func Modify(entity Entity, model *Model, elements []Element) error {
 
 	Log.Debug(sql)
 
-	db := DBPool{}.getMySQL()
+	db := DBPool{}.GetMySQL()
 	defer db.Close()
 
 	stmt, err := db.Prepare(sql)
@@ -407,12 +407,12 @@ func Modify(entity Entity, model *Model, elements []Element) error {
 }
 
 //删除
-func Delete(entity Entity, id string) error {
+func delete(entity Entity, id string) error {
 	sql := "delete from " + entity.Id + " where " + entity.Pk + "=?"
 
 	Log.Debug(sql)
 
-	db := DBPool{}.getMySQL()
+	db := DBPool{}.GetMySQL()
 	defer db.Close()
 
 	stmt, err := db.Prepare(sql)
