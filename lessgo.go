@@ -33,7 +33,14 @@ var (
 
 func init() {
 
+	fmt.Println("111111")
 	Config, _ = goconfig.LoadConfigFile("../etc/config.ini")
+//	if err != nil {
+//		fmt.Println(err)
+//		return
+//	}
+
+	fmt.Println(Config)
 
 	logFilePath, _ := Config.GetValue("lessgo", "logFilePath")
 
@@ -111,6 +118,7 @@ func ConfigLessgo() *mux.Router {
 		r.HandleFunc(url.Path, independentAction)
 	}
 
+	r.HandleFunc("/queryMenus", QueryMenus)
 	r.HandleFunc("/region/regions", regions)
 
 	r.HandleFunc("/timedim/years", years)
@@ -123,7 +131,7 @@ func ConfigLessgo() *mux.Router {
 
 	r.HandleFunc("/kindeditorImageUpload", kindeditorImageUpload)
 
-	//	http.Handle("/", r)
+//	http.Handle("/", r)
 
 	fmt.Println("lessgo配置完成")
 
