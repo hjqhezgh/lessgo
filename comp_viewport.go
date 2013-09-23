@@ -51,7 +51,7 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 
 	t = template.New("viewport.html")
 
-	t, err := t.ParseFiles("../lessgo/template/component/"+terminal+"/viewport.html", "../lessgo/template/component/"+terminal+"/nav.html")
+	t, err := t.ParseFiles("../lessgo/template/component/"+terminal+"/viewport.html")
 
 	if err != nil {
 		Log.Error(err.Error())
@@ -60,7 +60,6 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 
 	data := make(map[string]interface{})
 	data["Content"] = content
-	data["Nav"] = navList
 
 	err = t.Execute(&buf, data)
 

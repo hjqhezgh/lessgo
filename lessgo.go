@@ -28,7 +28,6 @@ var (
 	Log        *MyLogger //提供公用的日志方式
 	Config     *goconfig.ConfigFile
 	entityList entitys
-	navList    navs
 	urlList    urls
 )
 

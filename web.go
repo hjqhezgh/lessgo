@@ -14,7 +14,6 @@
 package lessgo
 
 import (
-	"encoding/xml"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/hjqhezgh/commonlib"
@@ -34,15 +33,13 @@ func errMessage(w http.ResponseWriter, r *http.Request, errMsg string) {
 
 	m["ErrMsg"] = errMsg
 
-	m["Nav"] = navList
-
-	commonlib.RenderTemplate(w, r, "err_message.html", m, nil, "../lessgo/template/err_message.html", "../lessgo/template/nav.html")
+	commonlib.RenderTemplate(w, r, "err_message.html", m, nil, "../lessgo/template/err_message.html")
 }
 
 //中心控制器
 func homeAction(w http.ResponseWriter, r *http.Request) {
 	m := make(map[string]interface{})
-	commonlib.RenderTemplate(w, r, "home.html", m, nil, "../template/home.html")
+	commonlib.RenderTemplate(w, r, "home.html", m, nil, "../lessgo/template/home.html")
 }
 
 //中心控制器
@@ -57,16 +54,6 @@ func commonAction(w http.ResponseWriter, r *http.Request) {
 		errMessage(w, r, "出现错误，请联系IT部门，错误信息:"+msg)
 		return
 	} else {
-
-		err := analyNav(terminal)
-
-		if err != nil {
-			errMessage(w, r, "出现错误，请联系IT部门，错误信息:"+err.Error())
-			return
-		}
-
-		//将导航数据放入页面上
-		m["Nav"] = navList
 
 		switch opera {
 		case "home":
@@ -103,7 +90,7 @@ func commonAction(w http.ResponseWriter, r *http.Request) {
 			dealEntityLoad(entity, w, r)
 		default:
 			Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的未知页")
-			commonlib.RenderTemplate(w, r, "home.html", m, nil, "../lessgo/template/home.html", "../lessgo/template/nav.html")
+			commonlib.RenderTemplate(w, r, "home.html", m, nil, "../lessgo/template/home.html")
 		}
 	}
 }
@@ -116,13 +103,6 @@ func independentAction(w http.ResponseWriter, r *http.Request) {
 	strs := strings.Split(r.URL.Path, "/")
 
 	terminal := strs[1]
-
-	err := analyNav(terminal)
-
-	if err != nil {
-		errMessage(w, r, "出现错误，请联系IT部门，错误信息:"+err.Error())
-		return
-	}
 
 	view := ""
 
@@ -151,28 +131,6 @@ func independentAction(w http.ResponseWriter, r *http.Request) {
 	packageName := terminal + "." + r.URL.Path
 
 	w.Write(generate(content, terminal, packageName, r))
-}
-
-//解析导航
-func analyNav(terminal string) error {
-
-	navList = navs{}
-
-	content, err := ioutil.ReadFile("../etc/view/" + terminal + "/nav.xml")
-
-	if err != nil {
-		Log.Error(err)
-		return err
-	}
-
-	err = xml.Unmarshal(content, &navList)
-
-	if err != nil {
-		Log.Error(err)
-		return err
-	}
-
-	return nil
 }
 
 //分析URL得出当前url访问的实体模块，以及进行的操作，如果有错误，就去读取msg
@@ -463,7 +421,7 @@ func dealEntityDetail(entity entity, m map[string]interface{}, w http.ResponseWr
 	m["Entity"] = entity
 	m["Model"] = model
 
-	commonlib.RenderTemplate(w, r, "entity_detail.html", m, template.FuncMap{"getPropValue": getPropValue}, "../lessgo/template/entity_detail.html", "../lessgo/template/nav.html")
+	commonlib.RenderTemplate(w, r, "entity_detail.html", m, template.FuncMap{"getPropValue": getPropValue}, "../lessgo/template/entity_detail.html")
 
 }
 
