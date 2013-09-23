@@ -51,7 +51,7 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 
 	t = template.New("viewport.html")
 
-	t, err := t.ParseFiles("../lessgo/template/component/"+terminal+"/viewport.html")
+	t, err := t.ParseFiles("../lessgo/template/component/" + terminal + "/viewport.html")
 
 	if err != nil {
 		Log.Error(err.Error())

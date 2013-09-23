@@ -24,7 +24,7 @@ import (
 //获取通用model的指定属性的值
 func getPropValue(model *model, propName string) string {
 
-	if model != nil{
+	if model != nil {
 		for _, prop := range model.Props {
 			if prop.Name == propName {
 				return prop.Value

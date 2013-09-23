@@ -30,9 +30,21 @@ type gridPanel struct {
 	Searchs  []search `xml:"search"`
 }
 
+//link目前可以支持，直接跳转，打开浏览器新窗口跳转，iframe弹窗，询问提示窗
+//linkType=currentPage，
+//以下为通用配置
+//url 必填
+//iconUrl 选填 如果有配置iconUrl，则会生成一个可点击的图标
+//loadParamName 选填，不填就不带参数
+//loadParamValue 如果loadParamName有值，则此配置必填，可取值为id 或者 this
 type column struct {
-	Field string `xml:"field,attr"`
-	Desc  string `xml:"desc,attr"`
+	Field    string `xml:"field,attr"`
+	Desc     string `xml:"desc,attr"`
+	LinkType string `xml:"linkType,attr"`
+	Url      string `xml:"url,attr"`
+	IconUrl  string `xml:"iconUrl,attr"`
+	LoadParamName   string `xml:"loadParamName,attr"`
+	LoadParamValue   string `xml:"loadParamValue,attr"`
 }
 
 type action struct {
@@ -52,6 +64,18 @@ type search struct {
 	DescField  string `xml:"descField,attr"`
 	//存储实际的搜索值
 	Value string
+}
+
+//返回当前gridpanel下的某个列配置
+func getColumn(gridpanel gridPanel,columnField string) column{
+
+	for _,column := range gridpanel.Columns {
+		if column.Field == columnField{
+			return column
+		}
+	}
+
+	return column{}
 }
 
 func (gridpanel gridPanel) generateGridPanel(entity entity, terminal, packageName string) []byte {
