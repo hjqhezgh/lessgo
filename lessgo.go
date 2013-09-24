@@ -118,7 +118,7 @@ func ConfigLessgo() *mux.Router {
 		r.HandleFunc(url.Path, independentAction)
 	}
 
-	r.HandleFunc("/queryMenus", QueryMenus)
+	r.HandleFunc("/queryMenus", QueryMenusAction)
 	r.HandleFunc("/region/regions", regions)
 
 	r.HandleFunc("/timedim/years", years)

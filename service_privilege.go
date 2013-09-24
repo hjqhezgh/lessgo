@@ -19,7 +19,96 @@ type Menu struct {
 	Children 	[]Menu		`json:"children"`
 }
 
-func QueryMenus(w http.ResponseWriter, r *http.Request) {
+func queryMenus(username string, menus *[]Menu) bool{
+
+	db := GetMySQL()
+	defer db.Close()
+
+	sql := `select a.action_id,a.action_name,a.icon,a.url from action a where
+				a.action_id in (select distinct(ra.action_id) from role_action ra where
+					ra.role_id in (select er.role_id from employee_role er where
+						er.user_id=(select e.user_id from employee e where e.username=?)))`
+
+	sql2 := "select a.action_id,a.action_name,a.icon,a.url from action a where parent_id=?"
+
+	rows, err := db.Query(sql, username)
+	if err != nil {
+		Log.Error(err.Error())
+		return false
+	}
+
+	for rows.Next() {
+		menu := new(Menu)
+		err := rows.Scan(&menu.Id, &menu.Name, &menu.Icon, &menu.Url)
+		if err != nil {
+			Log.Error(err.Error())
+			return false
+		}
+		rows2, err := db.Query(sql2, menu.Id)
+		if err != nil {
+			Log.Error(err.Error())
+			return false
+		}
+		for rows2.Next() {
+			child := new(Menu)
+			err := rows2.Scan(&child.Id, &child.Name, &child.Icon, &child.Url)
+			if err != nil {
+				Log.Error(err.Error())
+				return false
+			}
+			menu.Children = append(menu.Children, *child)
+		}
+		*menus = append(*menus, *menu)
+	}
+	return true
+}
+
+func GetMenus(username string) []Menu{
+
+	var menus []Menu
+	db := GetMySQL()
+	defer db.Close()
+
+	sql := `select a.action_id,a.action_name,a.icon,a.url from action a where
+				a.action_id in (select distinct(ra.action_id) from role_action ra where
+					ra.role_id in (select er.role_id from employee_role er where
+						er.user_id=(select e.user_id from employee e where e.username=?)))`
+
+	sql2 := "select a.action_id,a.action_name,a.icon,a.url from action a where parent_id=?"
+
+	rows, err := db.Query(sql, username)
+	if err != nil {
+		Log.Error(err.Error())
+		return nil
+	}
+
+	for rows.Next() {
+		menu := new(Menu)
+		err := rows.Scan(&menu.Id, &menu.Name, &menu.Icon, &menu.Url)
+		if err != nil {
+			Log.Error(err.Error())
+			return nil
+		}
+		rows2, err := db.Query(sql2, menu.Id)
+		if err != nil {
+			Log.Error(err.Error())
+			return nil
+		}
+		for rows2.Next() {
+			child := new(Menu)
+			err := rows2.Scan(&child.Id, &child.Name, &child.Icon, &child.Url)
+			if err != nil {
+				Log.Error(err.Error())
+				return nil
+			}
+			menu.Children = append(menu.Children, *child)
+		}
+		menus = append(menus, *menu)
+	}
+	return menus
+}
+
+func QueryMenusAction(w http.ResponseWriter, r *http.Request) {
 
 	var menus []Menu
 	data := make(map[string]interface {})
@@ -29,53 +118,12 @@ func QueryMenus(w http.ResponseWriter, r *http.Request) {
 		Log.Error("username is NULL!")
 		return
 	}
-
-	db := GetMySQL()
-	defer db.Close()
-
-	sql := `select a.action_id,a.action_name,a.icon,a.url from action a where
-				a.action_id in (select distinct(ra.action_id) from role_action ra where
-					ra.role_id in (select ur.role_id from user_role ur where
-						ur.user_id=(select u.user_id from users u where u.username=?)))`
-
-	sql2 := "select a.action_id,a.action_name,a.icon,a.url from action a where parent_id=?"
-
-	rows, err := db.Query(sql, username)
-	if err != nil {
-		Log.Error(err.Error())
-		return
+	ret := queryMenus(username, &menus)
+	if ret {
+		data["menus"] = menus
 	}
-
-	for rows.Next() {
-		menu := new(Menu)
-		err := rows.Scan(&menu.Id, &menu.Name, &menu.Icon, &menu.Url)
-		if err != nil {
-			Log.Error(err.Error())
-			return
-		}
-		rows2, err := db.Query(sql2, menu.Id)
-		if err != nil {
-			Log.Error(err.Error())
-			return
-		}
-		for rows2.Next() {
-			child := new(Menu)
-			err := rows2.Scan(&child.Id, &child.Name, &child.Icon, &child.Url)
-			if err != nil {
-				Log.Error(err.Error())
-				return
-			}
-			menu.Children = append(menu.Children, *child)
-		}
-//		if len(menu.Children) == 0 {
-//			menu.Children=[]
-//		}
-		Log.Warn(*menu)
-		menus = append(menus, *menu)
-	}
-	data["menus"] = menus
 	Log.Warn(data)
-	outputJson(w, menus)
+	outputJson(w, data)
 }
 
 func outputJson(w http.ResponseWriter, object interface {}) {
