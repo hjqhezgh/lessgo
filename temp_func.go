@@ -22,7 +22,7 @@ import (
 )
 
 //获取通用model的指定属性的值
-func getPropValue(model *model, propName string) string {
+func getPropValue(model *Model, propName string) string {
 
 	if model != nil {
 		for _, prop := range model.Props {

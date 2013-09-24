@@ -134,19 +134,19 @@ func independentAction(w http.ResponseWriter, r *http.Request) {
 }
 
 //分析URL得出当前url访问的实体模块，以及进行的操作，如果有错误，就去读取msg
-func analyseUrl(url string) (_entity entity, operation, terminal, msg string) {
+func analyseUrl(url string) (_entity Entity, operation, terminal, msg string) {
 
 	strs := strings.Split(url, "/")
 
 	//首页的情况
 	if len(strs) == 2 || strs[2] == "index.html" {
-		return entity{}, "home", strs[1], ""
+		return Entity{}, "home", strs[1], ""
 	} else {
 
 		_entity = getEntity(strs[2])
 
 		if _entity.Id == "" {
-			return entity{}, "", "", "找不到该url下的相应实体"
+			return Entity{}, "", "", "找不到该url下的相应实体"
 		}
 
 		if len(strs) == 3 {
@@ -174,7 +174,7 @@ func analyseUrl(url string) (_entity entity, operation, terminal, msg string) {
 			_, err := strconv.Atoi(strs[4])
 
 			if err != nil {
-				return entity{}, "", "", "找不到该url下对应的操作"
+				return Entity{}, "", "", "找不到该url下对应的操作"
 			} else {
 				return _entity, "detail", strs[1], ""
 			}
@@ -185,7 +185,7 @@ func analyseUrl(url string) (_entity entity, operation, terminal, msg string) {
 }
 
 //处理实体的列表页请求
-func dealEntityIndex(entity entity, terminal string, m map[string]interface{}, w http.ResponseWriter, r *http.Request) {
+func dealEntityIndex(entity Entity, terminal string, m map[string]interface{}, w http.ResponseWriter, r *http.Request) {
 	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的列表页")
 
 	content, err := ioutil.ReadFile("../etc/view/" + terminal + "/" + entity.Id + "/index.xml")
@@ -202,7 +202,7 @@ func dealEntityIndex(entity entity, terminal string, m map[string]interface{}, w
 }
 
 //处理实体的添加页请求
-func dealEntityAdd(entity entity, terminal string, m map[string]interface{}, w http.ResponseWriter, r *http.Request) {
+func dealEntityAdd(entity Entity, terminal string, m map[string]interface{}, w http.ResponseWriter, r *http.Request) {
 
 	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的添加页")
 
@@ -220,7 +220,7 @@ func dealEntityAdd(entity entity, terminal string, m map[string]interface{}, w h
 }
 
 //处理实体的修改页请求
-func dealEntityModify(entity entity, terminal string, m map[string]interface{}, w http.ResponseWriter, r *http.Request) {
+func dealEntityModify(entity Entity, terminal string, m map[string]interface{}, w http.ResponseWriter, r *http.Request) {
 
 	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的修改页")
 
@@ -238,7 +238,7 @@ func dealEntityModify(entity entity, terminal string, m map[string]interface{}, 
 }
 
 //处理实体的保存页请求
-func dealEntitySave(_entity entity, w http.ResponseWriter, r *http.Request) {
+func dealEntitySave(_entity Entity, w http.ResponseWriter, r *http.Request) {
 
 	Log.Debug("路径：", r.URL.Path, "访问实体", _entity.Id, "的保存ajax请求")
 
@@ -261,11 +261,11 @@ func dealEntitySave(_entity entity, w http.ResponseWriter, r *http.Request) {
 
 	idString := r.FormValue(_entity.Pk)
 
-	_model := new(model)
-	_model.Props = []*prop{}
+	_model := new(Model)
+	_model.Props = []*Prop{}
 
 	for _, formElement := range formpanel.Elements {
-		_prop := new(prop)
+		_prop := new(Prop)
 
 		if formElement.Type == "image" { //图片类型需要做多表处理
 
@@ -274,15 +274,15 @@ func dealEntitySave(_entity entity, w http.ResponseWriter, r *http.Request) {
 
 			if filePath != "" {
 				imgEntity := getEntity(formElement.ImageEntity)
-				imageModel := new(model)
-				imageModel.Props = []*prop{}
+				imageModel := new(Model)
+				imageModel.Props = []*Prop{}
 
-				fileNameProp := new(prop)
+				fileNameProp := new(Prop)
 				fileNameProp.Name = "filename"
 				fileNameProp.Value = commonlib.SubstrByStEd(filePath, strings.LastIndex(filePath, "/")+1, strings.LastIndex(filePath, "."))
 				tmpFileName = commonlib.Substr(filePath, strings.LastIndex(filePath, "/")+1, len(filePath))
 
-				suffixProp := new(prop)
+				suffixProp := new(Prop)
 				suffixProp.Name = "suffix"
 				suffixProp.Value = commonlib.Substr(filePath, strings.LastIndex(filePath, ".")+1, len(filePath))
 
@@ -404,7 +404,7 @@ func dealEntitySave(_entity entity, w http.ResponseWriter, r *http.Request) {
 }
 
 //处理实体的详细页请求
-func dealEntityDetail(entity entity, m map[string]interface{}, w http.ResponseWriter, r *http.Request) {
+func dealEntityDetail(entity Entity, m map[string]interface{}, w http.ResponseWriter, r *http.Request) {
 
 	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的详细信息页")
 
@@ -426,7 +426,7 @@ func dealEntityDetail(entity entity, m map[string]interface{}, w http.ResponseWr
 }
 
 //处理实体的删除页请求
-func dealEntityDelete(entity entity, w http.ResponseWriter, r *http.Request) {
+func dealEntityDelete(entity Entity, w http.ResponseWriter, r *http.Request) {
 
 	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的删除页")
 
@@ -453,7 +453,7 @@ func dealEntityDelete(entity entity, w http.ResponseWriter, r *http.Request) {
 }
 
 //处理实体的分页ajax请求
-func dealEntityPage(entity entity, w http.ResponseWriter, r *http.Request) {
+func dealEntityPage(entity Entity, w http.ResponseWriter, r *http.Request) {
 
 	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的分页数据ajax请求")
 
@@ -528,14 +528,14 @@ func dealEntityPage(entity entity, w http.ResponseWriter, r *http.Request) {
 	m["Gridpanel"] = gridpanel
 	m["DataLength"] = len(pageData.Datas) - 1
 	if len(pageData.Datas) > 0 {
-		m["FieldLength"] = len(pageData.Datas[0].(*model).Props) - 1
+		m["FieldLength"] = len(pageData.Datas[0].(*Model).Props) - 1
 	}
 
 	commonlib.RenderTemplate(w, r, "entity_page.json", m, template.FuncMap{"getPropValue": getPropValue, "compareInt": compareInt, "compareString": compareString, "dealJsonString": dealJsonString,"getColumn": getColumn}, "../lessgo/template/entity_page.json")
 }
 
 //处理实体的所有数据ajax请求
-func dealEntityAllData(entity entity, w http.ResponseWriter, r *http.Request) {
+func dealEntityAllData(entity Entity, w http.ResponseWriter, r *http.Request) {
 
 	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的所有数据ajax请求")
 
@@ -564,7 +564,7 @@ func dealEntityAllData(entity entity, w http.ResponseWriter, r *http.Request) {
 }
 
 //处理实体的分页ajax请求
-func dealEntityLoad(entity entity, w http.ResponseWriter, r *http.Request) {
+func dealEntityLoad(entity Entity, w http.ResponseWriter, r *http.Request) {
 
 	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的load单实体ajax请求")
 
@@ -606,7 +606,7 @@ func mutiSavaAction(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 
 	m := make(map[string]interface{})
-	modelMap := make(map[string]*model)
+	modelMap := make(map[string]*Model)
 
 	if err != nil {
 		m["success"] = false
@@ -622,12 +622,12 @@ func mutiSavaAction(w http.ResponseWriter, r *http.Request) {
 
 	//公有属性赋值
 	for _, tab := range mutiFormPanel.FormTabs {
-		_model := new(model)
+		_model := new(Model)
 		modelMap[tab.Entity] = _model
-		_model.Props = []*prop{}
+		_model.Props = []*Prop{}
 
 		for _, element := range mutiFormPanel.PublicElement.Elements {
-			_prop := new(prop)
+			_prop := new(Prop)
 			_prop.Name = element.Field
 			_prop.Value = r.FormValue(element.Field)
 			_model.Props = append(_model.Props, _prop)
@@ -641,7 +641,7 @@ func mutiSavaAction(w http.ResponseWriter, r *http.Request) {
 			strs := strings.Split(key, ".")
 
 			model := modelMap[strs[0]]
-			prop := new(prop)
+			prop := new(Prop)
 			prop.Name = strs[1]
 			prop.Value = r.FormValue(key)
 			model.Props = append(model.Props, prop)

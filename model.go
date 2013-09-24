@@ -18,14 +18,14 @@ import (
 )
 
 //通用模型，用于存储从数据库获取到的值
-type model struct {
-	Entity entity
+type Model struct {
+	Entity Entity
 	Id     int
-	Props  []*prop
+	Props  []*Prop
 }
 
 //通用属性
-type prop struct {
+type Prop struct {
 	Name  string
 	Value string
 }
@@ -33,10 +33,10 @@ type prop struct {
 //entity.xml
 type entitys struct {
 	XMLName xml.Name `xml:"entitys"`
-	Entitys []entity `xml:"entity"`
+	Entitys []Entity `xml:"entity"`
 }
 
-type entity struct {
+type Entity struct {
 	Id     string  `xml:"id,attr"`
 	Pk     string  `xml:"pk"`
 	Fields []field `xml:"field"`
@@ -44,7 +44,7 @@ type entity struct {
 }
 
 //根据id查找出实体
-func getEntity(id string) entity {
+func getEntity(id string) Entity {
 
 	for _, entity := range entityList.Entitys {
 		if entity.Id == id {
@@ -52,7 +52,7 @@ func getEntity(id string) entity {
 		}
 	}
 
-	return entity{}
+	return Entity{}
 }
 
 type ref struct {
