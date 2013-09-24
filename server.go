@@ -21,7 +21,7 @@ import (
 )
 
 //构建查询的sql语句
-func bulidSelectSql(entity entity, colmuns []column) (string, string) {
+func bulidSelectSql(entity Entity, colmuns []column) (string, string) {
 
 	dataSql := "select " + entity.Id + "." + entity.Pk + ","
 
@@ -61,7 +61,7 @@ func bulidSelectSql(entity entity, colmuns []column) (string, string) {
 }
 
 //构建查询
-func bulidWhereSql(entity entity, countSql, dataSql string, searchParam []search) (string, string, []interface{}) {
+func bulidWhereSql(entity Entity, countSql, dataSql string, searchParam []search) (string, string, []interface{}) {
 
 	params := []interface{}{}
 
@@ -109,7 +109,7 @@ func bulidWhereSql(entity entity, countSql, dataSql string, searchParam []search
 }
 
 //查找分页数据
-func findTraditionPage(entity entity, currPageNo, pageSize int, searchParam []search, colmuns []column) (*commonlib.TraditionPage, error) {
+func findTraditionPage(entity Entity, currPageNo, pageSize int, searchParam []search, colmuns []column) (*commonlib.TraditionPage, error) {
 
 	countSql, dataSql := bulidSelectSql(entity, colmuns)
 
@@ -161,17 +161,17 @@ func findTraditionPage(entity entity, currPageNo, pageSize int, searchParam []se
 
 	for rows.Next() {
 
-		model := new(model)
+		model := new(Model)
 		model.Entity = entity
 		model.Id = 0
-		model.Props = []*prop{}
+		model.Props = []*Prop{}
 
 		fillObjects := []interface{}{}
 
 		fillObjects = append(fillObjects, &model.Id)
 
 		for _, column := range colmuns {
-			prop := new(prop)
+			prop := new(Prop)
 			prop.Name = column.Field
 			prop.Value = ""
 			fillObjects = append(fillObjects, &prop.Value)
@@ -192,7 +192,7 @@ func findTraditionPage(entity entity, currPageNo, pageSize int, searchParam []se
 }
 
 //查找分页数据
-func findAllData(entity entity) ([]*model, error) {
+func findAllData(entity Entity) ([]*Model, error) {
 
 	_, dataSql := bulidSelectSql(entity, []column{})
 
@@ -205,7 +205,7 @@ func findAllData(entity entity) ([]*model, error) {
 
 	Log.Debug(dataSql)
 
-	objects := []*model{}
+	objects := []*Model{}
 
 	rows, err := db.Query(dataSql)
 
@@ -216,17 +216,17 @@ func findAllData(entity entity) ([]*model, error) {
 
 	for rows.Next() {
 
-		dataModel := new(model)
+		dataModel := new(Model)
 		dataModel.Entity = entity
 		dataModel.Id = 0
-		dataModel.Props = []*prop{}
+		dataModel.Props = []*Prop{}
 
 		fillObjects := []interface{}{}
 
 		fillObjects = append(fillObjects, &dataModel.Id)
 
 		for _, field := range entity.Fields {
-			prop := new(prop)
+			prop := new(Prop)
 			prop.Name = field.Name
 			prop.Value = ""
 			fillObjects = append(fillObjects, &prop.Value)
@@ -235,7 +235,7 @@ func findAllData(entity entity) ([]*model, error) {
 
 		for _, ref := range entity.Refs {
 			for _, field := range ref.Fields {
-				prop := new(prop)
+				prop := new(Prop)
 				prop.Name = ref.Entity + "." + field.Name
 				prop.Value = ""
 				fillObjects = append(fillObjects, &prop.Value)
@@ -247,7 +247,7 @@ func findAllData(entity entity) ([]*model, error) {
 
 		if err != nil {
 			Log.Error(err.Error())
-			return []*model{}, err
+			return []*Model{}, err
 		}
 
 		objects = append(objects, dataModel)
@@ -257,7 +257,7 @@ func findAllData(entity entity) ([]*model, error) {
 }
 
 //添加数据
-func insert(entity entity, model *model, elements []element) (id int, err error) {
+func insert(entity Entity, model *Model, elements []element) (id int, err error) {
 
 	sql := "insert into " + entity.Id + "("
 	valueSql := " values ("
@@ -312,7 +312,7 @@ func insert(entity entity, model *model, elements []element) (id int, err error)
 }
 
 //根据id查找对象
-func findById(entity entity, id string) (*model, error) {
+func findById(entity Entity, id string) (*Model, error) {
 
 	dataSql := "select " + entity.Pk + ","
 
@@ -337,10 +337,10 @@ func findById(entity entity, id string) (*model, error) {
 		return nil, err
 	}
 
-	model := new(model)
+	model := new(Model)
 	model.Entity = entity
 	model.Id = 0
-	model.Props = []*prop{}
+	model.Props = []*Prop{}
 
 	if rows.Next() {
 
@@ -349,7 +349,7 @@ func findById(entity entity, id string) (*model, error) {
 		fillObjects = append(fillObjects, &model.Id)
 
 		for _, field := range entity.Fields {
-			prop := new(prop)
+			prop := new(Prop)
 			prop.Name = field.Name
 			prop.Value = ""
 			fillObjects = append(fillObjects, &prop.Value)
@@ -367,7 +367,7 @@ func findById(entity entity, id string) (*model, error) {
 }
 
 //修改
-func modify(entity entity, model *model, elements []element) error {
+func modify(entity Entity, model *Model, elements []element) error {
 	sql := "update " + entity.Id + " set "
 
 	params := []interface{}{}
@@ -407,7 +407,7 @@ func modify(entity entity, model *model, elements []element) error {
 }
 
 //删除
-func delete(entity entity, id string) error {
+func delete(entity Entity, id string) error {
 	sql := "delete from " + entity.Id + " where " + entity.Pk + "=?"
 
 	Log.Debug(sql)
