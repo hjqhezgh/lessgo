@@ -32,15 +32,7 @@ var (
 )
 
 func init() {
-
-	fmt.Println("111111")
 	Config, _ = goconfig.LoadConfigFile("../etc/config.ini")
-	//	if err != nil {
-	//		fmt.Println(err)
-	//		return
-	//	}
-
-	fmt.Println(Config)
 
 	logFilePath, _ := Config.GetValue("lessgo", "logFilePath")
 
