@@ -97,6 +97,7 @@ func (gridpanel gridPanel) generateGridPanel(entity Entity, terminal, packageNam
 	data["Gridpanel"] = gridpanel
 	data["Entity"] = entity
 	data["Terminal"] = terminal
+	data["SearchLength"] = len(gridpanel.Searchs)
 
 	err = t.Execute(&buf, data)
 

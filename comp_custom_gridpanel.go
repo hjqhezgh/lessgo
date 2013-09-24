@@ -59,6 +59,7 @@ func (gridpanel customGridPanel) generateCustomGridPanel(terminal, packageName s
 
 	data["CustomGridPanel"] = gridpanel
 	data["Terminal"] = terminal
+	data["SearchLength"] = len(gridpanel.Searchs)
 
 	err = t.Execute(&buf, data)
 
