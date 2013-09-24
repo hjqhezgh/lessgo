@@ -45,7 +45,7 @@ type column struct {
 	IconUrl        string `xml:"iconUrl,attr"`
 	LoadParamName  string `xml:"loadParamName,attr"`
 	LoadParamValue string `xml:"loadParamValue,attr"`
-	Format 		   string `xml:"format,attr"`
+	Format         string `xml:"format,attr"`
 }
 
 type action struct {

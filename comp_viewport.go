@@ -20,13 +20,25 @@ import (
 	"text/template"
 )
 
-//当viewport下面可以放置其他元素的时候，就扩展Viewport结构体，同时记得扩展容器结构体
+//当viewport下面可以放置其他元素的时候，就扩展Viewport结构体
 type viewport struct {
 	XMLName          xml.Name          `xml:"viewport"`
 	GridPanels       []gridPanel       `xml:"gridpanel"`
 	FormPanels       []formPanel       `xml:"formpanel"`
 	MutiFormPanels   []mutiFormPanel   `xml:"mutiformpanel"`
 	CustomGridPanels []customGridPanel `xml:"customgridpanel"`
+	Crumbs           crumbs            `xml:"crumbs"`
+}
+
+//面包屑
+type crumbs struct {
+	Crumbs []crumb `xml:"crumb"`
+}
+
+type crumb struct {
+	Url         string `xml:"url,attr"`
+	Text        string `xml:"text,attr"`
+	CurrentPage string `xml:"currentPage,attr"`
 }
 
 //扩展viewport的同时，记得同时扩展container
@@ -56,6 +68,10 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 
 	t = template.New("viewport.html")
 
+	t = t.Funcs(template.FuncMap{
+		"compareString":  compareString,
+	})
+
 	t, err := t.ParseFiles("../lessgo/template/component/" + terminal + "/viewport.html")
 
 	if err != nil {
@@ -65,6 +81,7 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 
 	data := make(map[string]interface{})
 	data["Content"] = content
+	data["Crumbs"] = viewport.Crumbs
 
 	err = t.Execute(&buf, data)
 

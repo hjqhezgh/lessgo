@@ -67,23 +67,6 @@ type field struct {
 	Desc string `xml:"desc,attr"`
 }
 
-//nav.xml
-type navs struct {
-	XMLName xml.Name `xml:"navs"`
-	Navs    []nav    `xml:"nav"`
-}
-
-type nav struct {
-	Text  string `xml:"text,attr"`
-	Items []item `xml:"item"`
-}
-
-type item struct {
-	Path    string `xml:"path,attr"`
-	Text    string `xml:"text,attr"`
-	Outside bool   `xml:"outside,attr"`
-}
-
 //url.xml
 type urls struct {
 	XMLName   xml.Name `xml:"urls"`

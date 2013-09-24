@@ -1,25 +1,25 @@
 /**
- * FileDes: 
+ * FileDes:
  * User: Samurai
  * Date: 13-9-23
  * Time: 上午10:06
  */
 package lessgo
 
-import(
-	"net/http"
+import (
 	"encoding/json"
+	"net/http"
 )
 
 type Menu struct {
-	Id			int			`json:"id"`
-	Name		string		`json:"name"`
-	Icon		string		`json:"icon"`
-	Url			string	    `json:"url"`
-	Children 	[]Menu		`json:"children"`
+	Id       int    `json:"id"`
+	Name     string `json:"name"`
+	Icon     string `json:"icon"`
+	Url      string `json:"url"`
+	Children []Menu `json:"children"`
 }
 
-func queryMenus(username string, menus *[]Menu) bool{
+func queryMenus(username string, menus *[]Menu) bool {
 
 	db := GetMySQL()
 	defer db.Close()
@@ -63,7 +63,7 @@ func queryMenus(username string, menus *[]Menu) bool{
 	return true
 }
 
-func GetMenus(username string) []Menu{
+func GetMenus(username string) []Menu {
 
 	var menus []Menu
 	db := GetMySQL()
@@ -111,7 +111,7 @@ func GetMenus(username string) []Menu{
 func QueryMenusAction(w http.ResponseWriter, r *http.Request) {
 
 	var menus []Menu
-	data := make(map[string]interface {})
+	data := make(map[string]interface{})
 
 	username := r.FormValue("username")
 	if username == "" {
@@ -126,7 +126,7 @@ func QueryMenusAction(w http.ResponseWriter, r *http.Request) {
 	outputJson(w, data)
 }
 
-func outputJson(w http.ResponseWriter, object interface {}) {
+func outputJson(w http.ResponseWriter, object interface{}) {
 	b, err := json.Marshal(object)
 	if err != nil {
 		Log.Error("error!", err.Error())
@@ -134,4 +134,3 @@ func outputJson(w http.ResponseWriter, object interface {}) {
 	}
 	w.Write(b)
 }
-
