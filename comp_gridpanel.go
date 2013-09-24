@@ -38,13 +38,13 @@ type gridPanel struct {
 //loadParamName 选填，不填就不带参数
 //loadParamValue 如果loadParamName有值，则此配置必填，可取值为id 或者 this
 type column struct {
-	Field    string `xml:"field,attr"`
-	Desc     string `xml:"desc,attr"`
-	LinkType string `xml:"linkType,attr"`
-	Url      string `xml:"url,attr"`
-	IconUrl  string `xml:"iconUrl,attr"`
-	LoadParamName   string `xml:"loadParamName,attr"`
-	LoadParamValue   string `xml:"loadParamValue,attr"`
+	Field          string `xml:"field,attr"`
+	Desc           string `xml:"desc,attr"`
+	LinkType       string `xml:"linkType,attr"`
+	Url            string `xml:"url,attr"`
+	IconUrl        string `xml:"iconUrl,attr"`
+	LoadParamName  string `xml:"loadParamName,attr"`
+	LoadParamValue string `xml:"loadParamValue,attr"`
 }
 
 type action struct {
@@ -67,10 +67,10 @@ type search struct {
 }
 
 //返回当前gridpanel下的某个列配置
-func getColumn(gridpanel gridPanel,columnField string) column{
+func getColumn(gridpanel gridPanel, columnField string) column {
 
-	for _,column := range gridpanel.Columns {
-		if column.Field == columnField{
+	for _, column := range gridpanel.Columns {
+		if column.Field == columnField {
 			return column
 		}
 	}

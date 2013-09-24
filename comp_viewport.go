@@ -22,10 +22,11 @@ import (
 
 //当viewport下面可以放置其他元素的时候，就扩展Viewport结构体，同时记得扩展容器结构体
 type viewport struct {
-	XMLName        xml.Name        `xml:"viewport"`
-	GridPanels     []gridPanel     `xml:"gridpanel"`
-	FormPanels     []formPanel     `xml:"formpanel"`
-	MutiFormPanels []mutiFormPanel `xml:"mutiformpanel"`
+	XMLName          xml.Name          `xml:"viewport"`
+	GridPanels       []gridPanel       `xml:"gridpanel"`
+	FormPanels       []formPanel       `xml:"formpanel"`
+	MutiFormPanels   []mutiFormPanel   `xml:"mutiformpanel"`
+	CustomGridPanels []customGridPanel `xml:"customgridpanel"`
 }
 
 //扩展viewport的同时，记得同时扩展container
@@ -43,6 +44,10 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 
 	for _, mutiformpanel := range viewport.MutiFormPanels {
 		content += string(mutiformpanel.generateMutiFormPanel(terminal, packageName, r))
+	}
+
+	for _, customgridpanel := range viewport.CustomGridPanels {
+		content += string(customgridpanel.generateCustomGridPanel(terminal, packageName))
 	}
 
 	var t *template.Template

@@ -35,10 +35,10 @@ func init() {
 
 	fmt.Println("111111")
 	Config, _ = goconfig.LoadConfigFile("../etc/config.ini")
-//	if err != nil {
-//		fmt.Println(err)
-//		return
-//	}
+	//	if err != nil {
+	//		fmt.Println(err)
+	//		return
+	//	}
 
 	fmt.Println(Config)
 
@@ -131,7 +131,7 @@ func ConfigLessgo() *mux.Router {
 
 	r.HandleFunc("/kindeditorImageUpload", kindeditorImageUpload)
 
-//	http.Handle("/", r)
+	//	http.Handle("/", r)
 
 	fmt.Println("lessgo配置完成")
 
