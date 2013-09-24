@@ -45,6 +45,7 @@ type column struct {
 	IconUrl        string `xml:"iconUrl,attr"`
 	LoadParamName  string `xml:"loadParamName,attr"`
 	LoadParamValue string `xml:"loadParamValue,attr"`
+	Format 		   string `xml:"format,attr"`
 }
 
 type action struct {
@@ -66,18 +67,6 @@ type search struct {
 	Value string
 }
 
-//返回当前gridpanel下的某个列配置
-func getColumn(gridpanel gridPanel, columnField string) column {
-
-	for _, column := range gridpanel.Columns {
-		if column.Field == columnField {
-			return column
-		}
-	}
-
-	return column{}
-}
-
 func (gridpanel gridPanel) generateGridPanel(entity Entity, terminal, packageName string) []byte {
 
 	var t *template.Template
@@ -93,6 +82,7 @@ func (gridpanel gridPanel) generateGridPanel(entity Entity, terminal, packageNam
 	t = t.Funcs(template.FuncMap{
 		"getComponentId": getComponentId,
 		"compareInt":     compareInt,
+		"compareString":  compareString,
 	})
 
 	t, err := t.ParseFiles("../lessgo/template/component/" + terminal + "/gridpanel.html")

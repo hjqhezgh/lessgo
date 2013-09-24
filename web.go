@@ -531,7 +531,7 @@ func dealEntityPage(entity Entity, w http.ResponseWriter, r *http.Request) {
 		m["FieldLength"] = len(pageData.Datas[0].(*Model).Props) - 1
 	}
 
-	commonlib.RenderTemplate(w, r, "entity_page.json", m, template.FuncMap{"getPropValue": getPropValue, "compareInt": compareInt, "compareString": compareString, "dealJsonString": dealJsonString, "getColumn": getColumn}, "../lessgo/template/entity_page.json")
+	commonlib.RenderTemplate(w, r, "entity_page.json", m, template.FuncMap{"getPropValue": getPropValue, "compareInt": compareInt, "compareString": compareString, "dealJsonString": dealJsonString}, "../lessgo/template/entity_page.json")
 }
 
 //处理实体的所有数据ajax请求
