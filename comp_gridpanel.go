@@ -21,6 +21,7 @@ import (
 type gridPanel struct {
 	Entity   string   `xml:"entity,attr"`
 	PageSize int      `xml:"pageSize,attr"`
+	LoadUrl  string   `xml:"loadUrl,attr"`
 	Id       string   `xml:"id,attr"`
 	Title    string   `xml:"title,attr"`
 	Width    string   `xml:"width,attr"`
@@ -46,6 +47,7 @@ type column struct {
 	LoadParamName  string `xml:"loadParamName,attr"`
 	LoadParamValue string `xml:"loadParamValue,attr"`
 	Format         string `xml:"format,attr"`
+	Hidden         string `xml:"hidden,attr"`
 }
 
 type action struct {

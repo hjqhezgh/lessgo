@@ -128,7 +128,7 @@ func independentAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	packageName := terminal + "." + r.URL.Path
+	packageName := terminal + "." + view
 
 	w.Write(generate(content, terminal, packageName, r))
 }

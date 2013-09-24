@@ -21,6 +21,7 @@ import (
 type customGridPanel struct {
 	Url      string   `xml:"url,attr"`
 	PageSize int      `xml:"pageSize,attr"`
+	LoadUrl  string   `xml:"loadUrl,attr"`
 	Id       string   `xml:"id,attr"`
 	Title    string   `xml:"title,attr"`
 	Width    string   `xml:"width,attr"`

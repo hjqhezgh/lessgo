@@ -122,7 +122,7 @@ func QueryMenusAction(w http.ResponseWriter, r *http.Request) {
 	if ret {
 		data["menus"] = menus
 	}
-	Log.Warn(data)
+	Log.Debug(data)
 	outputJson(w, data)
 }
 
