@@ -41,9 +41,9 @@ func bulidSelectSql(entity Entity, colmuns []column) (string, string) {
 		for _, ref := range entity.Refs {
 
 			for _, field := range ref.Fields {
-				if ref.Alias != ""{
+				if ref.Alias != "" {
 					dataSql += ref.Alias + "." + field.Name + ","
-				}else{
+				} else {
 					dataSql += ref.Entity + "." + field.Name + ","
 				}
 
@@ -57,9 +57,9 @@ func bulidSelectSql(entity Entity, colmuns []column) (string, string) {
 	dataSql += " from " + entity.Id + " " + entity.Id
 
 	for _, ref := range entity.Refs {
-		if ref.Alias != ""{
+		if ref.Alias != "" {
 			dataSql += fmt.Sprintf(" left join %v %v on %v.%v=%v.%v", ref.Entity, ref.Alias, entity.Id, ref.Field, ref.Alias, ref.RefEntityField)
-		}else{
+		} else {
 			dataSql += fmt.Sprintf(" left join %v %v on %v.%v=%v.%v", ref.Entity, ref.Entity, entity.Id, ref.Field, ref.Entity, ref.RefEntityField)
 		}
 	}
