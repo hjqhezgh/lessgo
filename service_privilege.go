@@ -31,7 +31,7 @@ func GetMenus(username string) []Menu{
 	sql := `select a.action_id,a.action_name,a.icon,a.parent_id,a.url from action a where
 				a.action_id in (select distinct(ra.action_id) from role_action ra where
 					ra.role_id in (select er.role_id from employee_role er where
-						er.user_id=(select e.user_id from employee e where e.username=?))) order by parent_id`
+						er.user_id=(select e.user_id from employee e where e.username=?))) order by a.parent_id`
 
 	rows, err := db.Query(sql, username)
 	if err != nil {
