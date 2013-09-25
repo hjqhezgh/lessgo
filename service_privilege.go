@@ -12,18 +12,17 @@
 package lessgo
 
 import (
-	"net/http"
 	"github.com/hjqhezgh/commonlib"
+	"net/http"
 )
 
 const (
-	SESSION_USER        = "SESSION_USER"    //用户登录后信息存储
-	KEY_USER_ID     	= "KEY_USER_ID" 	//用户ID
-	KEY_USER_NAME   	= "KEY_USER_NAME"   //用户名
-	KEY_REALLY_NAME	 	= "KEY_REALLY_NAME" //真实姓名
-	KEY_DEPARTMENT_ID	= "KEY_DEPARTMENT_ID"   //部门ID
+	SESSION_USER      = "SESSION_USER"      //用户登录后信息存储
+	KEY_USER_ID       = "KEY_USER_ID"       //用户ID
+	KEY_USER_NAME     = "KEY_USER_NAME"     //用户名
+	KEY_REALLY_NAME   = "KEY_REALLY_NAME"   //真实姓名
+	KEY_DEPARTMENT_ID = "KEY_DEPARTMENT_ID" //部门ID
 )
-
 
 type Menu struct {
 	Id       int    `json:"id"`
@@ -35,10 +34,10 @@ type Menu struct {
 
 //用于存储登陆员工的信息
 type Employee struct {
-	UserId			string		`json:"userId"`
-	UserName		string		`json:"userName"`
-	ReallyName		string		`json:"reallyName"`
-	DepartmentId	string		`json:"departmentId"`
+	UserId       string `json:"userId"`
+	UserName     string `json:"userName"`
+	ReallyName   string `json:"reallyName"`
+	DepartmentId string `json:"departmentId"`
 }
 
 func queryMenus(username string, menus *[]Menu) bool {
@@ -145,11 +144,11 @@ func QueryMenusAction(w http.ResponseWriter, r *http.Request) {
 		data["menus"] = menus
 	}
 	Log.Debug(data)
-	commonlib.OutputJson(w, data,"")
+	commonlib.OutputJson(w, data, "")
 }
 
 //获取当前登陆用户
-func GetCurrentEmployee(r *http.Request) Employee{
+func GetCurrentEmployee(r *http.Request) Employee {
 
 	session, err := Store.Get(r, SESSION_USER)
 
@@ -183,15 +182,15 @@ func GetCurrentEmployee(r *http.Request) Employee{
 	}
 
 	return Employee{
-		UserId:			user_id,
-		UserName:		user_name,
-		ReallyName:		really_name,
-		DepartmentId:	department_id,
+		UserId:       user_id,
+		UserName:     user_name,
+		ReallyName:   really_name,
+		DepartmentId: department_id,
 	}
 }
 
 //设置当前用户信息
-func SetCurrentEmployee(employee Employee ,w http.ResponseWriter,r *http.Request) {
+func SetCurrentEmployee(employee Employee, w http.ResponseWriter, r *http.Request) {
 
 	session, err := Store.Get(r, SESSION_USER)
 

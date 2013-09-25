@@ -22,7 +22,7 @@ import (
 var runtimeComponentContain = make(map[string]interface{})
 
 //根据用户定义的view文件和数据库内容生成数据流
-func generate(viewContent []byte, terminal, packageName string, r *http.Request ,employee Employee) []byte {
+func generate(viewContent []byte, terminal, packageName string, r *http.Request, employee Employee) []byte {
 
 	var viewport viewport
 
@@ -33,5 +33,5 @@ func generate(viewContent []byte, terminal, packageName string, r *http.Request 
 		return []byte{}
 	}
 
-	return viewport.generateViewport(terminal, packageName, r ,employee)
+	return viewport.generateViewport(terminal, packageName, r, employee)
 }

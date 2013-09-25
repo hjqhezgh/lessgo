@@ -18,8 +18,8 @@ import (
 	"fmt"
 	"github.com/Unknwon/goconfig"
 	"github.com/gorilla/mux"
-	"github.com/moovweb/log4go"
 	"github.com/gorilla/sessions"
+	"github.com/moovweb/log4go"
 	"io/ioutil"
 	"net/http"
 )
@@ -30,7 +30,7 @@ var (
 	Config     *goconfig.ConfigFile
 	entityList entitys
 	urlList    urls
-	Store	   *sessions.CookieStore
+	Store      *sessions.CookieStore
 )
 
 func init() {
@@ -46,7 +46,7 @@ func init() {
 	tmplog.AddFilter("log", log4go.INFO, fw)
 	Log = new(MyLogger)
 
-	cookieSecret,_ := Config.GetValue("lessgo","cookieSecret")
+	cookieSecret, _ := Config.GetValue("lessgo", "cookieSecret")
 	Store = sessions.NewCookieStore([]byte(cookieSecret))
 }
 

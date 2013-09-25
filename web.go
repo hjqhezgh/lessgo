@@ -77,7 +77,7 @@ func commonAction(w http.ResponseWriter, r *http.Request) {
 
 			packageName := terminal + "." + "home"
 
-			w.Write(generate(content, terminal, packageName, r ,employee))
+			w.Write(generate(content, terminal, packageName, r, employee))
 		case "index":
 			dealEntityIndex(entity, terminal, m, w, r)
 		case "add":
@@ -146,7 +146,7 @@ func independentAction(w http.ResponseWriter, r *http.Request) {
 
 	packageName := terminal + "." + view
 
-	w.Write(generate(content, terminal, packageName, r,employee))
+	w.Write(generate(content, terminal, packageName, r, employee))
 }
 
 //中心控制器
@@ -235,7 +235,7 @@ func dealEntityIndex(entity Entity, terminal string, m map[string]interface{}, w
 
 	packageName := terminal + "." + entity.Id + ".index"
 
-	w.Write(generate(content, terminal, packageName, r,employee))
+	w.Write(generate(content, terminal, packageName, r, employee))
 }
 
 //处理实体的添加页请求
@@ -261,7 +261,7 @@ func dealEntityAdd(entity Entity, terminal string, m map[string]interface{}, w h
 
 	packageName := terminal + "." + entity.Id + ".add"
 
-	w.Write(generate(content, terminal, packageName, r,employee))
+	w.Write(generate(content, terminal, packageName, r, employee))
 }
 
 //处理实体的修改页请求
@@ -287,7 +287,7 @@ func dealEntityModify(entity Entity, terminal string, m map[string]interface{}, 
 
 	packageName := terminal + "." + entity.Id + ".modify"
 
-	w.Write(generate(content, terminal, packageName, r ,employee))
+	w.Write(generate(content, terminal, packageName, r, employee))
 }
 
 //处理实体的保存页请求
@@ -472,30 +472,30 @@ func dealEntityDetail(entity Entity, m map[string]interface{}, w http.ResponseWr
 
 	//todo 目前还没实现此页面
 	/*
-	employee := GetCurrentEmployee(r)
+		employee := GetCurrentEmployee(r)
 
-	if employee.UserId == "" {
-		Log.Warn("用户未登陆")
-		commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/login.html")
-		return
-	}
+		if employee.UserId == "" {
+			Log.Warn("用户未登陆")
+			commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/login.html")
+			return
+		}
 
-	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的详细信息页")
+		Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的详细信息页")
 
-	vars := mux.Vars(r)
-	id := vars["id"] //先假设这个是活动的ID
+		vars := mux.Vars(r)
+		id := vars["id"] //先假设这个是活动的ID
 
-	model, err := findById(entity, id)
+		model, err := findById(entity, id)
 
-	if err != nil {
-		errMessage(w, r, "出现错误，请联系IT部门，错误信息:"+err.Error())
-		return
-	}
+		if err != nil {
+			errMessage(w, r, "出现错误，请联系IT部门，错误信息:"+err.Error())
+			return
+		}
 
-	m["Entity"] = entity
-	m["Model"] = model
+		m["Entity"] = entity
+		m["Model"] = model
 
-	commonlib.RenderTemplate(w, r, "entity_detail.html", m, template.FuncMap{"getPropValue": getPropValue}, "../lessgo/template/entity_detail.html")*/
+		commonlib.RenderTemplate(w, r, "entity_detail.html", m, template.FuncMap{"getPropValue": getPropValue}, "../lessgo/template/entity_detail.html")*/
 
 }
 

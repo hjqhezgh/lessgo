@@ -60,7 +60,7 @@ type ref struct {
 	Field          string  `xml:"field,attr"`
 	RefEntityField string  `xml:"refEntityField,attr"`
 	Fields         []field `xml:"field"`
-	Alias	   string  `xml:"alias,attr"`
+	Alias          string  `xml:"alias,attr"`
 }
 
 type field struct {
