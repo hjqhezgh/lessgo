@@ -61,7 +61,7 @@ func commonAction(w http.ResponseWriter, r *http.Request) {
 
 			if employee.UserId == "" {
 				Log.Warn("用户未登陆")
-				commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/login.html")
+				commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/component/"+terminal+"/login.html")
 				return
 			}
 
@@ -106,19 +106,19 @@ func commonAction(w http.ResponseWriter, r *http.Request) {
 //中心控制器
 func independentAction(w http.ResponseWriter, r *http.Request) {
 
+	strs := strings.Split(r.URL.Path, "/")
+
+	terminal := strs[1]
+
 	employee := GetCurrentEmployee(r)
 
 	if employee.UserId == "" {
 		Log.Warn("用户未登陆")
-		commonlib.RenderTemplate(w, r, "login.html", nil, nil, "../lessgo/template/login.html")
+		commonlib.RenderTemplate(w, r, "login.html", nil, nil, "../lessgo/template/component/"+terminal+"/login.html")
 		return
 	}
 
 	Log.Debug("访问自定义路径：", r.URL.Path)
-
-	strs := strings.Split(r.URL.Path, "/")
-
-	terminal := strs[1]
 
 	view := ""
 
@@ -147,6 +147,18 @@ func independentAction(w http.ResponseWriter, r *http.Request) {
 	packageName := terminal + "." + view
 
 	w.Write(generate(content, terminal, packageName, r,employee))
+}
+
+//中心控制器
+func loginAction(w http.ResponseWriter, r *http.Request) {
+
+	strs := strings.Split(r.URL.Path, "/")
+
+	terminal := strs[1]
+
+	Log.Debug("访问登陆页")
+
+	commonlib.RenderTemplate(w, r, "login.html", nil, nil, "../lessgo/template/component/"+terminal+"/login.html")
 }
 
 //分析URL得出当前url访问的实体模块，以及进行的操作，如果有错误，就去读取msg
@@ -207,7 +219,7 @@ func dealEntityIndex(entity Entity, terminal string, m map[string]interface{}, w
 
 	if employee.UserId == "" {
 		Log.Warn("用户未登陆")
-		commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/login.html")
+		commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/component/"+terminal+"/login.html")
 		return
 	}
 
@@ -233,7 +245,7 @@ func dealEntityAdd(entity Entity, terminal string, m map[string]interface{}, w h
 
 	if employee.UserId == "" {
 		Log.Warn("用户未登陆")
-		commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/login.html")
+		commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/component/"+terminal+"/login.html")
 		return
 	}
 
@@ -259,7 +271,7 @@ func dealEntityModify(entity Entity, terminal string, m map[string]interface{}, 
 
 	if employee.UserId == "" {
 		Log.Warn("用户未登陆")
-		commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/login.html")
+		commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/component/"+terminal+"/login.html")
 		return
 	}
 

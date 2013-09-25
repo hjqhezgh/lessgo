@@ -22,7 +22,6 @@ import (
 	"github.com/gorilla/sessions"
 	"io/ioutil"
 	"net/http"
-	"github.com/hjqhezgh/commonlib"
 )
 
 var (
@@ -96,10 +95,7 @@ func ConfigLessgo() *mux.Router {
 
 		r.HandleFunc("/"+terminal, commonAction)
 		r.HandleFunc("/"+terminal+"/index.html", commonAction)
-		r.HandleFunc("/"+terminal+"/login.html", func (w http.ResponseWriter, r *http.Request) {
-				m := make(map[string]interface{})
-				commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/login.html")
-		})
+		r.HandleFunc("/"+terminal+"/login.html", loginAction)
 
 		for _, entity := range entityList.Entitys {
 			r.HandleFunc("/"+terminal+"/"+entity.Id+"/index.html", commonAction)
