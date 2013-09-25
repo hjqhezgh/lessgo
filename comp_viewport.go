@@ -42,7 +42,7 @@ type crumb struct {
 }
 
 //扩展viewport的同时，记得同时扩展container
-func (viewport viewport) generateViewport(terminal, packageName string, r *http.Request) []byte {
+func (viewport viewport) generateViewport(terminal, packageName string, r *http.Request ,employee Employee) []byte {
 
 	content := ""
 
@@ -82,6 +82,7 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 	data := make(map[string]interface{})
 	data["Content"] = content
 	data["Crumbs"] = viewport.Crumbs
+	data["Employee"] = employee
 
 	err = t.Execute(&buf, data)
 

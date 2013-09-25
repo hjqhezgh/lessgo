@@ -191,7 +191,7 @@ func GetCurrentEmployee(r *http.Request) Employee{
 }
 
 //设置当前用户信息
-func SerCurrentEmployee(employee Employee ,w http.ResponseWriter,r *http.Request) {
+func SetCurrentEmployee(employee Employee ,w http.ResponseWriter,r *http.Request) {
 
 	session, err := Store.Get(r, SESSION_USER)
 

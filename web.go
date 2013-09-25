@@ -57,6 +57,14 @@ func commonAction(w http.ResponseWriter, r *http.Request) {
 
 		switch opera {
 		case "home":
+			employee := GetCurrentEmployee(r)
+
+			if employee.UserId == "" {
+				Log.Warn("用户未登陆")
+				commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/login.html")
+				return
+			}
+
 			Log.Debug("路径：", r.URL.Path, "访问应用首页")
 
 			content, err := ioutil.ReadFile("../etc/view/" + terminal + "/home.xml")
@@ -69,7 +77,7 @@ func commonAction(w http.ResponseWriter, r *http.Request) {
 
 			packageName := terminal + "." + "home"
 
-			w.Write(generate(content, terminal, packageName, r))
+			w.Write(generate(content, terminal, packageName, r ,employee))
 		case "index":
 			dealEntityIndex(entity, terminal, m, w, r)
 		case "add":
@@ -97,6 +105,14 @@ func commonAction(w http.ResponseWriter, r *http.Request) {
 
 //中心控制器
 func independentAction(w http.ResponseWriter, r *http.Request) {
+
+	employee := GetCurrentEmployee(r)
+
+	if employee.UserId == "" {
+		Log.Warn("用户未登陆")
+		commonlib.RenderTemplate(w, r, "login.html", nil, nil, "../lessgo/template/login.html")
+		return
+	}
 
 	Log.Debug("访问自定义路径：", r.URL.Path)
 
@@ -130,7 +146,7 @@ func independentAction(w http.ResponseWriter, r *http.Request) {
 
 	packageName := terminal + "." + view
 
-	w.Write(generate(content, terminal, packageName, r))
+	w.Write(generate(content, terminal, packageName, r,employee))
 }
 
 //分析URL得出当前url访问的实体模块，以及进行的操作，如果有错误，就去读取msg
@@ -186,6 +202,15 @@ func analyseUrl(url string) (_entity Entity, operation, terminal, msg string) {
 
 //处理实体的列表页请求
 func dealEntityIndex(entity Entity, terminal string, m map[string]interface{}, w http.ResponseWriter, r *http.Request) {
+
+	employee := GetCurrentEmployee(r)
+
+	if employee.UserId == "" {
+		Log.Warn("用户未登陆")
+		commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/login.html")
+		return
+	}
+
 	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的列表页")
 
 	content, err := ioutil.ReadFile("../etc/view/" + terminal + "/" + entity.Id + "/index.xml")
@@ -198,11 +223,19 @@ func dealEntityIndex(entity Entity, terminal string, m map[string]interface{}, w
 
 	packageName := terminal + "." + entity.Id + ".index"
 
-	w.Write(generate(content, terminal, packageName, r))
+	w.Write(generate(content, terminal, packageName, r,employee))
 }
 
 //处理实体的添加页请求
 func dealEntityAdd(entity Entity, terminal string, m map[string]interface{}, w http.ResponseWriter, r *http.Request) {
+
+	employee := GetCurrentEmployee(r)
+
+	if employee.UserId == "" {
+		Log.Warn("用户未登陆")
+		commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/login.html")
+		return
+	}
 
 	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的添加页")
 
@@ -216,11 +249,19 @@ func dealEntityAdd(entity Entity, terminal string, m map[string]interface{}, w h
 
 	packageName := terminal + "." + entity.Id + ".add"
 
-	w.Write(generate(content, terminal, packageName, r))
+	w.Write(generate(content, terminal, packageName, r,employee))
 }
 
 //处理实体的修改页请求
 func dealEntityModify(entity Entity, terminal string, m map[string]interface{}, w http.ResponseWriter, r *http.Request) {
+
+	employee := GetCurrentEmployee(r)
+
+	if employee.UserId == "" {
+		Log.Warn("用户未登陆")
+		commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/login.html")
+		return
+	}
 
 	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的修改页")
 
@@ -234,11 +275,24 @@ func dealEntityModify(entity Entity, terminal string, m map[string]interface{}, 
 
 	packageName := terminal + "." + entity.Id + ".modify"
 
-	w.Write(generate(content, terminal, packageName, r))
+	w.Write(generate(content, terminal, packageName, r ,employee))
 }
 
 //处理实体的保存页请求
 func dealEntitySave(_entity Entity, w http.ResponseWriter, r *http.Request) {
+
+	m := make(map[string]interface{})
+
+	employee := GetCurrentEmployee(r)
+
+	if employee.UserId == "" {
+		Log.Warn("用户未登陆")
+		m["success"] = false
+		m["code"] = 100
+		m["msg"] = "用户未登陆"
+		commonlib.OutputJson(w, m, " ")
+		return
+	}
 
 	Log.Debug("路径：", r.URL.Path, "访问实体", _entity.Id, "的保存ajax请求")
 
@@ -247,8 +301,6 @@ func dealEntitySave(_entity Entity, w http.ResponseWriter, r *http.Request) {
 	//异步请求绑定的组件Id
 	componentId := r.FormValue("componentId")
 	formpanel := runtimeComponentContain[componentId].(formPanel)
-
-	m := make(map[string]interface{})
 
 	if err != nil {
 		m["success"] = false
@@ -406,6 +458,16 @@ func dealEntitySave(_entity Entity, w http.ResponseWriter, r *http.Request) {
 //处理实体的详细页请求
 func dealEntityDetail(entity Entity, m map[string]interface{}, w http.ResponseWriter, r *http.Request) {
 
+	//todo 目前还没实现此页面
+	/*
+	employee := GetCurrentEmployee(r)
+
+	if employee.UserId == "" {
+		Log.Warn("用户未登陆")
+		commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/login.html")
+		return
+	}
+
 	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的详细信息页")
 
 	vars := mux.Vars(r)
@@ -421,16 +483,27 @@ func dealEntityDetail(entity Entity, m map[string]interface{}, w http.ResponseWr
 	m["Entity"] = entity
 	m["Model"] = model
 
-	commonlib.RenderTemplate(w, r, "entity_detail.html", m, template.FuncMap{"getPropValue": getPropValue}, "../lessgo/template/entity_detail.html")
+	commonlib.RenderTemplate(w, r, "entity_detail.html", m, template.FuncMap{"getPropValue": getPropValue}, "../lessgo/template/entity_detail.html")*/
 
 }
 
 //处理实体的删除页请求
 func dealEntityDelete(entity Entity, w http.ResponseWriter, r *http.Request) {
 
-	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的删除页")
-
 	m := make(map[string]interface{})
+
+	employee := GetCurrentEmployee(r)
+
+	if employee.UserId == "" {
+		Log.Warn("用户未登陆")
+		m["success"] = false
+		m["code"] = 100
+		m["msg"] = "用户未登陆"
+		commonlib.OutputJson(w, m, " ")
+		return
+	}
+
+	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的删除页")
 
 	vars := mux.Vars(r)
 	id := vars["id"]
@@ -455,11 +528,22 @@ func dealEntityDelete(entity Entity, w http.ResponseWriter, r *http.Request) {
 //处理实体的分页ajax请求
 func dealEntityPage(entity Entity, w http.ResponseWriter, r *http.Request) {
 
+	m := make(map[string]interface{})
+
+	employee := GetCurrentEmployee(r)
+
+	if employee.UserId == "" {
+		Log.Warn("用户未登陆")
+		m["success"] = false
+		m["code"] = 100
+		m["msg"] = "用户未登陆"
+		commonlib.OutputJson(w, m, " ")
+		return
+	}
+
 	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的分页数据ajax请求")
 
 	err := r.ParseForm()
-
-	m := make(map[string]interface{})
 
 	if err != nil {
 		m["success"] = false
@@ -537,11 +621,22 @@ func dealEntityPage(entity Entity, w http.ResponseWriter, r *http.Request) {
 //处理实体的所有数据ajax请求
 func dealEntityAllData(entity Entity, w http.ResponseWriter, r *http.Request) {
 
+	m := make(map[string]interface{})
+
+	employee := GetCurrentEmployee(r)
+
+	if employee.UserId == "" {
+		Log.Warn("用户未登陆")
+		m["success"] = false
+		m["code"] = 100
+		m["msg"] = "用户未登陆"
+		commonlib.OutputJson(w, m, " ")
+		return
+	}
+
 	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的所有数据ajax请求")
 
 	err := r.ParseForm()
-
-	m := make(map[string]interface{})
 
 	models, err := findAllData(entity)
 
@@ -566,9 +661,20 @@ func dealEntityAllData(entity Entity, w http.ResponseWriter, r *http.Request) {
 //处理实体的分页ajax请求
 func dealEntityLoad(entity Entity, w http.ResponseWriter, r *http.Request) {
 
-	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的load单实体ajax请求")
-
 	m := make(map[string]interface{})
+
+	employee := GetCurrentEmployee(r)
+
+	if employee.UserId == "" {
+		Log.Warn("用户未登陆")
+		m["success"] = false
+		m["code"] = 100
+		m["msg"] = "用户未登陆"
+		commonlib.OutputJson(w, m, " ")
+		return
+	}
+
+	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的load单实体ajax请求")
 
 	vars := mux.Vars(r)
 	id := vars["id"]
@@ -601,11 +707,23 @@ func dealEntityLoad(entity Entity, w http.ResponseWriter, r *http.Request) {
 //多实体保存ajax请求处理器
 func mutiSavaAction(w http.ResponseWriter, r *http.Request) {
 
+	m := make(map[string]interface{})
+
+	employee := GetCurrentEmployee(r)
+
+	if employee.UserId == "" {
+		Log.Warn("用户未登陆")
+		m["success"] = false
+		m["code"] = 100
+		m["msg"] = "用户未登陆"
+		commonlib.OutputJson(w, m, " ")
+		return
+	}
+
 	Log.Debug("访问多表保存ajax路径：", r.URL.Path)
 
 	err := r.ParseForm()
 
-	m := make(map[string]interface{})
 	modelMap := make(map[string]*Model)
 
 	if err != nil {
