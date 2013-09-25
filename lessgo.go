@@ -19,6 +19,7 @@ import (
 	"github.com/Unknwon/goconfig"
 	"github.com/gorilla/mux"
 	"github.com/moovweb/log4go"
+	"github.com/gorilla/sessions"
 	"io/ioutil"
 	"net/http"
 )
@@ -29,6 +30,7 @@ var (
 	Config     *goconfig.ConfigFile
 	entityList entitys
 	urlList    urls
+	Store	   *sessions.CookieStore
 )
 
 func init() {
@@ -43,6 +45,9 @@ func init() {
 	fw := log4go.NewFileLogWriter(logFilePath, false).SetRotateSize(10 * 1024 * 1024).SetRotate(true)
 	tmplog.AddFilter("log", log4go.INFO, fw)
 	Log = new(MyLogger)
+
+	cookieSecret,_ := Config.GetValue("lessgo","cookieSecret")
+	Store = sessions.NewCookieStore([]byte(cookieSecret))
 }
 
 //解析配置文件内容至内存中

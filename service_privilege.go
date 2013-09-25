@@ -1,15 +1,29 @@
-/**
- * FileDes:
- * User: Samurai
- * Date: 13-9-23
- * Time: 上午10:06
- */
+// Title：权限相关的服务
+//
+// Description:
+//
+// Author:Samurai
+//
+// Createtime:2013-09-23 10:06
+//
+// Version:1.0
+//
+// 修改历史:版本号 修改日期 修改人 修改说明
 package lessgo
 
 import (
-	"encoding/json"
 	"net/http"
+	"github.com/hjqhezgh/commonlib"
 )
+
+const (
+	SESSION_USER        = "SESSION_USER"    //用户登录后信息存储
+	KEY_USER_ID     	= "KEY_USER_ID" 	//用户ID
+	KEY_USER_NAME   	= "KEY_USER_NAME"   //用户名
+	KEY_REALLY_NAME	 	= "KEY_REALLY_NAME" //真实姓名
+	KEY_DEPARTMENT_ID	= "KEY_DEPARTMENT_ID"   //部门ID
+)
+
 
 type Menu struct {
 	Id       int    `json:"id"`
@@ -17,6 +31,14 @@ type Menu struct {
 	Icon     string `json:"icon"`
 	Url      string `json:"url"`
 	Children []Menu `json:"children"`
+}
+
+//用于存储登陆员工的信息
+type Employee struct {
+	UserId			string		`json:"userId"`
+	UserName		string		`json:"userName"`
+	ReallyName		string		`json:"reallyName"`
+	DepartmentId	string		`json:"departmentId"`
 }
 
 func queryMenus(username string, menus *[]Menu) bool {
@@ -123,14 +145,65 @@ func QueryMenusAction(w http.ResponseWriter, r *http.Request) {
 		data["menus"] = menus
 	}
 	Log.Debug(data)
-	outputJson(w, data)
+	commonlib.OutputJson(w, data,"")
 }
 
-func outputJson(w http.ResponseWriter, object interface{}) {
-	b, err := json.Marshal(object)
+//获取当前登陆用户
+func GetCurrentEmployee(r *http.Request) Employee{
+
+	session, err := Store.Get(r, SESSION_USER)
+
 	if err != nil {
-		Log.Error("error!", err.Error())
-		return
+		Log.Error("前台用户获取session发生错误，信息如下：", err.Error())
+		return Employee{}
 	}
-	w.Write(b)
+
+	user_id, ok := session.Values[KEY_USER_ID].(string)
+	if !ok {
+		Log.Error("get session value error!", ok)
+		return Employee{}
+	}
+
+	user_name, ok := session.Values[KEY_USER_NAME].(string)
+	if !ok {
+		Log.Error("get session value error!", ok)
+		return Employee{}
+	}
+
+	really_name, ok := session.Values[KEY_REALLY_NAME].(string)
+	if !ok {
+		Log.Error("get session value error!", ok)
+		return Employee{}
+	}
+
+	department_id, ok := session.Values[KEY_DEPARTMENT_ID].(string)
+	if !ok {
+		Log.Error("get session value error!", ok)
+		return Employee{}
+	}
+
+	return Employee{
+		UserId:			user_id,
+		UserName:		user_name,
+		ReallyName:		really_name,
+		DepartmentId:	department_id,
+	}
+}
+
+//设置当前用户信息
+func SerCurrentEmployee(employee Employee ,w http.ResponseWriter,r *http.Request) {
+
+	session, err := Store.Get(r, SESSION_USER)
+
+	if err != nil {
+		Log.Error(err)
+	}
+
+	session.Values[KEY_USER_ID] = employee.UserId
+	session.Values[KEY_USER_NAME] = employee.UserName
+	session.Values[KEY_REALLY_NAME] = employee.ReallyName
+	session.Values[KEY_DEPARTMENT_ID] = employee.DepartmentId
+
+	//session.Options.MaxAge = 10 * 24 * 60 * 60
+	session.Save(r, w)
 }
