@@ -36,6 +36,16 @@ func errMessage(w http.ResponseWriter, r *http.Request, errMsg string) {
 	commonlib.RenderTemplate(w, r, "err_message.html", m, nil, "../lessgo/template/err_message.html")
 }
 
+//注销
+func loginOutAction(w http.ResponseWriter, r *http.Request) {
+	session, _ := Store.Get(r, SESSION_USER)
+	for v, _ := range session.Values {
+		delete(session.Values, v)
+	}
+	session.Save(r, w)
+	w.Write([]byte("success"))
+}
+
 //中心控制器
 func homeAction(w http.ResponseWriter, r *http.Request) {
 	m := make(map[string]interface{})
@@ -520,7 +530,7 @@ func dealEntityDelete(entity Entity, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	err := delete(entity, id)
+	err := deleteEntity(entity, id)
 
 	if err != nil {
 		m["success"] = false

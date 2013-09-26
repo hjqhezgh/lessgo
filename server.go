@@ -416,7 +416,7 @@ func modify(entity Entity, model *Model, elements []element) error {
 }
 
 //删除
-func delete(entity Entity, id string) error {
+func deleteEntity(entity Entity, id string) error {
 	sql := "delete from " + entity.Id + " where " + entity.Pk + "=?"
 
 	Log.Debug(sql)

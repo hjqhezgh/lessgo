@@ -81,6 +81,11 @@ func ConfigLessgo() *mux.Router {
 		panic(err)
 	}
 
+	err = checkLib()
+	if err != nil {
+		panic(err)
+	}
+
 	http.Handle("/lessgo/", http.FileServer(http.Dir("../")))
 	http.Handle("/tmp/", http.FileServer(http.Dir("../")))
 	http.Handle("/imageupload/", http.FileServer(http.Dir("../")))
@@ -88,6 +93,8 @@ func ConfigLessgo() *mux.Router {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", homeAction)
+
+	r.HandleFunc("/loginOut", loginOutAction)
 
 	//这里的把每个实体的url规约好，暂时不去改变，将来再考虑配置 FIXME
 
