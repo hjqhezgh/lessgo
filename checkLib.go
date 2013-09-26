@@ -37,7 +37,7 @@ func downLoad(url, libName string) error{
 
 //解压
 func decompressionZip(libName string) error{
-	cmd := exec.Command("unzip", libName)
+	cmd := exec.Command("unzip","-o", libName,"-d","../")
 	Log.Debug(cmd)
 	_, err := cmd.Output()
 	if err != nil {
@@ -48,12 +48,12 @@ func decompressionZip(libName string) error{
 
 func checkLib() error{
 	//下载到本地后的包名
-	libName := "lessgo.zip"
+	libName := "../lessgo.zip"
 	//下载url
 	url,_ := Config.GetValue("lessgo", "staticZipUrl")
 
 	//不存在
-	if isExists(libName) {
+	if !isExists(libName) {
 		Log.Debug("资源包文件不存在，开始下载")
 		//下载
 		err := downLoad(url, libName)
@@ -69,6 +69,8 @@ func checkLib() error{
 		}
 
 		return nil
+	}else{
+		Log.Debug("资源包文件存在，无需下载")
 	}
 
 	return nil
