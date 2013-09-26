@@ -210,7 +210,7 @@ func findAllData(entity Entity) ([]*Model, error) {
 	db := GetMySQL()
 	defer db.Close()
 
-	dataSql += " order by " + entity.Pk + " desc "
+	dataSql += " order by " + entity.Id +"."+ entity.Pk + " desc "
 
 	Log.Debug(dataSql)
 
