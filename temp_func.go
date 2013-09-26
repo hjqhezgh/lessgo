@@ -22,7 +22,7 @@ import (
 )
 
 //获取通用model的指定属性的值
-func getPropValue(model *Model, propName string) string {
+func GetPropValue(model *Model, propName string) string {
 
 	if model != nil {
 		for _, prop := range model.Props {
@@ -51,7 +51,7 @@ func getComponentId(componentType string) string {
 }
 
 //模板中的int类型比较比较
-func compareInt(a, b int, compareType string) (flag bool) {
+func CompareInt(a, b int, compareType string) (flag bool) {
 
 	switch compareType {
 
@@ -97,7 +97,7 @@ func compareInt(a, b int, compareType string) (flag bool) {
 }
 
 //模板中字符串比较
-func compareString(a, b string) bool {
+func CompareString(a, b string) bool {
 	if a == b {
 		return true
 	} else {
@@ -106,7 +106,7 @@ func compareString(a, b string) bool {
 }
 
 //替换json字符中的换行等特殊符号
-func dealJsonString(str string) string {
+func DealJsonString(str string) string {
 	str = strings.Replace(str, "\n", " ", -1)
 	str = strings.Replace(str, "\n\r", " ", -1)
 	str = strings.Replace(str, "\r\n", " ", -1)
@@ -117,6 +117,6 @@ func dealJsonString(str string) string {
 	return str
 }
 
-func dealHTMLEscaper(str string) string {
+func DealHTMLEscaper(str string) string {
 	return template.HTMLEscaper(str)
 }

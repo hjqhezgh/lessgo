@@ -45,8 +45,8 @@ func (gridpanel customGridPanel) generateCustomGridPanel(terminal, packageName s
 
 	t = t.Funcs(template.FuncMap{
 		"getComponentId": getComponentId,
-		"compareInt":     compareInt,
-		"compareString":  compareString,
+		"compareInt":     CompareInt,
+		"compareString":  CompareString,
 	})
 
 	t, err := t.ParseFiles("../lessgo/template/component/" + terminal + "/customgridpanel.html")

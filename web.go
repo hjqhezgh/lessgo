@@ -637,7 +637,7 @@ func dealEntityPage(entity Entity, w http.ResponseWriter, r *http.Request) {
 		m["FieldLength"] = len(pageData.Datas[0].(*Model).Props) - 1
 	}
 
-	commonlib.RenderTemplate(w, r, "entity_page.json", m, template.FuncMap{"getPropValue": getPropValue, "compareInt": compareInt, "compareString": compareString, "dealJsonString": dealJsonString}, "../lessgo/template/entity_page.json")
+	commonlib.RenderTemplate(w, r, "entity_page.json", m, template.FuncMap{"getPropValue": GetPropValue, "compareInt": CompareInt, "compareString": CompareString, "dealJsonString": DealJsonString}, "../lessgo/template/entity_page.json")
 }
 
 //处理实体的所有数据ajax请求
@@ -677,7 +677,7 @@ func dealEntityAllData(entity Entity, w http.ResponseWriter, r *http.Request) {
 		m["FieldLength"] = len(models[0].Props) - 1
 	}
 
-	commonlib.RenderTemplate(w, r, "entity_alldata.json", m, template.FuncMap{"getPropValue": getPropValue, "compareInt": compareInt}, "../lessgo/template/entity_alldata.json")
+	commonlib.RenderTemplate(w, r, "entity_alldata.json", m, template.FuncMap{"getPropValue": GetPropValue, "compareInt": CompareInt}, "../lessgo/template/entity_alldata.json")
 }
 
 //处理实体的分页ajax请求
@@ -723,7 +723,7 @@ func dealEntityLoad(entity Entity, w http.ResponseWriter, r *http.Request) {
 	m["Model"] = model
 	m["FieldLength"] = len(entity.Fields) - 1
 
-	commonlib.RenderTemplate(w, r, "entity_load.json", m, template.FuncMap{"getPropValue": getPropValue, "compareInt": compareInt}, "../lessgo/template/entity_load.json")
+	commonlib.RenderTemplate(w, r, "entity_load.json", m, template.FuncMap{"getPropValue": GetPropValue, "compareInt": CompareInt}, "../lessgo/template/entity_load.json")
 }
 
 //多实体保存ajax请求处理器

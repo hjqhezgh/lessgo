@@ -83,8 +83,8 @@ func (gridpanel gridPanel) generateGridPanel(entity Entity, terminal, packageNam
 
 	t = t.Funcs(template.FuncMap{
 		"getComponentId": getComponentId,
-		"compareInt":     compareInt,
-		"compareString":  compareString,
+		"compareInt":     CompareInt,
+		"compareString":  CompareString,
 	})
 
 	t, err := t.ParseFiles("../lessgo/template/component/" + terminal + "/gridpanel.html")

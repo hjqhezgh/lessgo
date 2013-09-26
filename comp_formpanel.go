@@ -57,10 +57,10 @@ func (formpanel formPanel) generateFormPanel(entity Entity, terminal, packageNam
 
 	t = t.Funcs(template.FuncMap{
 		"getComponentId":  getComponentId,
-		"compareInt":      compareInt,
-		"compareString":   compareString,
-		"getPropValue":    getPropValue,
-		"dealHTMLEscaper": dealHTMLEscaper,
+		"compareInt":      CompareInt,
+		"compareString":   CompareString,
+		"getPropValue":    GetPropValue,
+		"dealHTMLEscaper": DealHTMLEscaper,
 	})
 
 	t, err := t.ParseFiles("../lessgo/template/component/" + terminal + "/formpanel.html")

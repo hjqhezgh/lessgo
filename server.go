@@ -283,7 +283,7 @@ func insert(entity Entity, model *Model, elements []element) (id int, err error)
 			valueSql += ","
 		}
 
-		params = append(params, getPropValue(model, element.Field))
+		params = append(params, GetPropValue(model, element.Field))
 	}
 	fmt.Println(params)
 	sql += ")"
@@ -388,7 +388,7 @@ func modify(entity Entity, model *Model, elements []element) error {
 			sql += ","
 		}
 
-		params = append(params, getPropValue(model, element.Field))
+		params = append(params, GetPropValue(model, element.Field))
 	}
 
 	sql += " where " + entity.Pk + "=?"

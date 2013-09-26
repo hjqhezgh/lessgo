@@ -69,7 +69,7 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 	t = template.New("viewport.html")
 
 	t = t.Funcs(template.FuncMap{
-		"compareString": compareString,
+		"compareString": CompareString,
 	})
 
 	t, err := t.ParseFiles("../lessgo/template/component/" + terminal + "/viewport.html")
