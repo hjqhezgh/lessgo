@@ -103,3 +103,44 @@ func FindWeek(year, month string) ([]*Week, error) {
 
 	return weeks, nil
 }
+
+//根据时间key值获取时间区间
+func FindRangeTimeDim(yearKey,monthKey,weekKey string) (startTime,endTime string){
+
+	db := GetMySQL()
+
+	defer db.Close()
+
+	sql := ""
+
+	param := ""
+
+	if weekKey != ""{
+		sql = "select min(day_date),max(day_date) from time_dim where week_key=?"
+		param = weekKey
+	}else if monthKey != ""{
+		sql = "select min(day_date),max(day_date) from time_dim where month_key=?"
+		param = monthKey
+	}else{
+		sql = "select min(day_date),max(day_date) from time_dim where current_year=?"
+		param = yearKey
+	}
+
+	rows, err := db.Query(sql, param)
+
+	if err != nil {
+		Log.Error(err.Error())
+		return "", ""
+	}
+
+	if rows.Next() {
+		err := rows.Scan(&startTime, &endTime)
+		if err != nil {
+			Log.Warn(err.Error())
+			return "", ""
+		}
+		return startTime,endTime
+	}
+
+	return "", ""
+}
