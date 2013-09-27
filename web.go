@@ -400,7 +400,7 @@ func dealEntitySave(_entity Entity, w http.ResponseWriter, r *http.Request) {
 
 				if err != nil && os.IsNotExist(err) {
 					Log.Info(formElement.ImagePath, "文件夹不存在，创建")
-					os.Mkdir(formElement.ImagePath, 0777)
+					os.Mkdirs(formElement.ImagePath, 0777)
 				}
 
 				disFile, err := os.Create(formElement.ImagePath + "/" + tmpFileName)
