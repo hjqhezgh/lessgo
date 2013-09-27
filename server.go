@@ -273,19 +273,19 @@ func insert(entity Entity, model *Model, elements []element) (id int, err error)
 
 	params := []interface{}{}
 
-	for index, element := range elements {
-		sql += element.Field
+	for _, element := range elements {
+		if element.Type != "image"{
+			sql += element.Field + ","
 
-		valueSql += "?"
+			valueSql += "?,"
 
-		if index < len(elements)-1 {
-			sql += ","
-			valueSql += ","
+			params = append(params, GetPropValue(model, element.Field))
 		}
-
-		params = append(params, GetPropValue(model, element.Field))
 	}
-	fmt.Println(params)
+
+	valueSql = commonlib.Substr(valueSql,0,len(valueSql)-1)
+	sql = commonlib.Substr(sql,0,len(sql)-1)
+
 	sql += ")"
 	valueSql += ")"
 	sql += valueSql

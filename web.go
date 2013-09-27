@@ -14,7 +14,6 @@
 package lessgo
 
 import (
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/hjqhezgh/commonlib"
 	"io"
@@ -24,6 +23,7 @@ import (
 	"strconv"
 	"strings"
 	"text/template"
+	"fmt"
 )
 
 //跳转至错误页面
@@ -338,91 +338,13 @@ func dealEntitySave(_entity Entity, w http.ResponseWriter, r *http.Request) {
 	_model := new(Model)
 	_model.Props = []*Prop{}
 
+	imgElements := []element{}
+
 	for _, formElement := range formpanel.Elements {
 		_prop := new(Prop)
 
 		if formElement.Type == "image" { //图片类型需要做多表处理
-
-			filePath := r.FormValue(formElement.Field)
-			tmpFileName := ""
-
-			if filePath != "" {
-				imgEntity := getEntity(formElement.ImageEntity)
-				imageModel := new(Model)
-				imageModel.Props = []*Prop{}
-
-				fileNameProp := new(Prop)
-				fileNameProp.Name = "filename"
-				fileNameProp.Value = commonlib.SubstrByStEd(filePath, strings.LastIndex(filePath, "/")+1, strings.LastIndex(filePath, "."))
-				tmpFileName = commonlib.Substr(filePath, strings.LastIndex(filePath, "/")+1, len(filePath))
-
-				suffixProp := new(Prop)
-				suffixProp.Name = "suffix"
-				suffixProp.Value = commonlib.Substr(filePath, strings.LastIndex(filePath, ".")+1, len(filePath))
-
-				imageModel.Props = append(imageModel.Props, fileNameProp)
-				imageModel.Props = append(imageModel.Props, suffixProp)
-
-				imgId, err := insert(imgEntity, imageModel, []element{
-					element{
-						Field: "filename",
-					},
-					element{
-						Field: "suffix",
-					},
-				})
-
-				if err != nil {
-					m["success"] = false
-					m["code"] = 100
-					m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-					Log.Warn(err.Error())
-					commonlib.OutputJson(w, m, " ")
-					return
-				}
-
-				_prop.Name = formElement.Field
-				_prop.Value = fmt.Sprint(imgId)
-				_model.Props = append(_model.Props, _prop)
-
-				tmpFile, err := os.OpenFile("../tmp/"+tmpFileName, os.O_RDWR, 0777)
-
-				if err != nil {
-					m["success"] = false
-					m["code"] = 100
-					m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-					Log.Warn(err.Error())
-					commonlib.OutputJson(w, m, " ")
-					return
-				}
-
-				_, err = os.Stat(formElement.ImagePath)
-
-				if err != nil && os.IsNotExist(err) {
-					Log.Info(formElement.ImagePath, "文件夹不存在，创建")
-					os.Mkdirs(formElement.ImagePath, 0777)
-				}
-
-				disFile, err := os.Create(formElement.ImagePath + "/" + tmpFileName)
-
-				if err != nil {
-					m["success"] = false
-					m["code"] = 100
-					m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
-					Log.Warn(err.Error())
-					commonlib.OutputJson(w, m, " ")
-					return
-				}
-
-				io.Copy(disFile, tmpFile)
-
-				os.Remove("../tmp/" + tmpFileName)
-			} else {
-				_prop.Name = formElement.Field
-				_prop.Value = fmt.Sprint(0)
-				_model.Props = append(_model.Props, _prop)
-			}
-
+			imgElements = append(imgElements,formElement)
 		} else {
 			_prop.Name = formElement.Field
 			_prop.Value = r.FormValue(formElement.Field)
@@ -459,7 +381,90 @@ func dealEntitySave(_entity Entity, w http.ResponseWriter, r *http.Request) {
 		commonlib.OutputJson(w, m, " ")
 		return
 	} else {
-		_, err = insert(_entity, _model, formpanel.Elements)
+		id, err := insert(_entity, _model, formpanel.Elements)
+
+		for _,imgElment := range imgElements{
+
+			filePath := r.FormValue(imgElment.Field)
+			tmpFileName := ""
+
+			if filePath != "" {
+				imgEntity := getEntity(imgElment.ImageEntity)
+				imageModel := new(Model)
+				imageModel.Props = []*Prop{}
+
+				fileNameProp := new(Prop)
+				fileNameProp.Name = "filename"
+				fileNameProp.Value = commonlib.SubstrByStEd(filePath, strings.LastIndex(filePath, "/")+1, strings.LastIndex(filePath, "."))
+				tmpFileName = commonlib.Substr(filePath, strings.LastIndex(filePath, "/")+1, len(filePath))
+
+				suffixProp := new(Prop)
+				suffixProp.Name = "suffix"
+				suffixProp.Value = commonlib.Substr(filePath, strings.LastIndex(filePath, ".")+1, len(filePath))
+
+				refProp := new(Prop)
+				refProp.Name = imgElment.Field
+				refProp.Value = fmt.Sprint(id)
+
+				imageModel.Props = append(imageModel.Props, fileNameProp)
+				imageModel.Props = append(imageModel.Props, suffixProp)
+				imageModel.Props = append(imageModel.Props, refProp)
+
+				_, err := insert(imgEntity, imageModel, []element{
+					element{
+						Field: "filename",
+					},
+					element{
+						Field: "suffix",
+					},
+					element{
+						Field: imgElment.Field,
+					},
+				})
+
+				if err != nil {
+					m["success"] = false
+					m["code"] = 100
+					m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
+					Log.Warn(err.Error())
+					commonlib.OutputJson(w, m, " ")
+					return
+				}
+
+				tmpFile, err := os.OpenFile("../tmp/"+tmpFileName, os.O_RDWR, 0777)
+
+				if err != nil {
+					m["success"] = false
+					m["code"] = 100
+					m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
+					Log.Warn(err.Error())
+					commonlib.OutputJson(w, m, " ")
+					return
+				}
+
+				_, err = os.Stat(imgElment.ImagePath)
+
+				if err != nil && os.IsNotExist(err) {
+					Log.Info(imgElment.ImagePath, "文件夹不存在，创建")
+					os.MkdirAll(imgElment.ImagePath, 0777)
+				}
+
+				disFile, err := os.Create(imgElment.ImagePath + "/" + tmpFileName)
+
+				if err != nil {
+					m["success"] = false
+					m["code"] = 100
+					m["msg"] = "出现错误，请联系IT部门，错误信息:" + err.Error()
+					Log.Warn(err.Error())
+					commonlib.OutputJson(w, m, " ")
+					return
+				}
+
+				io.Copy(disFile, tmpFile)
+
+				os.Remove("../tmp/" + tmpFileName)
+			}
+		}
 
 		if err != nil {
 			m["success"] = false

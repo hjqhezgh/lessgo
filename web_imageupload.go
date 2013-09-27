@@ -35,7 +35,9 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		os.Mkdir("../tmp", 0777)
 	}
 
-	fn, header, err := r.FormFile("pid")
+	fileInputName := r.FormValue("fileInputName")
+
+	fn, header, err := r.FormFile(fileInputName)
 
 	if err != nil && os.IsNotExist(err) {
 		m["success"] = false
