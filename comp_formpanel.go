@@ -41,9 +41,12 @@ type element struct {
 	ImageEntity  string `xml:"imageEntity,attr"`
 	ImagePath    string `xml:"imagePath,attr"`
 	Resolutions  string `xml:"resolutions,attr"`
+	RefTable     string `xml:"refTable,attr"`
+	SelfId       string `xml:"selfId,attr"`
+	RefId        string `xml:"refId,attr"`
 }
 
-func (formpanel formPanel) generateFormPanel(entity Entity, terminal, packageName string, r *http.Request) []byte {
+func (formpanel formPanel) generate(entity Entity, terminal, packageName string, r *http.Request) []byte {
 
 	var t *template.Template
 

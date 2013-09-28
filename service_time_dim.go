@@ -13,6 +13,10 @@
 // 1.0 2013-08-19 17:29 black 创建文档
 package lessgo
 
+import (
+	"github.com/hjqhezgh/commonlib"
+)
+
 type Week struct {
 	WeekKey     string `json:"weekKey"`
 	CurrentWeek string `json:"currentWeek"`
@@ -104,8 +108,8 @@ func FindWeek(year, month string) ([]*Week, error) {
 	return weeks, nil
 }
 
-//根据时间key值获取时间区间
-func FindRangeTimeDim(yearKey,monthKey,weekKey string) (startTime,endTime string){
+//根据时间key值获取时间区间，false表示没有找到相应的时间区间
+func FindRangeTimeDim(yearKey, monthKey, weekKey string) (startTime, endTime string, flag bool) {
 
 	db := GetMySQL()
 
@@ -115,32 +119,38 @@ func FindRangeTimeDim(yearKey,monthKey,weekKey string) (startTime,endTime string
 
 	param := ""
 
-	if weekKey != ""{
+	if weekKey != "" {
 		sql = "select min(day_date),max(day_date) from time_dim where week_key=?"
 		param = weekKey
-	}else if monthKey != ""{
+	} else if monthKey != "" {
 		sql = "select min(day_date),max(day_date) from time_dim where month_key=?"
 		param = monthKey
-	}else{
+	} else {
 		sql = "select min(day_date),max(day_date) from time_dim where current_year=?"
 		param = yearKey
 	}
+
+	Log.Debug(sql)
 
 	rows, err := db.Query(sql, param)
 
 	if err != nil {
 		Log.Error(err.Error())
-		return "", ""
+		return "", "", false
 	}
 
 	if rows.Next() {
-		err := rows.Scan(&startTime, &endTime)
+		err := commonlib.PutRecord(rows, &startTime, &endTime)
 		if err != nil {
 			Log.Warn(err.Error())
-			return "", ""
+			return "", "", false
 		}
-		return startTime,endTime
+
+		if startTime != "" && endTime != "" {
+			return startTime, endTime, true
+		}
+
 	}
 
-	return "", ""
+	return "", "", false
 }

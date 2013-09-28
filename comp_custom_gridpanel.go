@@ -1,4 +1,4 @@
-// Title：表格，及其下属控件
+// Title：自定义表格
 //
 // Description:
 //
@@ -31,7 +31,7 @@ type customGridPanel struct {
 	Searchs  []search `xml:"search"`
 }
 
-func (gridpanel customGridPanel) generateCustomGridPanel(terminal, packageName string) []byte {
+func (gridpanel customGridPanel) generate(terminal, packageName string) []byte {
 
 	var t *template.Template
 

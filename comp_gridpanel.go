@@ -69,7 +69,7 @@ type search struct {
 	Value string
 }
 
-func (gridpanel gridPanel) generateGridPanel(entity Entity, terminal, packageName string) []byte {
+func (gridpanel gridPanel) generate(entity Entity, terminal, packageName string) []byte {
 
 	var t *template.Template
 

@@ -27,6 +27,7 @@ type viewport struct {
 	FormPanels       []formPanel       `xml:"formpanel"`
 	MutiFormPanels   []mutiFormPanel   `xml:"mutiformpanel"`
 	CustomGridPanels []customGridPanel `xml:"customgridpanel"`
+	CustomFormPanels []customFormPanel `xml:"customformpanel"`
 	Crumbs           crumbs            `xml:"crumbs"`
 }
 
@@ -47,19 +48,23 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 	content := ""
 
 	for _, gridpanel := range viewport.GridPanels {
-		content += string(gridpanel.generateGridPanel(getEntity(gridpanel.Entity), terminal, packageName))
+		content += string(gridpanel.generate(getEntity(gridpanel.Entity), terminal, packageName))
 	}
 
 	for _, formpanel := range viewport.FormPanels {
-		content += string(formpanel.generateFormPanel(getEntity(formpanel.Entity), terminal, packageName, r))
+		content += string(formpanel.generate(getEntity(formpanel.Entity), terminal, packageName, r))
 	}
 
 	for _, mutiformpanel := range viewport.MutiFormPanels {
-		content += string(mutiformpanel.generateMutiFormPanel(terminal, packageName, r))
+		content += string(mutiformpanel.generate(terminal, packageName, r))
 	}
 
 	for _, customgridpanel := range viewport.CustomGridPanels {
-		content += string(customgridpanel.generateCustomGridPanel(terminal, packageName))
+		content += string(customgridpanel.generate(terminal, packageName))
+	}
+
+	for _, customformpanel := range viewport.CustomFormPanels {
+		content += string(customformpanel.generate(terminal, packageName))
 	}
 
 	var t *template.Template
