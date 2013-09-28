@@ -19,13 +19,13 @@ import (
 )
 
 type customFormPanel struct {
-	Load     string    `xml:"load,attr"`
-	LoadUrl  string    `xml:"loadUrl,attr"`
-	SaveUrl  string    `xml:"saveUrl,attr"`
-	Id       string    `xml:"id,attr"`
-	Elements []element `xml:"element"`
-	BeforeSave string `xml:"beforeSave"`
-	AfterRender string `xml:"afterRender"`
+	Load        string    `xml:"load,attr"`
+	LoadUrl     string    `xml:"loadUrl,attr"`
+	SaveUrl     string    `xml:"saveUrl,attr"`
+	Id          string    `xml:"id,attr"`
+	Elements    []element `xml:"element"`
+	BeforeSave  string    `xml:"beforeSave"`
+	AfterRender string    `xml:"afterRender"`
 }
 
 func (formpanel customFormPanel) generate(terminal, packageName string) []byte {
