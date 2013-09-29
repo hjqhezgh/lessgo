@@ -19,13 +19,13 @@ import (
 )
 
 //检查文件是否存在
-func isExists(filePath string) bool{
+func isExists(filePath string) bool {
 	fi, _ := os.Stat(filePath)
 	return fi != nil
 }
 
 //下载
-func downLoad(url, libName string) error{
+func downLoad(url, libName string) error {
 	cmd := exec.Command("/usr/local/bin/wget", "-c", url, "-O", libName)
 	Log.Debug(cmd)
 	_, err := cmd.Output()
@@ -36,8 +36,8 @@ func downLoad(url, libName string) error{
 }
 
 //解压
-func decompressionZip(libName string) error{
-	cmd := exec.Command("unzip","-o", libName,"-d","../")
+func decompressionZip(libName string) error {
+	cmd := exec.Command("unzip", "-o", libName, "-d", "../")
 	Log.Debug(cmd)
 	_, err := cmd.Output()
 	if err != nil {
@@ -46,11 +46,11 @@ func decompressionZip(libName string) error{
 	return nil
 }
 
-func checkLib() error{
+func checkLib() error {
 	//下载到本地后的包名
 	libName := "../lessgo.zip"
 	//下载url
-	url,_ := Config.GetValue("lessgo", "staticZipUrl")
+	url, _ := Config.GetValue("lessgo", "staticZipUrl")
 
 	//不存在
 	if !isExists(libName) {
@@ -58,18 +58,18 @@ func checkLib() error{
 		//下载
 		err := downLoad(url, libName)
 
-		if err!= nil{
+		if err != nil {
 			return err
-		}else{
+		} else {
 			err = decompressionZip(libName)
 
-			if err!= nil{
+			if err != nil {
 				return err
 			}
 		}
 
 		return nil
-	}else{
+	} else {
 		Log.Debug("资源包文件存在，无需下载")
 	}
 

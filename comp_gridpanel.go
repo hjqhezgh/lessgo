@@ -52,8 +52,9 @@ type column struct {
 
 type action struct {
 	Desc   string `xml:"desc,attr"`
-	Action string `xml:"action,attr"`
 	Url    string `xml:"url,attr"`
+	ActionParams  string `xml:"actionParams,attr"`
+	LinkType       string `xml:"linkType,attr"`
 }
 
 type search struct {
@@ -100,6 +101,7 @@ func (gridpanel gridPanel) generate(entity Entity, terminal, packageName string)
 	data["Entity"] = entity
 	data["Terminal"] = terminal
 	data["SearchLength"] = len(gridpanel.Searchs)
+	data["ActionLength"] = len(gridpanel.Actions)
 
 	err = t.Execute(&buf, data)
 

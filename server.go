@@ -210,7 +210,7 @@ func findAllData(entity Entity) ([]*Model, error) {
 	db := GetMySQL()
 	defer db.Close()
 
-	dataSql += " order by " + entity.Id +"."+ entity.Pk + " desc "
+	dataSql += " order by " + entity.Id + "." + entity.Pk + " desc "
 
 	Log.Debug(dataSql)
 
@@ -274,7 +274,7 @@ func insert(entity Entity, model *Model, elements []element) (id int, err error)
 	params := []interface{}{}
 
 	for _, element := range elements {
-		if element.Type != "image"{
+		if element.Type != "image" {
 			sql += element.Field + ","
 
 			valueSql += "?,"
@@ -283,8 +283,8 @@ func insert(entity Entity, model *Model, elements []element) (id int, err error)
 		}
 	}
 
-	valueSql = commonlib.Substr(valueSql,0,len(valueSql)-1)
-	sql = commonlib.Substr(sql,0,len(sql)-1)
+	valueSql = commonlib.Substr(valueSql, 0, len(valueSql)-1)
+	sql = commonlib.Substr(sql, 0, len(sql)-1)
 
 	sql += ")"
 	valueSql += ")"

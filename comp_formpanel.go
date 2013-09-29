@@ -15,7 +15,6 @@ package lessgo
 
 import (
 	"bytes"
-	"github.com/gorilla/mux"
 	"net/http"
 	"text/template"
 )
@@ -85,8 +84,7 @@ func (formpanel formPanel) generate(entity Entity, terminal, packageName string,
 	data["Terminal"] = terminal
 
 	if formpanel.Load == "true" {
-		vars := mux.Vars(r)
-		id := vars["id"]
+		id := r.FormValue("id")
 		model, err := findById(entity, id)
 
 		if err != nil {

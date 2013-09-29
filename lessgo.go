@@ -109,12 +109,12 @@ func ConfigLessgo() *mux.Router {
 			r.HandleFunc("/"+terminal+"/"+entity.Id, commonAction)
 			r.HandleFunc("/"+terminal+"/"+entity.Id+"/{id:[0-9]+}", commonAction)
 			r.HandleFunc("/"+terminal+"/"+entity.Id+"/add", commonAction)
-			r.HandleFunc("/"+terminal+"/"+entity.Id+"/modify"+"/{id:[0-9]+}", commonAction)
+			r.HandleFunc("/"+terminal+"/"+entity.Id+"/modify", commonAction)
 			r.HandleFunc("/"+terminal+"/"+entity.Id+"/save", commonAction)
 			r.HandleFunc("/"+terminal+"/"+entity.Id+"/page", commonAction)
 			r.HandleFunc("/"+terminal+"/"+entity.Id+"/alldata", commonAction)
 			r.HandleFunc("/"+terminal+"/"+entity.Id+"/load"+"/{id:[0-9]+}", commonAction)
-			r.HandleFunc("/"+terminal+"/"+entity.Id+"/delete"+"/{id:[0-9]+}", commonAction)
+			r.HandleFunc("/"+terminal+"/"+entity.Id+"/delete", commonAction)
 		}
 
 	}

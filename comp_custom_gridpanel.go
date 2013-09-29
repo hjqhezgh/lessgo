@@ -61,6 +61,7 @@ func (gridpanel customGridPanel) generate(terminal, packageName string) []byte {
 	data["CustomGridPanel"] = gridpanel
 	data["Terminal"] = terminal
 	data["SearchLength"] = len(gridpanel.Searchs)
+	data["ActionLength"] = len(gridpanel.Actions)
 
 	err = t.Execute(&buf, data)
 

@@ -14,6 +14,7 @@
 package lessgo
 
 import (
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/hjqhezgh/commonlib"
 	"io"
@@ -23,7 +24,6 @@ import (
 	"strconv"
 	"strings"
 	"text/template"
-	"fmt"
 )
 
 //跳转至错误页面
@@ -344,7 +344,7 @@ func dealEntitySave(_entity Entity, w http.ResponseWriter, r *http.Request) {
 		_prop := new(Prop)
 
 		if formElement.Type == "image" { //图片类型需要做多表处理
-			imgElements = append(imgElements,formElement)
+			imgElements = append(imgElements, formElement)
 		} else {
 			_prop.Name = formElement.Field
 			_prop.Value = r.FormValue(formElement.Field)
@@ -383,7 +383,7 @@ func dealEntitySave(_entity Entity, w http.ResponseWriter, r *http.Request) {
 	} else {
 		id, err := insert(_entity, _model, formpanel.Elements)
 
-		for _,imgElment := range imgElements{
+		for _, imgElment := range imgElements {
 
 			filePath := r.FormValue(imgElment.Field)
 			tmpFileName := ""
@@ -532,8 +532,7 @@ func dealEntityDelete(entity Entity, w http.ResponseWriter, r *http.Request) {
 
 	Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的删除页")
 
-	vars := mux.Vars(r)
-	id := vars["id"]
+	id := r.FormValue("id")
 
 	err := deleteEntity(entity, id)
 
