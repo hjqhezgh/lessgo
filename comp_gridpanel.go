@@ -51,10 +51,10 @@ type column struct {
 }
 
 type action struct {
-	Desc   string `xml:"desc,attr"`
-	Url    string `xml:"url,attr"`
-	ActionParams  string `xml:"actionParams,attr"`
-	LinkType       string `xml:"linkType,attr"`
+	Desc         string `xml:"desc,attr"`
+	Url          string `xml:"url,attr"`
+	ActionParams string `xml:"actionParams,attr"`
+	LinkType     string `xml:"linkType,attr"`
 }
 
 type search struct {
