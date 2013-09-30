@@ -39,15 +39,10 @@ type gridPanel struct {
 //loadParamName 选填，不填就不带参数
 //loadParamValue 如果loadParamName有值，则此配置必填，可取值为id 或者 this
 type column struct {
-	Field          string `xml:"field,attr"`
-	Desc           string `xml:"desc,attr"`
-	LinkType       string `xml:"linkType,attr"`
-	Url            string `xml:"url,attr"`
-	IconUrl        string `xml:"iconUrl,attr"`
-	LoadParamName  string `xml:"loadParamName,attr"`
-	LoadParamValue string `xml:"loadParamValue,attr"`
-	Format         string `xml:"format,attr"`
-	Hidden         string `xml:"hidden,attr"`
+	Field     string `xml:"field,attr"`
+	Desc      string `xml:"desc,attr"`
+	Hidden    string `xml:"hidden,attr"`
+	Formatter string `xml:"formatter"`
 }
 
 type action struct {
