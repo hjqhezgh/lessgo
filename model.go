@@ -79,3 +79,8 @@ type url struct {
 	Path string `xml:"path,attr"`
 	View string `xml:"view,attr"`
 }
+
+type LoadFormObject struct {
+	Field string `json:"field"`
+	Value string `json:"value"`
+}
