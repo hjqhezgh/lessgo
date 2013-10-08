@@ -22,7 +22,7 @@ const (
 	KEY_USER_NAME     = "KEY_USER_NAME"     //用户名
 	KEY_REALLY_NAME   = "KEY_REALLY_NAME"   //真实姓名
 	KEY_DEPARTMENT_ID = "KEY_DEPARTMENT_ID" //部门ID
-	KEY_ROLE_ID 	  = "KEY_ROLE_ID" 		//角色ID
+	KEY_ROLE_ID       = "KEY_ROLE_ID"       //角色ID
 )
 
 type Menu struct {
@@ -39,7 +39,7 @@ type Employee struct {
 	UserName     string `json:"userName"`
 	ReallyName   string `json:"reallyName"`
 	DepartmentId string `json:"departmentId"`
-	RoleId	   	 string	`json:"roleId"`
+	RoleId       string `json:"roleId"`
 }
 
 func GetMenus(username string) []Menu {
@@ -139,7 +139,7 @@ func GetCurrentEmployee(r *http.Request) Employee {
 		UserName:     user_name,
 		ReallyName:   really_name,
 		DepartmentId: department_id,
-		RoleId:		  role_id,
+		RoleId:       role_id,
 	}
 }
 
