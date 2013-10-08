@@ -47,16 +47,16 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 
 	content := ""
 
-	for _, gridpanel := range viewport.GridPanels {
-		content += string(gridpanel.generate(getEntity(gridpanel.Entity), terminal, packageName))
-	}
-
 	for _, formpanel := range viewport.FormPanels {
 		content += string(formpanel.generate(getEntity(formpanel.Entity), terminal, packageName, r))
 	}
 
 	for _, mutiformpanel := range viewport.MutiFormPanels {
 		content += string(mutiformpanel.generate(terminal, packageName, r))
+	}
+
+	for _, gridpanel := range viewport.GridPanels {
+		content += string(gridpanel.generate(getEntity(gridpanel.Entity), terminal, packageName))
 	}
 
 	for _, customgridpanel := range viewport.CustomGridPanels {
