@@ -19,16 +19,17 @@ import (
 )
 
 type gridPanel struct {
-	Entity   string   `xml:"entity,attr"`
-	PageSize int      `xml:"pageSize,attr"`
-	LoadUrl  string   `xml:"loadUrl,attr"`
-	Id       string   `xml:"id,attr"`
-	Title    string   `xml:"title,attr"`
-	Width    string   `xml:"width,attr"`
-	Height   string   `xml:"height,attr"`
-	Columns  []column `xml:"column"`
-	Actions  []action `xml:"action"`
-	Searchs  []search `xml:"search"`
+	Entity      string       `xml:"entity,attr"`
+	PageSize    int          `xml:"pageSize,attr"`
+	LoadUrl     string       `xml:"loadUrl,attr"`
+	Id          string       `xml:"id,attr"`
+	Title       string       `xml:"title,attr"`
+	Width       string       `xml:"width,attr"`
+	Height      string       `xml:"height,attr"`
+	Columns     []column     `xml:"column"`
+	Actions     []action     `xml:"action"`
+	Searchs     []search     `xml:"search"`
+	Toolactions []toolaction `xml:"toolaction"`
 }
 
 //link目前可以支持，直接跳转，打开浏览器新窗口跳转，iframe弹窗，询问提示窗
@@ -50,6 +51,12 @@ type action struct {
 	Url          string `xml:"url,attr"`
 	ActionParams string `xml:"actionParams,attr"`
 	LinkType     string `xml:"linkType,attr"`
+}
+
+type toolaction struct {
+	Desc     string `xml:"desc,attr"`
+	Url      string `xml:"url,attr"`
+	LinkType string `xml:"linkType,attr"`
 }
 
 type search struct {
