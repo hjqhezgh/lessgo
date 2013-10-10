@@ -54,9 +54,10 @@ type action struct {
 }
 
 type toolaction struct {
-	Desc     string `xml:"desc,attr"`
-	Url      string `xml:"url,attr"`
-	LinkType string `xml:"linkType,attr"`
+	Desc       string `xml:"desc,attr"`
+	Url        string `xml:"url,attr"`
+	LinkType   string `xml:"linkType,attr"`
+	ColorClass string `xml:"colorClass,attr"`
 }
 
 type search struct {
