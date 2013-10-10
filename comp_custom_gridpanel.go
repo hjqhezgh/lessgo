@@ -19,16 +19,17 @@ import (
 )
 
 type customGridPanel struct {
-	Url      string   `xml:"url,attr"`
-	PageSize int      `xml:"pageSize,attr"`
-	LoadUrl  string   `xml:"loadUrl,attr"`
-	Id       string   `xml:"id,attr"`
-	Title    string   `xml:"title,attr"`
-	Width    string   `xml:"width,attr"`
-	Height   string   `xml:"height,attr"`
-	Columns  []column `xml:"column"`
-	Actions  []action `xml:"action"`
-	Searchs  []search `xml:"search"`
+	Url         string       `xml:"url,attr"`
+	PageSize    int          `xml:"pageSize,attr"`
+	LoadUrl     string       `xml:"loadUrl,attr"`
+	Id          string       `xml:"id,attr"`
+	Title       string       `xml:"title,attr"`
+	Width       string       `xml:"width,attr"`
+	Height      string       `xml:"height,attr"`
+	Columns     []column     `xml:"column"`
+	Actions     []action     `xml:"action"`
+	Searchs     []search     `xml:"search"`
+	ToolActions []toolaction `xml:"toolaction"`
 }
 
 func (gridpanel customGridPanel) generate(terminal, packageName string) []byte {
