@@ -29,7 +29,7 @@ type gridPanel struct {
 	Columns     []column     `xml:"column"`
 	Actions     []action     `xml:"action"`
 	Searchs     []search     `xml:"search"`
-	Toolactions []toolaction `xml:"toolaction"`
+	ToolActions []toolaction `xml:"toolaction"`
 }
 
 //link目前可以支持，直接跳转，打开浏览器新窗口跳转，iframe弹窗，询问提示窗
