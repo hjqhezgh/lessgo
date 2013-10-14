@@ -28,6 +28,7 @@ type viewport struct {
 	MutiFormPanels   []mutiFormPanel   `xml:"mutiformpanel"`
 	CustomGridPanels []customGridPanel `xml:"customgridpanel"`
 	CustomFormPanels []customFormPanel `xml:"customformpanel"`
+	BlankPanels      []blankPanel      `xml:"blankpanel"`
 	Crumbs           crumbs            `xml:"crumbs"`
 }
 
@@ -65,6 +66,10 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 
 	for _, customformpanel := range viewport.CustomFormPanels {
 		content += string(customformpanel.generate(terminal, packageName))
+	}
+
+	for _, blankpanel := range viewport.BlankPanels {
+		content += string(blankpanel.generate(terminal, packageName))
 	}
 
 	var t *template.Template

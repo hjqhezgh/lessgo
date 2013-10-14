@@ -56,11 +56,6 @@ func (formpanel customFormPanel) generate(terminal, packageName string) []byte {
 		return []byte{}
 	}
 
-	if err != nil {
-		Log.Error(err.Error())
-		return []byte{}
-	}
-
 	data := make(map[string]interface{})
 
 	data["CustomFormPanel"] = formpanel
