@@ -31,6 +31,7 @@ var (
 	entityList entitys
 	urlList    urls
 	Store      *sessions.CookieStore
+	SiteName   string
 )
 
 func init() {
@@ -48,6 +49,8 @@ func init() {
 
 	cookieSecret, _ := Config.GetValue("lessgo", "cookieSecret")
 	Store = sessions.NewCookieStore([]byte(cookieSecret))
+
+	SiteName,_ = Config.GetValue("lessgo", "siteName")
 }
 
 //解析配置文件内容至内存中

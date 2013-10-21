@@ -33,6 +33,8 @@ func errMessage(w http.ResponseWriter, r *http.Request, errMsg string) {
 
 	m["ErrMsg"] = errMsg
 
+	m["SiteName"] = SiteName
+
 	commonlib.RenderTemplate(w, r, "err_message.html", m, nil, "../lessgo/template/err_message.html")
 }
 
@@ -49,6 +51,7 @@ func loginOutAction(w http.ResponseWriter, r *http.Request) {
 //中心控制器
 func homeAction(w http.ResponseWriter, r *http.Request) {
 	m := make(map[string]interface{})
+	m["SiteName"] = SiteName
 	commonlib.RenderTemplate(w, r, "home.html", m, nil, "../lessgo/template/home.html")
 }
 
@@ -71,6 +74,7 @@ func commonAction(w http.ResponseWriter, r *http.Request) {
 
 			if employee.UserId == "" {
 				Log.Warn("用户未登陆")
+				m["SiteName"] = SiteName
 				commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/component/"+terminal+"/login.html")
 				return
 			}
@@ -108,6 +112,7 @@ func commonAction(w http.ResponseWriter, r *http.Request) {
 			dealEntityLoad(entity, w, r)
 		default:
 			Log.Debug("路径：", r.URL.Path, "访问实体", entity.Id, "的未知页")
+			m["SiteName"] = SiteName
 			commonlib.RenderTemplate(w, r, "home.html", m, nil, "../lessgo/template/home.html")
 		}
 	}
@@ -124,6 +129,7 @@ func independentAction(w http.ResponseWriter, r *http.Request) {
 
 	if employee.UserId == "" {
 		Log.Warn("用户未登陆")
+		m["SiteName"] = SiteName
 		commonlib.RenderTemplate(w, r, "login.html", nil, nil, "../lessgo/template/component/"+terminal+"/login.html")
 		return
 	}
@@ -162,13 +168,17 @@ func independentAction(w http.ResponseWriter, r *http.Request) {
 //中心控制器
 func loginAction(w http.ResponseWriter, r *http.Request) {
 
+	m := make(map[string]interface {})
+
+	m["SiteName"] = SiteName
+
 	strs := strings.Split(r.URL.Path, "/")
 
 	terminal := strs[1]
 
 	Log.Debug("访问登陆页")
 
-	commonlib.RenderTemplate(w, r, "login.html", nil, nil, "../lessgo/template/component/"+terminal+"/login.html")
+	commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/component/"+terminal+"/login.html")
 }
 
 //分析URL得出当前url访问的实体模块，以及进行的操作，如果有错误，就去读取msg
@@ -229,6 +239,7 @@ func dealEntityIndex(entity Entity, terminal string, m map[string]interface{}, w
 
 	if employee.UserId == "" {
 		Log.Warn("用户未登陆")
+		m["SiteName"] = SiteName
 		commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/component/"+terminal+"/login.html")
 		return
 	}
@@ -255,6 +266,7 @@ func dealEntityAdd(entity Entity, terminal string, m map[string]interface{}, w h
 
 	if employee.UserId == "" {
 		Log.Warn("用户未登陆")
+		m["SiteName"] = SiteName
 		commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/component/"+terminal+"/login.html")
 		return
 	}
@@ -281,6 +293,7 @@ func dealEntityModify(entity Entity, terminal string, m map[string]interface{}, 
 
 	if employee.UserId == "" {
 		Log.Warn("用户未登陆")
+		m["SiteName"] = SiteName
 		commonlib.RenderTemplate(w, r, "login.html", m, nil, "../lessgo/template/component/"+terminal+"/login.html")
 		return
 	}

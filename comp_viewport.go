@@ -93,6 +93,7 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 	data["Content"] = content
 	data["Crumbs"] = viewport.Crumbs
 	data["Employee"] = employee
+	data["SiteName"] = SiteName
 
 	err = t.Execute(&buf, data)
 
