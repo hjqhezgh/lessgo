@@ -22,6 +22,13 @@ import (
 	"os"
 	"strings"
 	"time"
+	"strconv"
+
+	"image"
+	"image/jpeg"
+	"image/png"
+	"bytes"
+	"bufio"
 )
 
 func imageUpload(w http.ResponseWriter, r *http.Request) {
@@ -36,46 +43,203 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fileInputName := r.FormValue("fileInputName")
+	resolutionString := r.FormValue("resolution")
+	maxWidthString := r.FormValue("maxWidth")
+	maxHeightString := r.FormValue("maxHeight")
+	minWidthString := r.FormValue("minWidth")
+	minHeightString := r.FormValue("minHeight")
+//	maxSizeString := r.FormValue("maxSize")
+	widths := r.FormValue("widths")
 
 	fn, header, err := r.FormFile(fileInputName)
 
 	if err != nil && os.IsNotExist(err) {
 		m["success"] = false
 		m["code"] = 100
+		m["msg"] = err.Error()
 		Log.Error("获取上传图片发生错误，信息如下：", err.Error())
 		commonlib.OutputJson(w, m, " ")
 		return
+	}
+
+	suffix := commonlib.Substr(header.Filename,strings.LastIndex(header.Filename,".")+1,len(header.Filename))
+
+	var i image.Image
+
+	if suffix=="jpeg" ||  suffix=="jpg" {
+		i, err = jpeg.Decode(fn)
+	}else{
+		i, _, err = image.Decode(fn)
+	}
+
+	if err != nil && os.IsNotExist(err) {
+		m["success"] = false
+		m["code"] = 100
+		m["msg"] = err.Error()
+		Log.Error("获取上传图片发生错误，信息如下：", err.Error())
+		commonlib.OutputJson(w, m, " ")
+		return
+	}
+
+	b := i.Bounds()
+
+	if maxWidthString!=""{
+		maxWidth,_ := strconv.Atoi(maxWidthString)
+		if b.Dx()>maxWidth{
+			m["success"] = false
+			m["code"] = 100
+			m["msg"] = "图片最大宽度不能超过" + maxWidthString
+			commonlib.OutputJson(w, m, " ")
+			return
+		}
+	}
+
+	if maxHeightString!=""{
+		maxHeight,_ := strconv.Atoi(maxHeightString)
+		if b.Dy()>maxHeight{
+			m["success"] = false
+			m["code"] = 100
+			m["msg"] = "图片最大高度不能超过" + maxHeightString
+			commonlib.OutputJson(w, m, " ")
+			return
+		}
+	}
+
+	if minWidthString!=""{
+		minWidth,_ := strconv.Atoi(minWidthString)
+		if b.Dx()<minWidth{
+			m["success"] = false
+			m["code"] = 100
+			m["msg"] = "图片最小宽度不能小于" + minWidthString
+			commonlib.OutputJson(w, m, " ")
+			return
+		}
+	}
+
+	if minHeightString!=""{
+		minHeight,_ := strconv.Atoi(minHeightString)
+		if b.Dy()<minHeight{
+			m["success"] = false
+			m["code"] = 100
+			m["msg"] = "图片最小高度不能小于" + minHeightString
+			commonlib.OutputJson(w, m, " ")
+			return
+		}
+	}
+
+	if resolutionString!=""{
+		resolution ,_ := strconv.ParseFloat(resolutionString,64)
+		if resolution != float64(b.Dx()) / float64(b.Dy()){
+			m["success"] = false
+			m["code"] = 100
+			m["msg"] = "图片宽高比应为" + resolutionString
+			commonlib.OutputJson(w, m, " ")
+			return
+		}
 	}
 
 	newFileName := findRandomFileName(header.Filename)
 
-	f, err := os.Create("../tmp/" + newFileName)
+	if widths!= "" {
+		widthsArray := strings.Split(widths,",")
 
-	if err != nil {
-		m["success"] = false
-		m["code"] = 100
-		Log.Error("获取上传图片发生错误，信息如下：", err.Error())
+		tmpFileName := ""
+		tmpFileNames := ""
+
+		for index,widthString := range widthsArray{
+			var i1 *image.RGBA
+
+			width,_ := strconv.Atoi(widthString)
+			height := (b.Dy()*width)/b.Dx()
+
+			i1 = commonlib.Resample(i, b, width, height)
+			i128 := commonlib.ResizeRGBA(i1, i1.Bounds(), width, height)
+
+			var buf bytes.Buffer
+			if err := png.Encode(&buf, i128); err != nil {
+				m["success"] = false
+				m["code"] = 100
+				m["msg"] = err.Error()
+				Log.Error("获取上传图片发生错误，信息如下：", err.Error())
+				commonlib.OutputJson(w, m, " ")
+				return
+			}
+
+			fo, err := os.Create(fmt.Sprint("../tmp/",newFileName,"_",width,".",suffix))
+			if err != nil {
+				m["success"] = false
+				m["code"] = 100
+				m["msg"] = err.Error()
+				Log.Error("获取上传图片发生错误，信息如下：", err.Error())
+				commonlib.OutputJson(w, m, " ")
+				return
+			}
+			defer fo.Close()
+			writer := bufio.NewWriter(fo)
+			buf.WriteTo(writer)
+
+			tmpFileNames += fmt.Sprint("/tmp/",newFileName,"_",width,".",suffix)
+
+			if index<len(widthsArray)-1{
+				tmpFileNames += ","
+			}
+
+			if index==0 {
+				tmpFileName = fmt.Sprint(newFileName,"_",width,".",suffix)
+			}
+		}
+
+		m["success"] = true
+		m["code"] = 200
+		m["tmpfile"] = "/tmp/" + tmpFileName
+		m["tmpfiles"] = tmpFileNames
+
+		commonlib.OutputJson(w, m, " ")
+		return
+
+	}else{
+		var i1 *image.RGBA
+
+		i1 = commonlib.Resample(i, b, b.Dx(), b.Dy())
+		i128 := commonlib.ResizeRGBA(i1, i1.Bounds(), b.Dx(), b.Dy())
+
+		var buf bytes.Buffer
+		if err := png.Encode(&buf, i128); err != nil {
+			m["success"] = false
+			m["code"] = 100
+			m["msg"] = err.Error()
+			Log.Error("获取上传图片发生错误，信息如下：", err.Error())
+			commonlib.OutputJson(w, m, " ")
+			return
+		}
+
+		fo, err := os.Create("../tmp/"+ newFileName + "."+suffix)
+		if err != nil {
+			m["success"] = false
+			m["code"] = 100
+			m["msg"] = err.Error()
+			Log.Error("获取上传图片发生错误，信息如下：", err.Error())
+			commonlib.OutputJson(w, m, " ")
+			return
+		}
+
+		defer fo.Close()
+		writer := bufio.NewWriter(fo)
+		buf.WriteTo(writer)
+
+		m["success"] = true
+		m["code"] = 200
+		m["tmpfile"] = "/tmp/" + newFileName + "."+suffix
+
 		commonlib.OutputJson(w, m, " ")
 		return
 	}
-
-	defer f.Close()
-
-	io.Copy(f, fn)
-
-	m["success"] = true
-	m["code"] = 200
-	m["tmpfile"] = "/tmp/" + newFileName
-
-	commonlib.OutputJson(w, m, " ")
 }
 
 /*****
  * 获取上传图片的随机不重复文件名
  */
 func findRandomFileName(sourceFileName string) string {
-
-	suffix := commonlib.Substr(sourceFileName, strings.LastIndex(sourceFileName, "."), len(sourceFileName))
 
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 
@@ -85,7 +249,7 @@ func findRandomFileName(sourceFileName string) string {
 		str += fmt.Sprint(r.Intn(10))
 	}
 
-	return fmt.Sprint(time.Now().UnixNano(), str, suffix)
+	return fmt.Sprint(time.Now().UnixNano(), str)
 }
 
 func kindeditorImageUpload(w http.ResponseWriter, r *http.Request) {

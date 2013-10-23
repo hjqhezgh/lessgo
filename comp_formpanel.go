@@ -31,19 +31,32 @@ type element struct {
 	Field        string `xml:"field,attr"`
 	Desc         string `xml:"desc,attr"`
 	Type         string `xml:"type,attr"`
-	LocalData    string `xml:"localData,attr"`
-	Url          string `xml:"url,attr"`
-	ValueField   string `xml:"valueField,attr"`
-	DescField    string `xml:"descField,attr"`
 	Readonly     string `xml:"readonly,attr"`
-	DefaultValue string `xml:"defaultValue,attr"`
 	Validate     string `xml:"validate,attr"`
-	ImageEntity  string `xml:"imageEntity,attr"`
-	ImagePath    string `xml:"imagePath,attr"`
-	Resolutions  string `xml:"resolutions,attr"`
-	RefTable     string `xml:"refTable,attr"`
-	SelfId       string `xml:"selfId,attr"`
-	RefId        string `xml:"refId,attr"`
+	Tip          string `xml:"tip,attr"`
+
+	LocalData    string `xml:"localData,attr"`//for 本地下拉框
+
+	Url          string `xml:"url,attr"`//for 远程下拉框
+	ValueField   string `xml:"valueField,attr"`//for 远程下拉框，多选框控件
+	DescField    string `xml:"descField,attr"`//for 远程下拉框，多选框控件
+
+	DefaultValue string `xml:"defaultValue,attr"`//for 隐藏域
+
+	RefTable     string `xml:"refTable,attr"`    //for 多选框控件
+	SelfId       string `xml:"selfId,attr"`      //for 多选框控件
+	RefId        string `xml:"refId,attr"`       //for 多选框控件
+
+	ImageEntity  string `xml:"imageEntity,attr"` //for Image控件
+	ImagePath    string `xml:"imagePath,attr"`   //for Image控件
+	Widths  	 string `xml:"widths,attr"` 	 //for Image控件
+	MaxWidth     string `xml:"maxWidth,attr"`    //for Image控件
+	MaxHeight    string `xml:"maxHeight,attr"`   //for Image控件
+	MinWidth     string `xml:"minWidth,attr"`    //for Image控件
+	MinHeight    string `xml:"minHeight,attr"`   //for Image控件
+	MaxSize      string `xml:"maxSize,attr"`     //for Image控件
+	Resolution   string `xml:"resolution,attr"`  //for Image控件
+	ImageType    string `xml:"imageType,attr"`   //for Image控件
 }
 
 func (formpanel formPanel) generate(entity Entity, terminal, packageName string, r *http.Request) []byte {
