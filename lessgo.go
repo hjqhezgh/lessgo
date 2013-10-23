@@ -51,8 +51,8 @@ func init() {
 	cookieSecret, _ := Config.GetValue("lessgo", "cookieSecret")
 	Store = sessions.NewCookieStore([]byte(cookieSecret))
 
-	SiteName,_ = Config.GetValue("lessgo", "siteName")
-	SiteIcon,_ = Config.GetValue("lessgo", "siteIcon")
+	SiteName, _ = Config.GetValue("lessgo", "siteName")
+	SiteIcon, _ = Config.GetValue("lessgo", "siteIcon")
 }
 
 //解析配置文件内容至内存中

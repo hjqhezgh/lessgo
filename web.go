@@ -132,7 +132,7 @@ func independentAction(w http.ResponseWriter, r *http.Request) {
 
 	if employee.UserId == "" {
 		Log.Warn("用户未登陆")
-		m := make(map[string]interface {})
+		m := make(map[string]interface{})
 		m["SiteName"] = SiteName
 		m["SiteIcon"] = SiteIcon
 		commonlib.RenderTemplate(w, r, "login.html", nil, nil, "../lessgo/template/component/"+terminal+"/login.html")
@@ -173,7 +173,7 @@ func independentAction(w http.ResponseWriter, r *http.Request) {
 //中心控制器
 func loginAction(w http.ResponseWriter, r *http.Request) {
 
-	m := make(map[string]interface {})
+	m := make(map[string]interface{})
 
 	m["SiteName"] = SiteName
 	m["SiteIcon"] = SiteIcon

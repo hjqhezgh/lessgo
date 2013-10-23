@@ -20,15 +20,15 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
-	"strconv"
 
+	"bufio"
+	"bytes"
 	"image"
 	"image/jpeg"
 	"image/png"
-	"bytes"
-	"bufio"
 )
 
 func imageUpload(w http.ResponseWriter, r *http.Request) {
@@ -48,7 +48,7 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 	maxHeightString := r.FormValue("maxHeight")
 	minWidthString := r.FormValue("minWidth")
 	minHeightString := r.FormValue("minHeight")
-//	maxSizeString := r.FormValue("maxSize")
+	//	maxSizeString := r.FormValue("maxSize")
 	widths := r.FormValue("widths")
 
 	fn, header, err := r.FormFile(fileInputName)
@@ -62,13 +62,13 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	suffix := commonlib.Substr(header.Filename,strings.LastIndex(header.Filename,".")+1,len(header.Filename))
+	suffix := commonlib.Substr(header.Filename, strings.LastIndex(header.Filename, ".")+1, len(header.Filename))
 
 	var i image.Image
 
-	if suffix=="jpeg" ||  suffix=="jpg" {
+	if suffix == "jpeg" || suffix == "jpg" {
 		i, err = jpeg.Decode(fn)
-	}else{
+	} else {
 		i, _, err = image.Decode(fn)
 	}
 
@@ -83,9 +83,9 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 
 	b := i.Bounds()
 
-	if maxWidthString!=""{
-		maxWidth,_ := strconv.Atoi(maxWidthString)
-		if b.Dx()>maxWidth{
+	if maxWidthString != "" {
+		maxWidth, _ := strconv.Atoi(maxWidthString)
+		if b.Dx() > maxWidth {
 			m["success"] = false
 			m["code"] = 100
 			m["msg"] = "图片最大宽度不能超过" + maxWidthString
@@ -94,9 +94,9 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if maxHeightString!=""{
-		maxHeight,_ := strconv.Atoi(maxHeightString)
-		if b.Dy()>maxHeight{
+	if maxHeightString != "" {
+		maxHeight, _ := strconv.Atoi(maxHeightString)
+		if b.Dy() > maxHeight {
 			m["success"] = false
 			m["code"] = 100
 			m["msg"] = "图片最大高度不能超过" + maxHeightString
@@ -105,9 +105,9 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if minWidthString!=""{
-		minWidth,_ := strconv.Atoi(minWidthString)
-		if b.Dx()<minWidth{
+	if minWidthString != "" {
+		minWidth, _ := strconv.Atoi(minWidthString)
+		if b.Dx() < minWidth {
 			m["success"] = false
 			m["code"] = 100
 			m["msg"] = "图片最小宽度不能小于" + minWidthString
@@ -116,9 +116,9 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if minHeightString!=""{
-		minHeight,_ := strconv.Atoi(minHeightString)
-		if b.Dy()<minHeight{
+	if minHeightString != "" {
+		minHeight, _ := strconv.Atoi(minHeightString)
+		if b.Dy() < minHeight {
 			m["success"] = false
 			m["code"] = 100
 			m["msg"] = "图片最小高度不能小于" + minHeightString
@@ -127,9 +127,9 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if resolutionString!=""{
-		resolution ,_ := strconv.ParseFloat(resolutionString,64)
-		if resolution != float64(b.Dx()) / float64(b.Dy()){
+	if resolutionString != "" {
+		resolution, _ := strconv.ParseFloat(resolutionString, 64)
+		if resolution != float64(b.Dx())/float64(b.Dy()) {
 			m["success"] = false
 			m["code"] = 100
 			m["msg"] = "图片宽高比应为" + resolutionString
@@ -140,17 +140,17 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 
 	newFileName := findRandomFileName(header.Filename)
 
-	if widths!= "" {
-		widthsArray := strings.Split(widths,",")
+	if widths != "" {
+		widthsArray := strings.Split(widths, ",")
 
 		tmpFileName := ""
 		tmpFileNames := ""
 
-		for index,widthString := range widthsArray{
+		for index, widthString := range widthsArray {
 			var i1 *image.RGBA
 
-			width,_ := strconv.Atoi(widthString)
-			height := (b.Dy()*width)/b.Dx()
+			width, _ := strconv.Atoi(widthString)
+			height := (b.Dy() * width) / b.Dx()
 
 			i1 = commonlib.Resample(i, b, width, height)
 			i128 := commonlib.ResizeRGBA(i1, i1.Bounds(), width, height)
@@ -165,7 +165,7 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			fo, err := os.Create(fmt.Sprint("../tmp/",newFileName,"_",width,".",suffix))
+			fo, err := os.Create(fmt.Sprint("../tmp/", newFileName, "_", width, ".", suffix))
 			if err != nil {
 				m["success"] = false
 				m["code"] = 100
@@ -178,14 +178,14 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 			writer := bufio.NewWriter(fo)
 			buf.WriteTo(writer)
 
-			tmpFileNames += fmt.Sprint("/tmp/",newFileName,"_",width,".",suffix)
+			tmpFileNames += fmt.Sprint("/tmp/", newFileName, "_", width, ".", suffix)
 
-			if index<len(widthsArray)-1{
+			if index < len(widthsArray)-1 {
 				tmpFileNames += ","
 			}
 
-			if index==0 {
-				tmpFileName = fmt.Sprint(newFileName,"_",width,".",suffix)
+			if index == 0 {
+				tmpFileName = fmt.Sprint(newFileName, "_", width, ".", suffix)
 			}
 		}
 
@@ -197,7 +197,7 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		commonlib.OutputJson(w, m, " ")
 		return
 
-	}else{
+	} else {
 		var i1 *image.RGBA
 
 		i1 = commonlib.Resample(i, b, b.Dx(), b.Dy())
@@ -213,7 +213,7 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		fo, err := os.Create("../tmp/"+ newFileName + "."+suffix)
+		fo, err := os.Create("../tmp/" + newFileName + "." + suffix)
 		if err != nil {
 			m["success"] = false
 			m["code"] = 100
@@ -229,7 +229,7 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 
 		m["success"] = true
 		m["code"] = 200
-		m["tmpfile"] = "/tmp/" + newFileName + "."+suffix
+		m["tmpfile"] = "/tmp/" + newFileName + "." + suffix
 
 		commonlib.OutputJson(w, m, " ")
 		return
