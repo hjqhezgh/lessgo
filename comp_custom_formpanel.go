@@ -27,6 +27,8 @@ type customFormPanel struct {
 	Elements    []element `xml:"element"`
 	BeforeSave  string    `xml:"beforeSave"`
 	AfterRender string    `xml:"afterRender"`
+	AfterSave   string    `xml:"afterSave"`
+	Inwindow    string    `xml:"inwindow,attr"`
 }
 
 func (formpanel customFormPanel) generate(terminal, packageName string) []byte {

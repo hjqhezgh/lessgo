@@ -23,6 +23,7 @@ import (
 //当viewport下面可以放置其他元素的时候，就扩展Viewport结构体
 type viewport struct {
 	XMLName          xml.Name          `xml:"viewport"`
+	Window           string            `xml:"window,attr"`
 	GridPanels       []gridPanel       `xml:"gridpanel"`
 	FormPanels       []formPanel       `xml:"formpanel"`
 	MutiFormPanels   []mutiFormPanel   `xml:"mutiformpanel"`
@@ -72,29 +73,38 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 		content += string(blankpanel.generate(terminal, packageName))
 	}
 
-	var t *template.Template
-
-	var buf bytes.Buffer
-
-	t = template.New("viewport.html")
-
-	t = t.Funcs(template.FuncMap{
-		"compareString": CompareString,
-	})
-
-	t, err := t.ParseFiles("../lessgo/template/component/" + terminal + "/viewport.html")
-
-	if err != nil {
-		Log.Error(err.Error())
-		return []byte{}
-	}
-
 	data := make(map[string]interface{})
 	data["Content"] = content
 	data["Crumbs"] = viewport.Crumbs
 	data["Employee"] = employee
 	data["SiteName"] = SiteName
 	data["SiteIcon"] = SiteIcon
+
+	var t *template.Template
+
+	var buf bytes.Buffer
+
+	tempName := ""
+
+	if viewport.Window == "true" {
+		t = template.New("window.html")
+		data["ParentComponentId"] = r.FormValue("parentComponentId")
+		tempName = "../lessgo/template/component/" + terminal + "/window.html"
+	} else {
+		t = template.New("viewport.html")
+		tempName = "../lessgo/template/component/" + terminal + "/viewport.html"
+	}
+
+	t = t.Funcs(template.FuncMap{
+		"compareString": CompareString,
+	})
+
+	t, err := t.ParseFiles(tempName)
+
+	if err != nil {
+		Log.Error(err.Error())
+		return []byte{}
+	}
 
 	err = t.Execute(&buf, data)
 

@@ -51,6 +51,9 @@ type action struct {
 	Url          string `xml:"url,attr"`
 	ActionParams string `xml:"actionParams,attr"`
 	LinkType     string `xml:"linkType,attr"`
+	Width        string `xml:"width,attr"`
+	Height       string `xml:"height,attr"`
+	Title        string `xml:"title,attr"`
 }
 
 type toolaction struct {
@@ -58,6 +61,9 @@ type toolaction struct {
 	Url        string `xml:"url,attr"`
 	LinkType   string `xml:"linkType,attr"`
 	ColorClass string `xml:"colorClass,attr"`
+	Width      string `xml:"width,attr"`
+	Height     string `xml:"height,attr"`
+	Title      string `xml:"title,attr"`
 }
 
 type search struct {

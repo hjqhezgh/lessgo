@@ -20,11 +20,15 @@ import (
 )
 
 type formPanel struct {
-	Entity   string    `xml:"entity,attr"`
-	Load     string    `xml:"load,attr"`
-	Id       string    `xml:"id,attr"`
-	Title    string    `xml:"title,attr"`
-	Elements []element `xml:"element"`
+	Entity      string    `xml:"entity,attr"`
+	Load        string    `xml:"load,attr"`
+	Id          string    `xml:"id,attr"`
+	Title       string    `xml:"title,attr"`
+	Elements    []element `xml:"element"`
+	BeforeSave  string    `xml:"beforeSave"`
+	AfterRender string    `xml:"afterRender"`
+	AfterSave   string    `xml:"afterSave"`
+	Inwindow    string    `xml:"inwindow,attr"`
 }
 
 type element struct {
