@@ -61,6 +61,8 @@ type element struct {
 	MaxSize     string `xml:"maxSize,attr"`     //for Image控件
 	Resolution  string `xml:"resolution,attr"`  //for Image控件
 	ImageType   string `xml:"imageType,attr"`   //for Image控件
+
+	UploadUrl   string `xml:"uploadUrl,attr"`   //for HTML编辑器控件
 }
 
 func (formpanel formPanel) generate(entity Entity, terminal, packageName string, r *http.Request) []byte {
