@@ -112,7 +112,8 @@ func DealJsonString(str string) string {
 	str = strings.Replace(str, "\r\n", " ", -1)
 	str = strings.Replace(str, "\r", " ", -1)
 	str = strings.Replace(str, "\"", "\\\"", -1)
-	str = strings.Replace(str, "'", "\\'", -1)
+	//to fixed
+	str = strings.Replace(str, "'", "\\\"", -1)
 
 	return str
 }
