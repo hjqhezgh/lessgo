@@ -25,6 +25,7 @@ func isExists(filePath string) bool {
 }
 
 //下载
+//todo 可以考虑改成 用这个工具 https://github.com/go-av/curl
 func downLoad(url, libName string) error {
 	cmd := exec.Command("/usr/local/bin/wget", "-c", url, "-O", libName)
 	Log.Debug(cmd)

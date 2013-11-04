@@ -26,6 +26,7 @@ type customGridPanel struct {
 	Title       string       `xml:"title,attr"`
 	Width       string       `xml:"width,attr"`
 	Height      string       `xml:"height,attr"`
+	MutiSelect  string       `xml:"mutiSelect,attr"`
 	Columns     []column     `xml:"column"`
 	Actions     []action     `xml:"action"`
 	Searchs     []search     `xml:"search"`

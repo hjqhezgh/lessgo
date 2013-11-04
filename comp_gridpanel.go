@@ -26,6 +26,7 @@ type gridPanel struct {
 	Title       string       `xml:"title,attr"`
 	Width       string       `xml:"width,attr"`
 	Height      string       `xml:"height,attr"`
+	MutiSelect  string       `xml:"mutiSelect,attr"`
 	Columns     []column     `xml:"column"`
 	Actions     []action     `xml:"action"`
 	Searchs     []search     `xml:"search"`
@@ -61,9 +62,15 @@ type toolaction struct {
 	Url        string `xml:"url,attr"`
 	LinkType   string `xml:"linkType,attr"`
 	ColorClass string `xml:"colorClass,attr"`
-	Width      string `xml:"width,attr"`
-	Height     string `xml:"height,attr"`
-	Title      string `xml:"title,attr"`
+
+	//for iframeWindow
+	Width  string `xml:"width,attr"`
+	Height string `xml:"height,attr"`
+	Title  string `xml:"title,attr"`
+
+	//for mutiSelect
+	ConfirmMsg string `xml:"confirmMsg,attr"`
+	Params     string `xml:"params,attr"`
 }
 
 type search struct {
