@@ -89,6 +89,7 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 	if viewport.Window == "true" {
 		t = template.New("window.html")
 		data["ParentComponentId"] = r.FormValue("parentComponentId")
+		data["ParentWindowName"] = r.FormValue("parentWindowName")
 		tempName = "../lessgo/template/component/" + terminal + "/window.html"
 	} else {
 		t = template.New("viewport.html")
