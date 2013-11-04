@@ -20,15 +20,24 @@ import (
 )
 
 type formPanel struct {
-	Entity      string    `xml:"entity,attr"`
-	Load        string    `xml:"load,attr"`
-	Id          string    `xml:"id,attr"`
-	Title       string    `xml:"title,attr"`
-	Elements    []element `xml:"element"`
-	BeforeSave  string    `xml:"beforeSave"`
-	AfterRender string    `xml:"afterRender"`
-	AfterSave   string    `xml:"afterSave"`
-	Inwindow    string    `xml:"inwindow,attr"`
+	Entity          string       `xml:"entity,attr"`
+	Load            string       `xml:"load,attr"`
+	Id              string       `xml:"id,attr"`
+	Title           string       `xml:"title,attr"`
+	Elements        []element    `xml:"element"`
+	FormButtons     []formButton `xml:"formButton"`
+	BeforeSave      string       `xml:"beforeSave"`
+	AfterRender     string       `xml:"afterRender"`
+	AfterSave       string       `xml:"afterSave"`
+	Inwindow        string       `xml:"inwindow,attr"`
+	HideSaveButton  string       `xml:"hideSaveButton,attr"`
+	HideResetButton string       `xml:"hideResetButton,attr"`
+}
+
+type formButton struct {
+	Desc        string `xml:"desc,attr"`
+	ButtonClass string `xml:"buttonClass,attr"`
+	Handler   	string `xml:"handler"`
 }
 
 type element struct {
@@ -62,7 +71,7 @@ type element struct {
 	Resolution  string `xml:"resolution,attr"`  //for Image控件
 	ImageType   string `xml:"imageType,attr"`   //for Image控件
 
-	UploadUrl   string `xml:"uploadUrl,attr"`   //for HTML编辑器控件
+	UploadUrl string `xml:"uploadUrl,attr"` //for HTML编辑器控件
 }
 
 func (formpanel formPanel) generate(entity Entity, terminal, packageName string, r *http.Request) []byte {
