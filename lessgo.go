@@ -136,8 +136,6 @@ func ConfigLessgo() *mux.Router {
 	r.HandleFunc("/timedim/months", months)
 	r.HandleFunc("/timedim/weeks", weeks)
 
-	r.HandleFunc("/mutisave", mutiSavaAction)
-
 	r.HandleFunc("/imgageuplaod", imageUpload)
 
 	r.HandleFunc("/kindeditorImageUpload", kindeditorImageUpload)

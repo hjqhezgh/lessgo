@@ -26,7 +26,7 @@ type viewport struct {
 	Window           string            `xml:"window,attr"`
 	GridPanels       []gridPanel       `xml:"gridpanel"`
 	FormPanels       []formPanel       `xml:"formpanel"`
-	MutiFormPanels   []mutiFormPanel   `xml:"mutiformpanel"`
+	TabFormPanels    []tabFormPanel    `xml:"tabformpanel"`
 	CustomGridPanels []customGridPanel `xml:"customgridpanel"`
 	CustomFormPanels []customFormPanel `xml:"customformpanel"`
 	BlankPanels      []blankPanel      `xml:"blankpanel"`
@@ -53,8 +53,8 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 		content += string(formpanel.generate(getEntity(formpanel.Entity), terminal, packageName, r))
 	}
 
-	for _, mutiformpanel := range viewport.MutiFormPanels {
-		content += string(mutiformpanel.generate(terminal, packageName, r))
+	for _, tabFormPanel := range viewport.TabFormPanels {
+		content += string(tabFormPanel.generate(terminal, packageName, r))
 	}
 
 	for _, gridpanel := range viewport.GridPanels {
