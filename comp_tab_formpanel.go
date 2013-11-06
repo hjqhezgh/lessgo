@@ -26,7 +26,7 @@ type tabFormPanel struct {
 	LoadUrl         string       `xml:"loadUrl,attr"`
 	SaveUrl         string       `xml:"saveUrl,attr"`
 	Title           string       `xml:"title,attr"`
-	FormButtons     []formButton `xml:"formButtons"`
+	FormButtons     []formButton `xml:"formButton"`
 	BeforeSave      string       `xml:"beforeSave"`
 	AfterRender     string       `xml:"afterRender"`
 	AfterSave       string       `xml:"afterSave"`

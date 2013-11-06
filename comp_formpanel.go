@@ -37,7 +37,7 @@ type formPanel struct {
 type formButton struct {
 	Desc        string `xml:"desc,attr"`
 	ButtonClass string `xml:"buttonClass,attr"`
-	Handler   	string `xml:"handler"`
+	Handler     string `xml:"handler"`
 }
 
 type element struct {

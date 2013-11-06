@@ -25,7 +25,7 @@ type customFormPanel struct {
 	Id              string       `xml:"id,attr"`
 	Title           string       `xml:"title,attr"`
 	Elements        []element    `xml:"element"`
-	FormButtons     []formButton `xml:"formButtons"`
+	FormButtons     []formButton `xml:"formButton"`
 	BeforeSave      string       `xml:"beforeSave"`
 	AfterRender     string       `xml:"afterRender"`
 	AfterSave       string       `xml:"afterSave"`
