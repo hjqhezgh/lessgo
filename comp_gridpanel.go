@@ -87,6 +87,9 @@ type search struct {
 	//存储实际的搜索值
 	Value  string
 	Char14 string `xml:"char14,attr"` //for 时间戳控件
+	Char8  string `xml:"char8,attr"` //for 时间日控件
+
+	ParentSelect string `xml:"parentSelect,attr"` //for remoteSelect
 }
 
 func (gridpanel gridPanel) generate(entity Entity, terminal, packageName string) []byte {
