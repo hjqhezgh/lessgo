@@ -24,6 +24,7 @@ import (
 	"strconv"
 	"strings"
 	"text/template"
+	"time"
 )
 
 //跳转至错误页面
@@ -367,6 +368,14 @@ func dealEntitySave(_entity Entity, w http.ResponseWriter, r *http.Request) {
 
 		if formElement.Type == "image" { //图片类型需要做多表处理
 			imgElements = append(imgElements, formElement)
+		} else if formElement.Type == "currentTime" { //当前时间，一般用于createTime
+			_prop.Name = formElement.Field
+			if formElement.Char14 == "true" {
+				_prop.Value = time.Now().Format("20060102150405")
+			} else {
+				_prop.Value = time.Now().Format("2006-01-02 15:04:05")
+			}
+			_model.Props = append(_model.Props, _prop)
 		} else {
 			_prop.Name = formElement.Field
 			_prop.Value = r.FormValue(formElement.Field)

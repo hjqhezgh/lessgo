@@ -19,18 +19,19 @@ import (
 )
 
 type gridPanel struct {
-	Entity      string       `xml:"entity,attr"`
-	PageSize    int          `xml:"pageSize,attr"`
-	LoadUrl     string       `xml:"loadUrl,attr"`
-	Id          string       `xml:"id,attr"`
-	Title       string       `xml:"title,attr"`
-	Width       string       `xml:"width,attr"`
-	Height      string       `xml:"height,attr"`
-	MutiSelect  string       `xml:"mutiSelect,attr"`
-	Columns     []column     `xml:"column"`
-	Actions     []action     `xml:"action"`
-	Searchs     []search     `xml:"search"`
-	ToolActions []toolaction `xml:"toolaction"`
+	Entity       string       `xml:"entity,attr"`
+	PageSize     int          `xml:"pageSize,attr"`
+	LoadUrl      string       `xml:"loadUrl,attr"`
+	Id           string       `xml:"id,attr"`
+	Title        string       `xml:"title,attr"`
+	Width        string       `xml:"width,attr"`
+	Height       string       `xml:"height,attr"`
+	MutiSelect   string       `xml:"mutiSelect,attr"`
+	Columns      []column     `xml:"column"`
+	Actions      []action     `xml:"action"`
+	Searchs      []search     `xml:"search"`
+	Checkboxtool checkboxtool `xml:"checkboxtool"`
+	ToolActions  []toolaction `xml:"toolaction"`
 }
 
 //link目前可以支持，直接跳转，打开浏览器新窗口跳转，iframe弹窗，询问提示窗
@@ -63,6 +64,15 @@ type toolaction struct {
 	//for mutiSelect
 	ConfirmMsg string `xml:"confirmMsg,attr"`
 	Params     string `xml:"params,attr"`
+
+	//for addToCheckBox
+	CheckboxDesc string `xml:"checkboxDesc,attr"`
+}
+
+type checkboxtool struct {
+	Desc    string `xml:"desc,attr"`
+	LoadUrl string `xml:"loadUrl,attr"`
+	SaveUrl string `xml:"saveUrl,attr"`
 }
 
 type search struct {
@@ -76,6 +86,7 @@ type search struct {
 	DescField  string `xml:"descField,attr"`
 	//存储实际的搜索值
 	Value string
+	Char14 string `xml:"char14,attr"` //for 时间戳控件
 }
 
 func (gridpanel gridPanel) generate(entity Entity, terminal, packageName string) []byte {

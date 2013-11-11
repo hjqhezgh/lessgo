@@ -72,6 +72,10 @@ type element struct {
 	ImageType   string `xml:"imageType,attr"`   //for Image控件
 
 	UploadUrl string `xml:"uploadUrl,attr"` //for HTML编辑器控件
+
+	Char14 string `xml:"char14,attr"` //for 时间戳控件
+
+	ParentSelect string `xml:"parentSelect,attr"` //for remoteSelect
 }
 
 func (formpanel formPanel) generate(entity Entity, terminal, packageName string, r *http.Request) []byte {
