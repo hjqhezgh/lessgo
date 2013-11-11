@@ -85,7 +85,7 @@ type search struct {
 	ValueField string `xml:"valueField,attr"`
 	DescField  string `xml:"descField,attr"`
 	//存储实际的搜索值
-	Value string
+	Value  string
 	Char14 string `xml:"char14,attr"` //for 时间戳控件
 }
 
