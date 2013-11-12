@@ -45,6 +45,7 @@ type column struct {
 	Field     string `xml:"field,attr"`
 	Desc      string `xml:"desc,attr"`
 	Hidden    string `xml:"hidden,attr"`
+	LoadUrl   string `xml:"loadUrl,attr"`
 	Formatter string `xml:"formatter"`
 }
 
@@ -60,6 +61,7 @@ type toolaction struct {
 	Url        string `xml:"url,attr"`
 	LinkType   string `xml:"linkType,attr"`
 	ColorClass string `xml:"colorClass,attr"`
+	LoadUrl   string `xml:"loadUrl,attr"`
 
 	//for mutiSelect
 	ConfirmMsg string `xml:"confirmMsg,attr"`
