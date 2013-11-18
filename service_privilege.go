@@ -23,6 +23,8 @@ const (
 	KEY_REALLY_NAME   = "KEY_REALLY_NAME"   //真实姓名
 	KEY_DEPARTMENT_ID = "KEY_DEPARTMENT_ID" //部门ID
 	KEY_ROLE_ID       = "KEY_ROLE_ID"       //角色ID
+	KEY_ROLE_CODE     = "KEY_ROLE_CODE"     //角色代号
+	KEY_ROLE_LEVEL    = "KEY_ROLE_LEVEL"    //角色等级
 )
 
 type Menu struct {
@@ -40,6 +42,8 @@ type Employee struct {
 	ReallyName   string `json:"reallyName"`
 	DepartmentId string `json:"departmentId"`
 	RoleId       string `json:"roleId"`
+	RoleCode     string `json:"roleCode"`
+	RoleLevel    string `json:"roleLevel"`
 }
 
 func GetMenus(username string) []Menu {
@@ -134,12 +138,26 @@ func GetCurrentEmployee(r *http.Request) Employee {
 		return Employee{}
 	}
 
+	role_code, ok := session.Values[KEY_ROLE_CODE].(string)
+	if !ok {
+		Log.Error("get session value error!", ok)
+		return Employee{}
+	}
+
+	role_level, ok := session.Values[KEY_ROLE_LEVEL].(string)
+	if !ok {
+		Log.Error("get session value error!", ok)
+		return Employee{}
+	}
+
 	return Employee{
 		UserId:       user_id,
 		UserName:     user_name,
 		ReallyName:   really_name,
 		DepartmentId: department_id,
 		RoleId:       role_id,
+		RoleCode:     role_code,
+		RoleLevel:    role_level,
 	}
 }
 
@@ -157,6 +175,8 @@ func SetCurrentEmployee(employee Employee, w http.ResponseWriter, r *http.Reques
 	session.Values[KEY_REALLY_NAME] = employee.ReallyName
 	session.Values[KEY_DEPARTMENT_ID] = employee.DepartmentId
 	session.Values[KEY_ROLE_ID] = employee.RoleId
+	session.Values[KEY_ROLE_CODE] = employee.RoleCode
+	session.Values[KEY_ROLE_LEVEL] = employee.RoleLevel
 
 	//session.Options.MaxAge = 10 * 24 * 60 * 60
 	session.Save(r, w)

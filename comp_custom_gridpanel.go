@@ -23,6 +23,7 @@ type customGridPanel struct {
 	PageSize     int          `xml:"pageSize,attr"`
 	LoadUrl      string       `xml:"loadUrl,attr"`
 	Id           string       `xml:"id,attr"`
+	PageId       string       `xml:"pageId,attr"`
 	Title        string       `xml:"title,attr"`
 	Width        string       `xml:"width,attr"`
 	Height       string       `xml:"height,attr"`

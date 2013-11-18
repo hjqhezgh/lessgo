@@ -23,6 +23,7 @@ type gridPanel struct {
 	PageSize     int          `xml:"pageSize,attr"`
 	LoadUrl      string       `xml:"loadUrl,attr"`
 	Id           string       `xml:"id,attr"`
+	PageId       string       `xml:"pageId,attr"`
 	Title        string       `xml:"title,attr"`
 	Width        string       `xml:"width,attr"`
 	Height       string       `xml:"height,attr"`
@@ -61,11 +62,12 @@ type toolaction struct {
 	Url        string `xml:"url,attr"`
 	LinkType   string `xml:"linkType,attr"`
 	ColorClass string `xml:"colorClass,attr"`
-	LoadUrl   string `xml:"loadUrl,attr"`
+	LoadUrl    string `xml:"loadUrl,attr"`
 
 	//for mutiSelect
 	ConfirmMsg string `xml:"confirmMsg,attr"`
 	Params     string `xml:"params,attr"`
+	Callback   string `xml:"callback"`
 
 	//for addToCheckBox
 	CheckboxDesc string `xml:"checkboxDesc,attr"`
@@ -89,7 +91,7 @@ type search struct {
 	//存储实际的搜索值
 	Value  string
 	Char14 string `xml:"char14,attr"` //for 时间戳控件
-	Char8  string `xml:"char8,attr"` //for 时间日控件
+	Char8  string `xml:"char8,attr"`  //for 时间日控件
 
 	ParentSelect string `xml:"parentSelect,attr"` //for remoteSelect
 }
