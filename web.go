@@ -637,9 +637,9 @@ func dealEntityPage(entity Entity, w http.ResponseWriter, r *http.Request) {
 
 	for key, value := range r.Form {
 		//滤除分页组件自带的参数，其他参数都认定为搜索参数， Fixme 后期改进这块机制
-		strings.Contains(key,"-")
-		if strings.Contains(key,"-"){
-//		if key != "page" && key != "rows" && key != "componentId" && key != "_search" && key != "nd" && key != "sidx" && key != "sord" && key != "filters" {
+		strings.Contains(key, "-")
+		if strings.Contains(key, "-") {
+			//		if key != "page" && key != "rows" && key != "componentId" && key != "_search" && key != "nd" && key != "sidx" && key != "sord" && key != "filters" {
 			strs := strings.Split(key, "-")
 			search := search{
 				Field:      strs[0],

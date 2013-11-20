@@ -74,7 +74,7 @@ type element struct {
 	UploadUrl string `xml:"uploadUrl,attr"` //for HTML编辑器控件
 
 	Char14 string `xml:"char14,attr"` //for 时间戳控件
-	Char8  string `xml:"char8,attr"` //for 时间日控件
+	Char8  string `xml:"char8,attr"`  //for 时间日控件
 
 	ParentSelect string `xml:"parentSelect,attr"` //for remoteSelect
 }
