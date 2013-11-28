@@ -23,6 +23,7 @@ type formPanel struct {
 	Entity          string       `xml:"entity,attr"`
 	Load            string       `xml:"load,attr"`
 	Id              string       `xml:"id,attr"`
+	PageId          string       `xml:"pageId,attr"`
 	Title           string       `xml:"title,attr"`
 	Elements        []element    `xml:"element"`
 	FormButtons     []formButton `xml:"formButton"`

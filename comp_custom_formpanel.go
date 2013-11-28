@@ -23,6 +23,7 @@ type customFormPanel struct {
 	LoadUrl         string       `xml:"loadUrl,attr"`
 	SaveUrl         string       `xml:"saveUrl,attr"`
 	Id              string       `xml:"id,attr"`
+	PageId          string       `xml:"pageId,attr"`
 	Title           string       `xml:"title,attr"`
 	Elements        []element    `xml:"element"`
 	FormButtons     []formButton `xml:"formButton"`

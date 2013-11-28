@@ -33,6 +33,9 @@ type customGridPanel struct {
 	Searchs      []search     `xml:"search"`
 	Checkboxtool checkboxtool `xml:"checkboxtool"`
 	ToolActions  []toolaction `xml:"toolaction"`
+	BeforeRender string       `xml:"beforeRender"`
+	AfterRender  string       `xml:"afterRender"`
+	CustomSearch string       `xml:"customSearch"`
 }
 
 func (gridpanel customGridPanel) generate(terminal, packageName string) []byte {

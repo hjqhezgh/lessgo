@@ -33,6 +33,9 @@ type gridPanel struct {
 	Searchs      []search     `xml:"search"`
 	Checkboxtool checkboxtool `xml:"checkboxtool"`
 	ToolActions  []toolaction `xml:"toolaction"`
+	BeforeRender string   	  `xml:"beforeRender"`
+	AfterRender  string   	  `xml:"afterRender"`
+	CustomSearch string       `xml:"customSearch"`
 }
 
 //link目前可以支持，直接跳转，打开浏览器新窗口跳转，iframe弹窗，询问提示窗
@@ -55,6 +58,7 @@ type action struct {
 	Url          string `xml:"url,attr"`
 	ActionParams string `xml:"actionParams,attr"`
 	LinkType     string `xml:"linkType,attr"`
+	ConfirmMsg   string `xml:"confirmMsg,attr"`
 }
 
 type toolaction struct {

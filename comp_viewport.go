@@ -31,6 +31,7 @@ type viewport struct {
 	CustomFormPanels []customFormPanel `xml:"customformpanel"`
 	BlankPanels      []blankPanel      `xml:"blankpanel"`
 	Crumbs           crumbs            `xml:"crumbs"`
+	CustomJs         string            `xml:"customJs"`
 }
 
 //面包屑
@@ -76,9 +77,10 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 	data := make(map[string]interface{})
 	data["Content"] = content
 	data["Crumbs"] = viewport.Crumbs
+	data["Crumbs"] = viewport.Crumbs
 	data["Employee"] = employee
 	data["SiteName"] = SiteName
-	data["SiteIcon"] = SiteIcon
+	data["CustomJs"] = viewport.CustomJs
 
 	var t *template.Template
 

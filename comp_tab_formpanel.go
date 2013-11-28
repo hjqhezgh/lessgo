@@ -21,6 +21,7 @@ import (
 
 type tabFormPanel struct {
 	Id              string       `xml:"id,attr"`
+	PageId          string       `xml:"pageId,attr"`
 	FormTabs        []formTab    `xml:"formtab"`
 	Load            string       `xml:"load,attr"`
 	LoadUrl         string       `xml:"loadUrl,attr"`
