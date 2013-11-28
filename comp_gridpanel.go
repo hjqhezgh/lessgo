@@ -33,8 +33,8 @@ type gridPanel struct {
 	Searchs      []search     `xml:"search"`
 	Checkboxtool checkboxtool `xml:"checkboxtool"`
 	ToolActions  []toolaction `xml:"toolaction"`
-	BeforeRender string   	  `xml:"beforeRender"`
-	AfterRender  string   	  `xml:"afterRender"`
+	BeforeRender string       `xml:"beforeRender"`
+	AfterRender  string       `xml:"afterRender"`
 	CustomSearch string       `xml:"customSearch"`
 }
 
@@ -78,9 +78,10 @@ type toolaction struct {
 }
 
 type checkboxtool struct {
-	Desc    string `xml:"desc,attr"`
-	LoadUrl string `xml:"loadUrl,attr"`
-	SaveUrl string `xml:"saveUrl,attr"`
+	Desc     string `xml:"desc,attr"`
+	LoadUrl  string `xml:"loadUrl,attr"`
+	SaveUrl  string `xml:"saveUrl,attr"`
+	HideSave string `xml:"hideSave,attr"`
 }
 
 type search struct {
