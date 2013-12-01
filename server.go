@@ -172,7 +172,7 @@ func findTraditionPage(entity Entity, currPageNo, pageSize int, searchParam []se
 
 		model := new(Model)
 		model.Entity = entity
-		model.Id = 0
+		model.Id = ""
 		model.Props = []*Prop{}
 
 		fillObjects := []interface{}{}
@@ -227,7 +227,7 @@ func findAllData(entity Entity) ([]*Model, error) {
 
 		dataModel := new(Model)
 		dataModel.Entity = entity
-		dataModel.Id = 0
+		dataModel.Id = ""
 		dataModel.Props = []*Prop{}
 
 		fillObjects := []interface{}{}
@@ -348,7 +348,7 @@ func findById(entity Entity, id string) (*Model, error) {
 
 	model := new(Model)
 	model.Entity = entity
-	model.Id = 0
+	model.Id = ""
 	model.Props = []*Prop{}
 
 	if rows.Next() {

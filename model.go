@@ -20,7 +20,7 @@ import (
 //通用模型，用于存储从数据库获取到的值
 type Model struct {
 	Entity Entity
-	Id     int
+	Id     string
 	Props  []*Prop
 }
 

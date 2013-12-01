@@ -395,7 +395,7 @@ func dealEntitySave(_entity Entity, w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		_model.Id = id
+		_model.Id = fmt.Sprint(id)
 
 		err = modify(_entity, _model, formpanel.Elements)
 
@@ -748,7 +748,7 @@ func dealEntityLoad(entity Entity, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if model.Id == 0 {
+	if model.Id == "" {
 		m["success"] = false
 		m["code"] = 100
 		m["msg"] = "出现错误，请联系IT部门，错误信息:找不到相应的实体"
