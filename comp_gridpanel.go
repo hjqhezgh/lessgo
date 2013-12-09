@@ -48,6 +48,7 @@ type gridPanel struct {
 type column struct {
 	Field     string `xml:"field,attr"`
 	Desc      string `xml:"desc,attr"`
+	Width     string `xml:"width,attr"`
 	Hidden    string `xml:"hidden,attr"`
 	LoadUrl   string `xml:"loadUrl,attr"`
 	Formatter string `xml:"formatter"`

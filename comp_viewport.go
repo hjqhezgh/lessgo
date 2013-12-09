@@ -80,6 +80,7 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 	data["Crumbs"] = viewport.Crumbs
 	data["Employee"] = employee
 	data["SiteName"] = SiteName
+	data["SiteIcon"] = SiteIcon
 	data["CustomJs"] = viewport.CustomJs
 
 	var t *template.Template
