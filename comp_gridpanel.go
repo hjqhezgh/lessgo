@@ -36,6 +36,7 @@ type gridPanel struct {
 	BeforeRender string       `xml:"beforeRender"`
 	AfterRender  string       `xml:"afterRender"`
 	CustomSearch string       `xml:"customSearch"`
+	ActionWidth  string 	  `xml:"actionWidth,attr"`
 }
 
 //link目前可以支持，直接跳转，打开浏览器新窗口跳转，iframe弹窗，询问提示窗

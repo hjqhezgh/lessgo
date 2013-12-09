@@ -36,6 +36,7 @@ type customGridPanel struct {
 	BeforeRender string       `xml:"beforeRender"`
 	AfterRender  string       `xml:"afterRender"`
 	CustomSearch string       `xml:"customSearch"`
+	ActionWidth  string 	  `xml:"actionWidth,attr"`
 }
 
 func (gridpanel customGridPanel) generate(terminal, packageName string) []byte {

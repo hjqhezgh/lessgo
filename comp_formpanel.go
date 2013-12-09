@@ -55,7 +55,7 @@ type element struct {
 	ValueField string `xml:"valueField,attr"` //for 远程下拉框，多选框控件
 	DescField  string `xml:"descField,attr"`  //for 远程下拉框，多选框控件
 
-	DefaultValue string `xml:"defaultValue,attr"` //for 隐藏域
+	DefaultValue string `xml:"defaultValue,attr"` //for 隐藏域、本地和远程下拉框
 
 	RefTable string `xml:"refTable,attr"` //for 多选框控件
 	SelfId   string `xml:"selfId,attr"`   //for 多选框控件
