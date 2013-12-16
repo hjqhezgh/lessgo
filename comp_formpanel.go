@@ -55,7 +55,7 @@ type element struct {
 	ValueField string `xml:"valueField,attr"` //for 远程下拉框，多选框控件
 	DescField  string `xml:"descField,attr"`  //for 远程下拉框，多选框控件
 
-	DefaultValue string `xml:"defaultValue,attr"` //for 隐藏域、本地和远程下拉框
+	DefaultValue string `xml:"defaultValue,attr"` //for 隐藏域、本地下拉框
 
 	RefTable string `xml:"refTable,attr"` //for 多选框控件
 	SelfId   string `xml:"selfId,attr"`   //for 多选框控件
@@ -78,6 +78,7 @@ type element struct {
 	Char8  string `xml:"char8,attr"`  //for 时间日控件
 
 	ParentSelect string `xml:"parentSelect,attr"` //for remoteSelect
+	Params       string `xml:"params,attr"`       //for remoteSelect
 }
 
 func (formpanel formPanel) generate(entity Entity, terminal, packageName string, r *http.Request) []byte {
