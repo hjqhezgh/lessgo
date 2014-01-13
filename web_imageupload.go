@@ -24,9 +24,9 @@ import (
 	"strings"
 	"time"
 
-//	"bytes"
-//	"bufio"
-//	"image/png"
+	//	"bytes"
+	//	"bufio"
+	//	"image/png"
 	"image"
 	"image/jpeg"
 )
@@ -62,7 +62,7 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	infos := strings.Split(header.Filename,".")
+	infos := strings.Split(header.Filename, ".")
 	suffix := infos[len(infos)-1]
 
 	newFileName := findRandomFileName(header.Filename)
@@ -78,7 +78,7 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 	}
 	defer fo.Close()
 
-	_,err = io.Copy(fo,fn)
+	_, err = io.Copy(fo, fn)
 
 	if err != nil && os.IsNotExist(err) {
 		m["success"] = false
@@ -90,7 +90,7 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var i image.Image
-	fo,_ = os.Open(fmt.Sprint("../tmp/", newFileName, ".", suffix))
+	fo, _ = os.Open(fmt.Sprint("../tmp/", newFileName, ".", suffix))
 
 	if suffix == "jpeg" || suffix == "jpg" {
 		i, err = jpeg.Decode(fo)
@@ -174,7 +174,7 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 			width, _ := strconv.Atoi(widthString)
 			height := (b.Dy() * width) / b.Dx()
 
-			err = commonlib.Resample("../tmp/" + newFileName + "." + suffix, fmt.Sprint("../tmp/",newFileName, "_", width, ".", suffix), width, height)
+			err = commonlib.Resample("../tmp/"+newFileName+"."+suffix, fmt.Sprint("../tmp/", newFileName, "_", width, ".", suffix), width, height)
 			if err != nil {
 				m["success"] = false
 				m["code"] = 100

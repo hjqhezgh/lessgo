@@ -79,6 +79,8 @@ type element struct {
 
 	ParentSelect string `xml:"parentSelect,attr"` //for remoteSelect
 	Params       string `xml:"params,attr"`       //for remoteSelect
+
+	FileUploadUrl string `xml:"fileUploadUrl,attr"` //for fileupload
 }
 
 func (formpanel formPanel) generate(entity Entity, terminal, packageName string, r *http.Request) []byte {

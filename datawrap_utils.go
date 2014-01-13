@@ -14,19 +14,19 @@
 package lessgo
 
 import (
-	"github.com/hjqhezgh/commonlib"
 	"database/sql"
+	"github.com/hjqhezgh/commonlib"
 	"math"
 )
 
 //获取数据库总页数
-func GetTotalPage(pageSize int,db *sql.DB,sql string ,params []interface {}) (totalPage,totalNum int,err error){
+func GetTotalPage(pageSize int, db *sql.DB, sql string, params []interface{}) (totalPage, totalNum int, err error) {
 
 	rows, err := db.Query(sql, params...)
 
 	if err != nil {
 		Log.Error(err.Error())
-		return 0,0,err
+		return 0, 0, err
 	}
 
 	if rows.Next() {
@@ -34,31 +34,31 @@ func GetTotalPage(pageSize int,db *sql.DB,sql string ,params []interface {}) (to
 
 		if err != nil {
 			Log.Error(err.Error())
-			return 0,0,err
+			return 0, 0, err
 		}
 	}
 
 	totalPage = int(math.Ceil(float64(totalNum) / float64(pageSize)))
 
-	return totalPage,totalNum,nil
+	return totalPage, totalNum, nil
 }
 
-func GetFillObjectPage(db *sql.DB,sql string,currPageNo,pageSize,totalNum int ,params []interface {}) (*commonlib.TraditionPage,error){
+func GetFillObjectPage(db *sql.DB, sql string, currPageNo, pageSize, totalNum int, params []interface{}) (*commonlib.TraditionPage, error) {
 
 	rows, err := db.Query(sql, params...)
 
 	if err != nil {
 		Log.Error(err.Error())
-		return nil,err
+		return nil, err
 	}
 
 	objects := []interface{}{}
 
-	columns,err := rows.Columns()
+	columns, err := rows.Columns()
 
 	if err != nil {
 		Log.Error(err.Error())
-		return nil,err
+		return nil, err
 	}
 
 	for rows.Next() {
@@ -69,8 +69,8 @@ func GetFillObjectPage(db *sql.DB,sql string,currPageNo,pageSize,totalNum int ,p
 
 		fillObjects = append(fillObjects, &model.Id)
 
-		for index,column := range columns {
-			if index > 0 {//第一个列必须是id
+		for index, column := range columns {
+			if index > 0 { //第一个列必须是id
 				prop := new(Prop)
 				prop.Name = column
 				prop.Value = ""
@@ -83,17 +83,16 @@ func GetFillObjectPage(db *sql.DB,sql string,currPageNo,pageSize,totalNum int ,p
 
 		if err != nil {
 			Log.Error(err.Error())
-			return nil,err
+			return nil, err
 		}
 
 		objects = append(objects, model)
 	}
 
-
-	return commonlib.BulidTraditionPage(currPageNo, pageSize, totalNum, objects),nil
+	return commonlib.BulidTraditionPage(currPageNo, pageSize, totalNum, objects), nil
 }
 
-func GetDataMap(rows *sql.Rows) (map[string]string,error){
+func GetDataMap(rows *sql.Rows) (map[string]string, error) {
 
 	type TmpString struct {
 		Value string
@@ -101,11 +100,11 @@ func GetDataMap(rows *sql.Rows) (map[string]string,error){
 
 	dataMap := make(map[string]string)
 
-	columns,err := rows.Columns()
+	columns, err := rows.Columns()
 
 	if err != nil {
 		Log.Error(err.Error())
-		return nil,err
+		return nil, err
 	}
 
 	if rows.Next() {
@@ -113,7 +112,7 @@ func GetDataMap(rows *sql.Rows) (map[string]string,error){
 		objects := []*TmpString{}
 		tmpString := []interface{}{}
 
-		for i:=0; i < len(columns);i++ {
+		for i := 0; i < len(columns); i++ {
 			var tmp = new(TmpString)
 			objects = append(objects, tmp)
 			tmpString = append(tmpString, &tmp.Value)
@@ -123,13 +122,13 @@ func GetDataMap(rows *sql.Rows) (map[string]string,error){
 
 		if err != nil {
 			Log.Error(err.Error())
-			return nil,err
+			return nil, err
 		}
 
-		for index,column := range columns {
+		for index, column := range columns {
 			dataMap[column] = objects[index].Value
 		}
 	}
 
-	return dataMap,nil
+	return dataMap, nil
 }
