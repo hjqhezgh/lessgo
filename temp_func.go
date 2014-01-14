@@ -36,6 +36,18 @@ func GetPropValue(model *Model, propName string) string {
 	return ""
 }
 
+func SetPropValue(model *Model, propName,newValue string) {
+
+	if model != nil {
+		for _, prop := range model.Props {
+			if prop.Name == propName {
+				prop.Value = newValue
+			}
+		}
+		Log.Debug("找不到实体", model.Entity.Id, "的属性")
+	}
+}
+
 //获取随机的组件id
 func getComponentId(componentType string) string {
 
