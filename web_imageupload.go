@@ -24,11 +24,11 @@ import (
 	"strings"
 	"time"
 
-	//	"bytes"
-	//	"bufio"
-	//	"image/png"
+	"bufio"
+	"bytes"
 	"image"
 	"image/jpeg"
+	"image/png"
 )
 
 func imageUpload(w http.ResponseWriter, r *http.Request) {
@@ -65,37 +65,12 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 	infos := strings.Split(header.Filename, ".")
 	suffix := infos[len(infos)-1]
 
-	newFileName := findRandomFileName(header.Filename)
-
-	fo, err := os.Create(fmt.Sprint("../tmp/", newFileName, ".", suffix))
-	if err != nil {
-		m["success"] = false
-		m["code"] = 100
-		m["msg"] = err.Error()
-		Log.Error("获取上传图片发生错误，信息如下：", err.Error())
-		commonlib.OutputJson(w, m, " ")
-		return
-	}
-	defer fo.Close()
-
-	_, err = io.Copy(fo, fn)
-
-	if err != nil && os.IsNotExist(err) {
-		m["success"] = false
-		m["code"] = 100
-		m["msg"] = err.Error()
-		Log.Error("获取上传图片发生错误，信息如下：", err.Error())
-		commonlib.OutputJson(w, m, " ")
-		return
-	}
-
 	var i image.Image
-	fo, _ = os.Open(fmt.Sprint("../tmp/", newFileName, ".", suffix))
 
 	if suffix == "jpeg" || suffix == "jpg" {
-		i, err = jpeg.Decode(fo)
+		i, err = jpeg.Decode(fn)
 	} else {
-		i, _, err = image.Decode(fo)
+		i, _, err = image.Decode(fn)
 	}
 
 	if err != nil && os.IsNotExist(err) {
@@ -164,6 +139,8 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	newFileName := findRandomFileName(header.Filename)
+
 	if widths != "" {
 		widthsArray := strings.Split(widths, ",")
 
@@ -171,10 +148,25 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		tmpFileNames := ""
 
 		for index, widthString := range widthsArray {
+			var i1 *image.RGBA
+
 			width, _ := strconv.Atoi(widthString)
 			height := (b.Dy() * width) / b.Dx()
 
-			err = commonlib.Resample("../tmp/"+newFileName+"."+suffix, fmt.Sprint("../tmp/", newFileName, "_", width, ".", suffix), width, height)
+			i1 = commonlib.Resample(i, b, width, height)
+			i128 := commonlib.ResizeRGBA(i1, i1.Bounds(), width, height)
+
+			var buf bytes.Buffer
+			if err := png.Encode(&buf, i128); err != nil {
+				m["success"] = false
+				m["code"] = 100
+				m["msg"] = err.Error()
+				Log.Error("获取上传图片发生错误，信息如下：", err.Error())
+				commonlib.OutputJson(w, m, " ")
+				return
+			}
+
+			fo, err := os.Create(fmt.Sprint("../tmp/", newFileName, "_", width, ".", suffix))
 			if err != nil {
 				m["success"] = false
 				m["code"] = 100
@@ -183,6 +175,9 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 				commonlib.OutputJson(w, m, " ")
 				return
 			}
+			defer fo.Close()
+			writer := bufio.NewWriter(fo)
+			buf.WriteTo(writer)
 
 			tmpFileNames += fmt.Sprint("/tmp/", newFileName, "_", width, ".", suffix)
 
@@ -195,8 +190,6 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		os.Remove(fmt.Sprint("../tmp/", newFileName, ".", suffix))
-
 		m["success"] = true
 		m["code"] = 200
 		m["tmpfile"] = "/tmp/" + tmpFileName
@@ -206,6 +199,35 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		return
 
 	} else {
+		var i1 *image.RGBA
+
+		i1 = commonlib.Resample(i, b, b.Dx(), b.Dy())
+		i128 := commonlib.ResizeRGBA(i1, i1.Bounds(), b.Dx(), b.Dy())
+
+		var buf bytes.Buffer
+		if err := png.Encode(&buf, i128); err != nil {
+			m["success"] = false
+			m["code"] = 100
+			m["msg"] = err.Error()
+			Log.Error("获取上传图片发生错误，信息如下：", err.Error())
+			commonlib.OutputJson(w, m, " ")
+			return
+		}
+
+		fo, err := os.Create("../tmp/" + newFileName + "." + suffix)
+		if err != nil {
+			m["success"] = false
+			m["code"] = 100
+			m["msg"] = err.Error()
+			Log.Error("获取上传图片发生错误，信息如下：", err.Error())
+			commonlib.OutputJson(w, m, " ")
+			return
+		}
+
+		defer fo.Close()
+		writer := bufio.NewWriter(fo)
+		buf.WriteTo(writer)
+
 		m["success"] = true
 		m["code"] = 200
 		m["tmpfile"] = "/tmp/" + newFileName + "." + suffix
