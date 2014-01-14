@@ -42,6 +42,7 @@ func SetPropValue(model *Model, propName,newValue string) {
 		for _, prop := range model.Props {
 			if prop.Name == propName {
 				prop.Value = newValue
+				return
 			}
 		}
 		Log.Debug("找不到实体", model.Entity.Id, "的属性")
