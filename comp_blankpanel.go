@@ -22,7 +22,7 @@ type blankPanel struct {
 	Content string `xml:"content"`
 }
 
-func (blankPanel blankPanel) generate(terminal, packageName string) []byte {
+func (blankPanel blankPanel) generate(terminal, packageName string, employee Employee) []byte {
 
 	var t *template.Template
 
@@ -41,6 +41,7 @@ func (blankPanel blankPanel) generate(terminal, packageName string) []byte {
 
 	data["BlankPanel"] = blankPanel
 	data["Terminal"] = terminal
+	data["Employee"] = employee
 
 	err = t.Execute(&buf, data)
 

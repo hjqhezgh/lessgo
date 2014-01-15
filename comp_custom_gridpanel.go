@@ -39,7 +39,7 @@ type customGridPanel struct {
 	ActionWidth  string       `xml:"actionWidth,attr"`
 }
 
-func (gridpanel customGridPanel) generate(terminal, packageName string) []byte {
+func (gridpanel customGridPanel) generate(terminal, packageName string, employee Employee) []byte {
 
 	var t *template.Template
 
@@ -70,6 +70,7 @@ func (gridpanel customGridPanel) generate(terminal, packageName string) []byte {
 	data["Terminal"] = terminal
 	data["SearchLength"] = len(gridpanel.Searchs)
 	data["ActionLength"] = len(gridpanel.Actions)
+	data["Employee"] = employee
 
 	err = t.Execute(&buf, data)
 

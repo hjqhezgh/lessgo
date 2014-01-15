@@ -74,6 +74,7 @@ type toolaction struct {
 	ConfirmMsg string `xml:"confirmMsg,attr"`
 	Params     string `xml:"params,attr"`
 	Callback   string `xml:"callback"`
+	Roles	   string `xml:"roles,attr"`
 
 	//for addToCheckBox
 	CheckboxDesc string `xml:"checkboxDesc,attr"`
@@ -103,7 +104,7 @@ type search struct {
 	ParentSelect string `xml:"parentSelect,attr"` //for remoteSelect
 }
 
-func (gridpanel gridPanel) generate(entity Entity, terminal, packageName string) []byte {
+func (gridpanel gridPanel) generate(entity Entity, terminal, packageName string, employee Employee) []byte {
 
 	var t *template.Template
 
@@ -135,6 +136,7 @@ func (gridpanel gridPanel) generate(entity Entity, terminal, packageName string)
 	data["Terminal"] = terminal
 	data["SearchLength"] = len(gridpanel.Searchs)
 	data["ActionLength"] = len(gridpanel.Actions)
+	data["Employee"] = employee
 
 	err = t.Execute(&buf, data)
 

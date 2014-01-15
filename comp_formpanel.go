@@ -83,7 +83,7 @@ type element struct {
 	FileUploadUrl string `xml:"fileUploadUrl,attr"` //for fileupload
 }
 
-func (formpanel formPanel) generate(entity Entity, terminal, packageName string, r *http.Request) []byte {
+func (formpanel formPanel) generate(entity Entity, terminal, packageName string, r *http.Request, employee Employee) []byte {
 
 	var t *template.Template
 
@@ -120,6 +120,7 @@ func (formpanel formPanel) generate(entity Entity, terminal, packageName string,
 	data["Formpanel"] = formpanel
 	data["Entity"] = entity
 	data["Terminal"] = terminal
+	data["Employee"] = employee
 
 	if formpanel.Load == "true" {
 		id := r.FormValue("id")

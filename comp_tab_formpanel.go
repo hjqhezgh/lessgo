@@ -41,7 +41,7 @@ type formTab struct {
 	Desc     string    `xml:"desc,attr"`
 }
 
-func (tabFormPanel tabFormPanel) generate(terminal, packageName string, r *http.Request) []byte {
+func (tabFormPanel tabFormPanel) generate(terminal, packageName string, r *http.Request, employee Employee) []byte {
 
 	var t *template.Template
 
@@ -77,6 +77,7 @@ func (tabFormPanel tabFormPanel) generate(terminal, packageName string, r *http.
 
 	data["TabFormPanel"] = tabFormPanel
 	data["Terminal"] = terminal
+	data["Employee"] = employee
 
 	err = t.Execute(&buf, data)
 

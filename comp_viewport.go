@@ -51,32 +51,31 @@ func (viewport viewport) generateViewport(terminal, packageName string, r *http.
 	content := ""
 
 	for _, formpanel := range viewport.FormPanels {
-		content += string(formpanel.generate(getEntity(formpanel.Entity), terminal, packageName, r))
+		content += string(formpanel.generate(getEntity(formpanel.Entity), terminal, packageName, r ,employee))
 	}
 
 	for _, tabFormPanel := range viewport.TabFormPanels {
-		content += string(tabFormPanel.generate(terminal, packageName, r))
+		content += string(tabFormPanel.generate(terminal, packageName, r ,employee))
 	}
 
 	for _, gridpanel := range viewport.GridPanels {
-		content += string(gridpanel.generate(getEntity(gridpanel.Entity), terminal, packageName))
+		content += string(gridpanel.generate(getEntity(gridpanel.Entity), terminal, packageName ,employee))
 	}
 
 	for _, customgridpanel := range viewport.CustomGridPanels {
-		content += string(customgridpanel.generate(terminal, packageName))
+		content += string(customgridpanel.generate(terminal, packageName ,employee))
 	}
 
 	for _, customformpanel := range viewport.CustomFormPanels {
-		content += string(customformpanel.generate(terminal, packageName))
+		content += string(customformpanel.generate(terminal, packageName ,employee))
 	}
 
 	for _, blankpanel := range viewport.BlankPanels {
-		content += string(blankpanel.generate(terminal, packageName))
+		content += string(blankpanel.generate(terminal, packageName ,employee))
 	}
 
 	data := make(map[string]interface{})
 	data["Content"] = content
-	data["Crumbs"] = viewport.Crumbs
 	data["Crumbs"] = viewport.Crumbs
 	data["Employee"] = employee
 	data["SiteName"] = SiteName

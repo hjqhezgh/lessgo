@@ -35,7 +35,7 @@ type customFormPanel struct {
 	HideResetButton string       `xml:"hideResetButton,attr"`
 }
 
-func (formpanel customFormPanel) generate(terminal, packageName string) []byte {
+func (formpanel customFormPanel) generate(terminal, packageName string, employee Employee) []byte {
 
 	var t *template.Template
 
@@ -66,6 +66,7 @@ func (formpanel customFormPanel) generate(terminal, packageName string) []byte {
 
 	data["CustomFormPanel"] = formpanel
 	data["Terminal"] = terminal
+	data["Employee"] = employee
 
 	err = t.Execute(&buf, data)
 
