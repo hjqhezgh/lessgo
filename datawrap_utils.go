@@ -107,27 +107,24 @@ func GetDataMap(rows *sql.Rows) (map[string]string, error) {
 		return nil, err
 	}
 
-	if rows.Next() {
+	objects := []*TmpString{}
+	tmpString := []interface{}{}
 
-		objects := []*TmpString{}
-		tmpString := []interface{}{}
+	for i := 0; i < len(columns); i++ {
+		var tmp = new(TmpString)
+		objects = append(objects, tmp)
+		tmpString = append(tmpString, &tmp.Value)
+	}
 
-		for i := 0; i < len(columns); i++ {
-			var tmp = new(TmpString)
-			objects = append(objects, tmp)
-			tmpString = append(tmpString, &tmp.Value)
-		}
+	err = commonlib.PutRecord(rows, tmpString...)
 
-		err = commonlib.PutRecord(rows, tmpString...)
+	if err != nil {
+		Log.Error(err.Error())
+		return nil, err
+	}
 
-		if err != nil {
-			Log.Error(err.Error())
-			return nil, err
-		}
-
-		for index, column := range columns {
-			dataMap[column] = objects[index].Value
-		}
+	for index, column := range columns {
+		dataMap[column] = objects[index].Value
 	}
 
 	return dataMap, nil

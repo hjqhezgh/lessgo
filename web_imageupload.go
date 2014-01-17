@@ -52,6 +52,7 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 	widths := r.FormValue("widths")
 
 	fn, header, err := r.FormFile(fileInputName)
+	fn1, header, err := r.FormFile(fileInputName)//读两次，一个用于分析，一个用于io，不然会出现错误
 
 	if err != nil && os.IsNotExist(err) {
 		m["success"] = false
@@ -63,7 +64,9 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	infos := strings.Split(header.Filename, ".")
-	suffix := infos[len(infos)-1]
+	suffix := strings.ToLower(infos[len(infos)-1])
+
+	newFileName := findRandomFileName(header.Filename)
 
 	var i image.Image
 
@@ -139,8 +142,6 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	newFileName := findRandomFileName(header.Filename)
-
 	if widths != "" {
 		widthsArray := strings.Split(widths, ",")
 
@@ -198,7 +199,7 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		commonlib.OutputJson(w, m, " ")
 		return
 
-	} else {
+	} else {/*
 		var i1 *image.RGBA
 
 		i1 = commonlib.Resample(i, b, b.Dx(), b.Dy())
@@ -226,7 +227,29 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 
 		defer fo.Close()
 		writer := bufio.NewWriter(fo)
-		buf.WriteTo(writer)
+		buf.WriteTo(writer)*/
+
+		fo, err := os.Create(fmt.Sprint("../tmp/", newFileName, ".", suffix))
+		if err != nil {
+			m["success"] = false
+			m["code"] = 100
+			m["msg"] = err.Error()
+			Log.Error("获取上传图片发生错误，信息如下：", err.Error())
+			commonlib.OutputJson(w, m, " ")
+			return
+		}
+		defer fo.Close()
+
+		_, err = io.Copy(fo, fn1)
+
+		if err != nil && os.IsNotExist(err) {
+			m["success"] = false
+			m["code"] = 100
+			m["msg"] = err.Error()
+			Log.Error("获取上传图片发生错误，信息如下：", err.Error())
+			commonlib.OutputJson(w, m, " ")
+			return
+		}
 
 		m["success"] = true
 		m["code"] = 200
