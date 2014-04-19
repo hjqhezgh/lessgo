@@ -30,6 +30,7 @@ type formPanel struct {
 	BeforeSave      string       `xml:"beforeSave"`
 	AfterRender     string       `xml:"afterRender"`
 	AfterSave       string       `xml:"afterSave"`
+	AfterLoad       string       `xml:"afterLoad"`
 	Inwindow        string       `xml:"inwindow,attr"`
 	HideSaveButton  string       `xml:"hideSaveButton,attr"`
 	HideResetButton string       `xml:"hideResetButton,attr"`
