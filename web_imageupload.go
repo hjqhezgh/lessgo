@@ -191,10 +191,10 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		m["success"] = true
-		m["code"] = 200
-		m["tmpfile"] = "/tmp/" + tmpFileName
-		m["tmpfiles"] = tmpFileNames
+		m["success"]    = true
+		m["code"]       = 200
+		m["tmpfile"]    = "/tmp/" + tmpFileName
+		m["tmpfiles"]   = tmpFileNames
 
 		commonlib.OutputJson(w, m, " ")
 		return
@@ -251,9 +251,10 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		m["success"] = true
-		m["code"] = 200
-		m["tmpfile"] = "/tmp/" + newFileName + "." + suffix
+		m["success"]    = true
+		m["code"]       = 200
+		m["sourcefile"] = header.Filename
+		m["tmpfile"]    = "/tmp/" + newFileName + "." + suffix
 
 		commonlib.OutputJson(w, m, " ")
 		return
