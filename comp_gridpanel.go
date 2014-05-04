@@ -102,6 +102,7 @@ type search struct {
 	Char8  string `xml:"char8,attr"`  //for 时间日控件
 
 	ParentSelect string `xml:"parentSelect,attr"` //for remoteSelect
+	Params       string `xml:"params,attr"`       //for remoteSelect
 }
 
 func (gridpanel gridPanel) generate(entity Entity, terminal, packageName string, employee Employee) []byte {
