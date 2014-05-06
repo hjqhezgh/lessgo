@@ -35,6 +35,7 @@ type customGridPanel struct {
 	ToolActions  []toolaction `xml:"toolaction"`
 	BeforeRender string       `xml:"beforeRender"`
 	AfterRender  string       `xml:"afterRender"`
+	AfterLoad  string          `xml:"afterLoad"`
 	CustomSearch string       `xml:"customSearch"`
 	ActionWidth  string       `xml:"actionWidth,attr"`
 }
