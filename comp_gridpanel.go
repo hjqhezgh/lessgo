@@ -54,7 +54,7 @@ type column struct {
 	Hidden    string `xml:"hidden,attr"`
 	LoadUrl   string `xml:"loadUrl,attr"`
 	Formatter string `xml:"formatter"`
-	align 	  string `xml:"align,attr"`
+	Align 	  string `xml:"align,attr"`
 }
 
 type action struct {
