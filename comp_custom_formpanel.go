@@ -31,6 +31,7 @@ type customFormPanel struct {
 	AfterRender     string       `xml:"afterRender"`
 	AfterSave       string       `xml:"afterSave"`
 	AfterLoad       string       `xml:"afterLoad"`
+	FailCallback    string       `xml:"failCallback"`
 	Inwindow        string       `xml:"inwindow,attr"`
 	HideSaveButton  string       `xml:"hideSaveButton,attr"`
 	HideResetButton string       `xml:"hideResetButton,attr"`
